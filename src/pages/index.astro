@@ -33,6 +33,23 @@ const personJsonLd = {
     `微信:${SITE.author.wechat}`,
   ],
 };
+
+// 站点级结构化数据：品牌搜索可展示「站内搜索框」富片段
+const websiteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: SITE.name,
+  url: SITE.url,
+  description: SITE.description,
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: {
+      '@type': 'EntryPoint',
+      urlTemplate: `${SITE.url}/search?q={search_term_string}`,
+    },
+    'query-input': 'required name=search_term_string',
+  },
+};
 ---
 
 <BaseLayout
@@ -42,6 +59,7 @@ const personJsonLd = {
   ogImage="/og-default.png"
 >
   <JsonLd data={personJsonLd} />
+  <JsonLd data={websiteJsonLd} />
   <Nav active="首页" variant="full" />
 
   <!-- Hero -->

@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# 站点地图：列出全站可被收录的页面
+Sitemap: https://suihuajili.cn/sitemap.xml

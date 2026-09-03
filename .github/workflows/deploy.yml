@@ -6,9 +6,10 @@ on:
     branches: [main]
   workflow_dispatch:
 
-# 最小权限原则
+# 最小权限原则（pages-action 需要创建 GitHub Deployment 状态）
 permissions:
   contents: read
+  deployments: write
 
 concurrency:
   group: pages-deploy

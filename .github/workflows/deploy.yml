@@ -27,17 +27,16 @@ jobs:
           node-version: 22
 
       - name: Install dependencies
-        run: npm install
-
-      - name: Install Wrangler
-        run: npm install -g wrangler@latest
+        run: npm ci
 
       - name: Build site (Astro + Pagefind)
         run: npm run build
 
       - name: Deploy to Cloudflare Pages
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/pages-action@v1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy dist --project-name suihuajili --commit-dirty=true
+          projectName: suihuajili
+          directory: dist
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}

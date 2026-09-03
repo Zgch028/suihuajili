@@ -41,6 +41,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? SITE.url).href;
       ogType={ogType}
       ogImage={ogImage}
     />
+    <!-- 百度搜索资源平台站点验证 -->
+    <meta name="baidu-site-verification" content="codeva-sl6Vk5ldwE" />
   </head>
   <body>
     <slot />

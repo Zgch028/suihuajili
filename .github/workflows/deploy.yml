@@ -29,6 +29,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Install Wrangler
+        run: npm install -g wrangler@latest
+
       - name: Build site (Astro + Pagefind)
         run: npm run build
 

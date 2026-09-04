@@ -9,7 +9,7 @@
   body {
     width: 1080px; height: 1350px;
     font-family: 'Microsoft YaHei', '微软雅黑', 'PingFang SC', sans-serif;
-    background: #ece4d4;
+    background: #e8e0ec;
     display: flex; align-items: center; justify-content: center;
   }
   .card {
@@ -18,23 +18,23 @@
     border-radius: 28px;
     overflow: hidden;
     background:
-      radial-gradient(130% 90% at 82% -12%, rgba(176,136,56,.10), transparent 55%),
-      radial-gradient(90% 70% at 12% 110%, rgba(58,90,85,.10), transparent 60%),
-      linear-gradient(158deg, #faf6ed 0%, #f4ecdc 58%, #ece2cf 100%);
-    border: 1px solid rgba(168,127,51,.40);
-    box-shadow: 0 30px 80px rgba(80,64,40,.22);
-    color: #2b2620;
+      radial-gradient(120% 80% at 78% -10%, rgba(255,255,255,.16), transparent 55%),
+      radial-gradient(80% 60% at 10% 108%, rgba(78,63,107,.14), transparent 58%),
+      linear-gradient(158deg, #8a7bb5 0%, #6d5c94 42%, #4e3f6b 100%);
+    border: 1px solid rgba(255,255,255,.25);
+    box-shadow: 0 30px 80px rgba(60,48,90,.28);
+    color: #fff8f0;
   }
-  /* 淡墨山影 */
+  /* 淡紫山影 */
   .hills {
     position: absolute; left: 0; right: 0; bottom: 0;
-    width: 100%; height: 380px; opacity: .5; pointer-events: none;
+    width: 100%; height: 380px; opacity: .45; pointer-events: none;
   }
-  /* 淡墨晕染月 */
+  /* 淡月晕 */
   .moon {
     position: absolute; top: 110px; right: 120px;
     width: 220px; height: 220px; border-radius: 50%;
-    background: radial-gradient(circle at 60% 40%, rgba(255,255,255,.55), rgba(176,136,56,.06) 70%, transparent 72%);
+    background: radial-gradient(circle at 60% 40%, rgba(255,255,255,.35), rgba(232,201,106,.08) 70%, transparent 72%);
     filter: blur(2px); pointer-events: none;
   }
   .topbar {
@@ -43,16 +43,16 @@
     padding: 54px 60px 0;
   }
   .brand {
-    font-size: 26px; letter-spacing: 6px; color: #9c7530; font-weight: 700;
+    font-size: 26px; letter-spacing: 6px; color: #e8c96a; font-weight: 700;
   }
-  .brand small { display:block; font-size: 15px; letter-spacing: 3px; color:#8a7d6a; font-weight:400; margin-top:6px; }
+  .brand small { display:block; font-size: 15px; letter-spacing: 3px; color:#d8cfe6; font-weight:400; margin-top:6px; }
   .spacer { flex: 1; }
   .seal {
     width: 92px; height: 92px; border-radius: 14px;
     background: #b5341f;
     display: flex; align-items: center; justify-content: center;
     font-family: 'KaiTi','楷体',serif; font-size: 52px; color: #fff;
-    box-shadow: 0 6px 18px rgba(181,52,31,.30);
+    box-shadow: 0 6px 18px rgba(0,0,0,.22);
     border: 2px solid rgba(255,255,255,.25);
   }
   .identity {
@@ -62,57 +62,75 @@
   }
   .avatar {
     width: 168px; height: 168px; border-radius: 50%;
-    object-fit: cover; border: 4px solid #b08838;
-    box-shadow: 0 10px 30px rgba(80,64,40,.22);
+    object-fit: cover; border: 4px solid #e8c96a;
+    box-shadow: 0 10px 30px rgba(40,32,64,.28);
     background: #f3ecdc;
   }
   .namebox .name {
     font-family: 'KaiTi','STKaiti','楷体',serif;
     font-size: 92px; font-weight: 700; letter-spacing: 8px; line-height: 1;
-    color: #23201c;
-    text-shadow: 0 2px 8px rgba(255,255,255,.6);
+    color: #fff8f0;
+    text-shadow: 0 3px 12px rgba(40,32,64,.35);
   }
   .namebox .pinyin {
-    font-size: 24px; letter-spacing: 6px; color: #a87f33; margin-top: 14px;
+    font-size: 24px; letter-spacing: 6px; color: #e8c96a; margin-top: 14px;
     text-transform: uppercase;
   }
   .role {
     position: relative; z-index: 2;
     margin: 30px 60px 0;
     padding: 22px 26px;
-    background: rgba(176,136,56,.08);
-    border-left: 4px solid #b08838;
+    background: rgba(255,255,255,.09);
+    border-left: 4px solid #e8c96a;
     border-radius: 10px;
   }
-  .role .company { font-size: 30px; font-weight: 700; color: #2b2620; letter-spacing: 1px; }
-  .role .title { font-size: 26px; color: #9c7530; margin-top: 8px; letter-spacing: 2px; }
+  .role .company { font-size: 30px; font-weight: 700; color: #fff8f0; letter-spacing: 1px; }
+  .role .title { font-size: 26px; color: #e8c96a; margin-top: 8px; letter-spacing: 2px; }
+  .contact {
+    position: relative; z-index: 2;
+    margin: 26px 60px 0;
+    display: flex; gap: 28px;
+    flex-wrap: wrap;
+  }
+  .contact-item {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 22px; color: #ece6f5;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.16);
+    border-radius: 999px;
+    padding: 10px 22px;
+  }
+  .contact-item .icon {
+    width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;
+    font-size: 20px; color: #e8c96a;
+  }
   .creds {
     position: relative; z-index: 2;
-    margin: 32px 60px 0;
-    display: flex; flex-wrap: wrap; gap: 16px;
+    margin: 28px 60px 0;
+    display: flex; flex-wrap: wrap; gap: 14px;
   }
   .chip {
-    font-size: 23px; color: #3a332a;
-    padding: 11px 22px; border-radius: 999px;
-    border: 1px solid rgba(168,127,51,.45);
-    background: rgba(176,136,56,.07);
+    font-size: 22px; color: #fff8f0;
+    padding: 10px 20px; border-radius: 999px;
+    border: 1px solid rgba(255,255,255,.22);
+    background: rgba(255,255,255,.08);
     letter-spacing: 1px;
   }
   .foot {
     position: absolute; left: 60px; right: 60px; bottom: 56px; z-index: 2;
     display: flex; align-items: flex-end; justify-content: space-between;
   }
-  .sitebox .label { font-size: 20px; color: #8a7d6a; letter-spacing: 2px; }
+  .sitebox .label { font-size: 20px; color: #d8cfe6; letter-spacing: 2px; }
   .sitebox .url {
-    font-size: 38px; font-weight: 800; color: #23201c; letter-spacing: 2px;
+    font-size: 38px; font-weight: 800; color: #fff8f0; letter-spacing: 2px;
     margin-top: 8px;
   }
-  .sitebox .url span { color: #a87f33; }
-  .sitebox .tip { font-size: 18px; color:#8a7d6a; margin-top: 8px; letter-spacing:1px;}
+  .sitebox .url span { color: #e8c96a; }
+  .sitebox .tip { font-size: 18px; color:#d8cfe6; margin-top: 8px; letter-spacing:1px;}
   .qr {
     width: 178px; height: 178px; border-radius: 14px; background:#fff;
-    padding: 12px; box-shadow: 0 10px 26px rgba(80,64,40,.18);
-    border: 1px solid rgba(168,127,51,.30);
+    padding: 12px; box-shadow: 0 10px 26px rgba(40,32,64,.25);
+    border: 1px solid rgba(255,255,255,.35);
   }
 </style>
 </head>
@@ -120,9 +138,9 @@
   <div class="card">
     <div class="moon"></div>
     <svg class="hills" viewBox="0 0 1000 380" preserveAspectRatio="none">
-      <path d="M0,380 L0,220 C120,160 200,240 320,190 C440,140 520,260 660,200 C780,150 880,240 1000,180 L1000,380 Z" fill="#cdd8d0" opacity="0.55"/>
-      <path d="M0,380 L0,280 C140,230 240,310 380,260 C520,210 600,310 740,265 C860,225 940,300 1000,260 L1000,380 Z" fill="#b9c7bd" opacity="0.6"/>
-      <path d="M0,380 L0,330 C160,295 300,345 460,310 C620,275 720,345 880,315 C940,305 980,335 1000,325 L1000,380 Z" fill="#a9b9ad" opacity="0.7"/>
+      <path d="M0,380 L0,220 C120,160 200,240 320,190 C440,140 520,260 660,200 C780,150 880,240 1000,180 L1000,380 Z" fill="#b8aed4" opacity="0.45"/>
+      <path d="M0,380 L0,280 C140,230 240,310 380,260 C520,210 600,310 740,265 C860,225 940,300 1000,260 L1000,380 Z" fill="#a89bc6" opacity="0.5"/>
+      <path d="M0,380 L0,330 C160,295 300,345 460,310 C620,275 720,345 880,315 C940,305 980,335 1000,325 L1000,380 Z" fill="#9789b8" opacity="0.55"/>
     </svg>
 
     <div class="topbar">
@@ -142,6 +160,17 @@
     <div class="role">
       <div class="company">山西安宇建设监理有限公司</div>
       <div class="title">副总经理</div>
+    </div>
+
+    <div class="contact">
+      <div class="contact-item">
+        <div class="icon">☎</div>
+        <div>13546339366</div>
+      </div>
+      <div class="contact-item">
+        <div class="icon">◎</div>
+        <div>山西 · 太原</div>
+      </div>
     </div>
 
     <div class="creds">

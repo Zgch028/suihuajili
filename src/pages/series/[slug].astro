@@ -96,11 +96,12 @@ const collectionJsonLd = {
     content: '';
     position: absolute;
     inset: 0;
+    /* 宣纸亮调遮罩：左侧暖米色保证墨字清晰，右侧渐淡透出画意 */
     background: linear-gradient(
       90deg,
-      rgba(15, 23, 42, 0.92) 0%,
-      rgba(15, 23, 42, 0.72) 45%,
-      rgba(15, 23, 42, 0.35) 100%
+      rgba(247, 240, 226, 0.94) 0%,
+      rgba(247, 240, 226, 0.78) 42%,
+      rgba(247, 240, 226, 0.40) 100%
     );
     z-index: 1;
   }
@@ -112,30 +113,31 @@ const collectionJsonLd = {
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 1px;
-    color: var(--gold);
+    color: #9a7b2e;
   }
   .series-header__title {
     font-family: var(--font-serif);
     font-size: 48px;
     font-weight: 700;
-    color: #fff;
+    color: #2a241c;
     letter-spacing: -1px;
     margin-top: 8px;
   }
   .series-header__sub {
     font-size: 16px;
-    color: #c9c4ba;
+    color: #5b5346;
     line-height: 1.6;
     margin-top: 16px;
     max-width: 720px;
   }
   .seo-panel {
     margin-top: 24px;
-    background: var(--navy-deep);
+    background: rgba(255, 252, 246, 0.74);
+    border: 1px solid rgba(120, 100, 70, 0.18);
     border-radius: var(--radius);
     padding: 20px;
     font-size: 13px;
-    color: #c9c4ba;
+    color: #5b5346;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -144,7 +146,7 @@ const collectionJsonLd = {
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 1px;
-    color: var(--gold);
+    color: #9a7b2e;
   }
   .post-list {
     display: flex;

@@ -14,6 +14,7 @@ const series = defineCollection({
     seoDescription: z.string(),     // 本页 meta description
     seoKeywords: z.array(z.string()), // 本页 meta keywords
     order: z.number().default(99),  // 首页系列网格排序
+    headerImage: z.string().optional(), // 系列页头部背景图（如 /series-bg/qingming-header.jpg）
   }),
 });
 

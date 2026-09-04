@@ -7,6 +7,7 @@ seoTitle: 大宋纪丽 · 宋人生活美学｜岁华纪丽
 seoDescription: 记录大宋纪丽生活之旅的所遇所感，连接宋人生活美学与当代生活方式。
 seoKeywords: [宋文化, 生活美学, 大宋纪丽生活之旅, 赵匡胤, 二十四节气, 宋词, 龙山大佛]
 order: 1
+headerImage: /series-bg/qingming-header.jpg
 ---
 
 大宋纪丽，是把一趟「宋式生活之旅」过成日常的实验。

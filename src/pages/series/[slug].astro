@@ -42,7 +42,7 @@ const collectionJsonLd = {
   <JsonLd data={collectionJsonLd} />
   <Nav active={series.data.title} variant="minimal" />
 
-  <section class="series-header">
+  <section class={`series-header ${series.data.headerImage ? 'series-header--with-bg' : ''}`} style={series.data.headerImage ? `background-image: url('${series.data.headerImage}');` : undefined}>
     <div class="container">
       <span class="series-header__eyebrow">{series.data.eyebrow}</span>
       <h1 class="series-header__title">{series.data.title}</h1>
@@ -85,6 +85,28 @@ const collectionJsonLd = {
   .series-header {
     background: var(--navy);
     padding: 64px 0 48px;
+    position: relative;
+  }
+  .series-header--with-bg {
+    background-color: var(--navy);
+    background-size: cover;
+    background-position: center;
+  }
+  .series-header--with-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      rgba(15, 23, 42, 0.92) 0%,
+      rgba(15, 23, 42, 0.72) 45%,
+      rgba(15, 23, 42, 0.35) 100%
+    );
+    z-index: 1;
+  }
+  .series-header > .container {
+    position: relative;
+    z-index: 2;
   }
   .series-header__eyebrow {
     font-size: 12px;

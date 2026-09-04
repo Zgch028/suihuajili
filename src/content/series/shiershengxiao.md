@@ -7,6 +7,7 @@ seoTitle: 十二生肖职场人格解码｜岁华纪丽
 seoDescription: 用十二生肖视角解码职场人格，给职场人一套易懂的自我认知框架与成长线索。
 seoKeywords: [十二生肖, 职场人格, 生肖, 自我认知, 狗, 忠诚, 守护, 正直, 龙山大佛]
 order: 2
+headerImage: /series-bg/shiershengxiao-header.jpg
 ---
 
 十二生肖不是宿命，是一面镜子。

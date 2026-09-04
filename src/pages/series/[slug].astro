@@ -113,31 +113,30 @@ const collectionJsonLd = {
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 1px;
-    color: #9a7b2e;
+    color: var(--gold);
   }
   .series-header__title {
     font-family: var(--font-serif);
     font-size: 48px;
     font-weight: 700;
-    color: #2a241c;
+    color: #fff;
     letter-spacing: -1px;
     margin-top: 8px;
   }
   .series-header__sub {
     font-size: 16px;
-    color: #5b5346;
+    color: #c9c4ba;
     line-height: 1.6;
     margin-top: 16px;
     max-width: 720px;
   }
   .seo-panel {
     margin-top: 24px;
-    background: rgba(255, 252, 246, 0.74);
-    border: 1px solid rgba(120, 100, 70, 0.18);
+    background: var(--navy-deep);
     border-radius: var(--radius);
     padding: 20px;
     font-size: 13px;
-    color: #5b5346;
+    color: #c9c4ba;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -146,6 +145,25 @@ const collectionJsonLd = {
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 1px;
+    color: var(--gold);
+  }
+
+  /* 仅当配了 headerImage 时启用宣纸亮调配色 */
+  .series-header--with-bg .series-header__eyebrow {
+    color: #9a7b2e;
+  }
+  .series-header--with-bg .series-header__title {
+    color: #2a241c;
+  }
+  .series-header--with-bg .series-header__sub {
+    color: #5b5346;
+  }
+  .series-header--with-bg .seo-panel {
+    background: rgba(255, 252, 246, 0.74);
+    border: 1px solid rgba(120, 100, 70, 0.18);
+    color: #5b5346;
+  }
+  .series-header--with-bg .seo-panel__label {
     color: #9a7b2e;
   }
   .post-list {

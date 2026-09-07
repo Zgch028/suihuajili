@@ -63,6 +63,17 @@ const personJsonLd = {
         </p>
       </div>
 
+      <div class="card" id="official-account">
+        <h2 class="card__title">公众号 · {SITE.author.officialAccount}</h2>
+        <div class="official-account-row">
+          <div class="official-account-text">
+            <p>长按二维码，关注公众号「{SITE.author.officialAccount}」，第一时间收到更新。</p>
+            <p class="official-account-note">记录历史温情，连接宋人生活美学与当代生活方式。</p>
+          </div>
+          <img class="official-account-qr" src="/images/wechat-official-qr.jpg" alt="公众号「岁华纪丽」二维码" />
+        </div>
+      </div>
+
       <div class="agent-card">
         <span class="agent-card__label">AI Agent 认证标准入口 · /agent.json</span>
         <pre class="agent-card__code">{JSON.stringify(personJsonLd, null, 2)}</pre>
@@ -118,6 +129,34 @@ const personJsonLd = {
     display: flex;
     gap: 16px;
     flex-wrap: wrap;
+  }
+  .official-account-row {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .official-account-text {
+    flex: 1;
+    min-width: 220px;
+  }
+  .official-account-text p {
+    font-size: 16px;
+    color: var(--ink);
+    line-height: 1.75;
+    margin-bottom: 10px;
+  }
+  .official-account-note {
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+  .official-account-qr {
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: #fff;
   }
   .agent-card {
     background: var(--navy);

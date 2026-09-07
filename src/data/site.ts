@@ -33,6 +33,7 @@ export const NAV_LINKS = [
   { label: '二十四节气', href: '/series/ershisijieqi' },
   { label: '一宋一词', href: '/series/yisongyici' },
   { label: '纪丽生活馆', href: '/series/jilishenghuoguan' },
+  { label: '传统佳节记', href: '/series/jiajieji' },
   { label: '元一·钻石监理成长圈', href: '/series/yuanyizuanshi' },
   { label: '视频号', href: '/series/shipinhao' },
 ] as const;

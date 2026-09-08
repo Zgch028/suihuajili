@@ -1,7 +1,7 @@
 ---
 title: 一宋一词：李清照的愁是怎么写出来的
 date: 2026-04-12
-series: dasongjili
+series: yisongyici
 description: 拆一首《声声慢》，看宋词如何用叠字与意象把情绪铺成画面。
 tags: [宋词, 李清照, 赏析]
 ---

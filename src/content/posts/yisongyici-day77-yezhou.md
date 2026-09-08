@@ -1,0 +1,21 @@
+---
+title: 一宋一词 Day77：夜舟系碓量江度——月夜量江
+date: 2026-08-22
+series: yisongyici
+description: 月夜量江，量出另一条路。樊若水考不中没认命，去江心放绳量水，量出渡江的策。命运给了一扇关上的门，他只开了半扇。
+tags: [宋词, 夜舟, 量江度, 大宋纪丽, 一宋一词]
+volume: （待从图精确）
+---
+
+> 本文为「岁华纪丽」公众号《一宋一词》系列图片型推文，原文以长图卡片形式发布。
+
+![一宋一词 Day77：夜舟系碓量江度——月夜量江 - 内容卡1](/images/posts/yisongyici-day77-yezhou-0.jpg)
+
+![一宋一词 Day77：夜舟系碓量江度——月夜量江 - 内容卡2](/images/posts/yisongyici-day77-yezhou-1.jpg)
+
+![一宋一词 Day77：夜舟系碓量江度——月夜量江 - 内容卡3](/images/posts/yisongyici-day77-yezhou-2.jpg)
+
+![一宋一词 Day77：夜舟系碓量江度——月夜量江 - 内容卡4](/images/posts/yisongyici-day77-yezhou-3.jpg)
+
+
+> 本文首发于公众号「岁华纪丽」《一宋一词》系列。

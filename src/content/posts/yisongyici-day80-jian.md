@@ -9,13 +9,9 @@ volume: （待从图精确）
 
 > 本文为「岁华纪丽」公众号《一宋一词》系列图片型推文，原文以长图卡片形式发布。
 
-![一宋一词 Day80：不须抵岸、先渡此滩——不必强求 - 内容卡1](/images/posts/yisongyici-day80-jian-0.jpg)
+![词正文与词眼](/images/posts/yisongyici-day80-jian-0.jpg)
 
-![一宋一词 Day80：不须抵岸、先渡此滩——不必强求 - 内容卡2](/images/posts/yisongyici-day80-jian-1.jpg)
-
-![一宋一词 Day80：不须抵岸、先渡此滩——不必强求 - 内容卡3](/images/posts/yisongyici-day80-jian-2.jpg)
-
-![一宋一词 Day80：不须抵岸、先渡此滩——不必强求 - 内容卡4](/images/posts/yisongyici-day80-jian-3.jpg)
+![选牌理由与全文](/images/posts/yisongyici-day80-jian-3.jpg)
 
 
 > 本文首发于公众号「岁华纪丽」《一宋一词》系列。

@@ -11,7 +11,5 @@ volume: 苏幕遮·浮桥
 
 ![词正文与词眼](/images/posts/yisongyici-day76-sumuzhe-0.jpg)
 
-![选牌理由与全文](/images/posts/yisongyici-day76-sumuzhe-3.jpg)
-
 
 > 本文首发于公众号「岁华纪丽」《一宋一词》系列。

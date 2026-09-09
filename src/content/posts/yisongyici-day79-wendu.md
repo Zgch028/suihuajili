@@ -11,7 +11,5 @@ volume: （待从图精确）
 
 ![词正文与词眼](/images/posts/yisongyici-day79-wendu-0.jpg)
 
-![选牌理由与全文](/images/posts/yisongyici-day79-wendu-3.jpg)
-
 
 > 本文首发于公众号「岁华纪丽」《一宋一词》系列。

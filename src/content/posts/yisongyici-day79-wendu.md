@@ -9,7 +9,7 @@ volume: 行香子·扬楚
 
 > 本文为「岁华纪丽」公众号《一宋一词》系列图片型推文，原文以完整长图卡片形式发布。
 
-![一宋一词 Day73：行香子·扬楚——不须抵岸，先渡此滩（完整内容卡）](/images/posts/yisongyici-day79-wendu-0.jpg)
+![一宋一词 Day73：行香子·扬楚——不须抵岸，先渡此滩（完整内容卡）](/images/posts/yisongyici-day79-wendu-full.jpg)
 
 
 > 本文首发于公众号「岁华纪丽」《一宋一词》系列。

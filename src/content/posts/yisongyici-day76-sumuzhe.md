@@ -9,7 +9,7 @@ volume: 苏幕遮·浮桥
 
 > 本文为「岁华纪丽」公众号《一宋一词》系列图片型推文，原文以完整长图卡片形式发布。
 
-![一宋一词 Day76：苏幕遮·浮桥——渡不过常因缺（完整内容卡）](/images/posts/yisongyici-day76-sumuzhe-0.jpg)
+![一宋一词 Day76：苏幕遮·浮桥——渡不过常因缺（完整内容卡）](/images/posts/yisongyici-day76-sumuzhe-full.jpg)
 
 
 > 本文首发于公众号「岁华纪丽」《一宋一词》系列。

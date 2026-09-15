@@ -6,14 +6,20 @@ interface Props {
   date: Date;
   href: string;
   volume?: string;
+  cover?: string;
 }
-const { title, description, date, href, volume } = Astro.props;
+const { title, description, date, href, volume, cover } = Astro.props;
 const mm = String(date.getMonth() + 1).padStart(2, '0');
 const dd = String(date.getDate()).padStart(2, '0');
 const yyyy = date.getFullYear();
 ---
 
 <article class="article-card">
+  {cover && (
+    <a class="article-card__cover" href={href}>
+      <img src={cover} alt={title} loading="lazy" />
+    </a>
+  )}
   <div class="article-card__date">
     <span class="article-card__d">{mm}-{dd}</span>
     <span class="article-card__y">{yyyy}</span>
@@ -35,6 +41,21 @@ const yyyy = date.getFullYear();
     background: #fff;
     border: 1px solid var(--border);
     border-radius: var(--radius);
+  }
+  .article-card__cover {
+    width: 104px;
+    height: 78px;
+    flex-shrink: 0;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    display: block;
+    background: var(--paper);
+  }
+  .article-card__cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
   .article-card__date {
     display: flex;
@@ -87,6 +108,10 @@ const yyyy = date.getFullYear();
   @media (max-width: 768px) {
     .article-card {
       flex-wrap: wrap;
+    }
+    .article-card__cover {
+      width: 72px;
+      height: 54px;
     }
     .article-card__link {
       width: 100%;

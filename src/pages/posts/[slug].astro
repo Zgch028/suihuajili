@@ -50,8 +50,13 @@ const articleJsonLd = {
   <article class="post">
     <div class="container post__inner">
       <a class="post__crumb" href={`/series/${seriesSlug}`}>← {seriesTitle}</a>
-      <h1 class="post__title">{post.data.title}</h1>
-      <div class="post__meta">
+        <h1 class="post__title">{post.data.title}</h1>
+        {
+          post.data.cover && (
+            <img class="post__cover" src={post.data.cover} alt={post.data.title} />
+          )
+        }
+        <div class="post__meta">
         <span>{post.data.date.toISOString().slice(0, 10)}</span>
         {
           post.data.volume && (
@@ -93,6 +98,14 @@ const articleJsonLd = {
     color: var(--ink);
     line-height: 1.3;
     margin: 16px 0 12px;
+  }
+  .post__cover {
+    width: 100%;
+    max-height: 420px;
+    object-fit: cover;
+    border-radius: var(--radius);
+    margin-bottom: 24px;
+    display: block;
   }
   .post__meta {
     display: flex;

@@ -4,7 +4,7 @@ description: 岁华纪丽视频号「龙山大佛」内容精选，点击卡片�
 date: 2026-09-16
 series: shipinhao
 cover: /images/posts/shipinhao-02-cover.jpg
-video: https://weixin.qq.com/sph/ACXZBDTv8
+video: /videos/shipinhao-02.mp4
 tags: [视频号, 龙山大佛, 岁华纪丽, 一叶知秋]
 ---
 

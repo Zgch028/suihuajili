@@ -70,7 +70,7 @@ const collectionJsonLd = {
                   date={p.data.date}
                   cover={p.data.cover}
                   video={p.data.video}
-                  href={p.data.video || `/posts/${p.slug}`}
+                  href={p.data.video && p.data.video.startsWith('http') ? p.data.video : `/posts/${p.slug}`}
                 />
               ))
             ) : (

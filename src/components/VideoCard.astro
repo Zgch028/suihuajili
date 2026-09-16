@@ -1,0 +1,130 @@
+---
+// 视频号系列列表卡片：封面 + 播放标记，点击直接跳视频号链接观看
+interface Props {
+  title: string;
+  description: string;
+  date: Date;
+  href: string;
+  cover?: string;
+  video?: string;
+}
+const { title, description, date, href, cover, video } = Astro.props;
+const mm = String(date.getMonth() + 1).padStart(2, '0');
+const dd = String(date.getDate()).padStart(2, '0');
+const yyyy = date.getFullYear();
+---
+
+<article class="video-card">
+  {cover && (
+    <a class="video-card__cover" href={href}>
+      <img src={cover} alt={title} loading="lazy" />
+      <span class="video-card__play" aria-hidden="true">▶</span>
+    </a>
+  )}
+  <div class="video-card__date">
+    <span class="video-card__d">{mm}-{dd}</span>
+    <span class="video-card__y">{yyyy}</span>
+  </div>
+  <div class="video-card__body">
+    <h3 class="video-card__title">{title}</h3>
+    <p class="video-card__excerpt">{description}</p>
+  </div>
+  <a class="video-card__link" href={href}>观看 ▶</a>
+</article>
+
+<style>
+  .video-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 24px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+  .video-card__cover {
+    position: relative;
+    width: 104px;
+    height: 78px;
+    flex-shrink: 0;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    display: block;
+    background: var(--paper);
+  }
+  .video-card__cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .video-card__play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(190, 30, 45, 0.86);
+    color: #fff;
+    font-size: 14px;
+    line-height: 34px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    pointer-events: none;
+  }
+  .video-card__date {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    width: 72px;
+    flex-shrink: 0;
+    text-align: center;
+  }
+  .video-card__d {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--brand-red);
+  }
+  .video-card__y {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .video-card__body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .video-card__title {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .video-card__excerpt {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.55;
+  }
+  .video-card__link {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--brand-red);
+    flex-shrink: 0;
+  }
+  @media (max-width: 768px) {
+    .video-card {
+      flex-wrap: wrap;
+    }
+    .video-card__cover {
+      width: 72px;
+      height: 54px;
+    }
+    .video-card__link {
+      width: 100%;
+    }
+  }
+</style>

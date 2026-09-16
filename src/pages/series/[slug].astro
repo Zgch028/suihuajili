@@ -5,6 +5,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
+import VideoCard from '../../components/VideoCard.astro';
 import JsonLd from '../../components/JsonLd.astro';
 import { SITE } from '../../data/site';
 
@@ -61,16 +62,29 @@ const collectionJsonLd = {
       <div class="post-list">
         {
           posts.length > 0 ? (
-            posts.map((p) => (
-              <ArticleCard
-                title={p.data.title}
-                description={p.data.description}
-                date={p.data.date}
-                volume={p.data.volume}
-                cover={p.data.cover}
-                href={`/posts/${p.slug}`}
-              />
-            ))
+            series.slug === 'shipinhao' ? (
+              posts.map((p) => (
+                <VideoCard
+                  title={p.data.title}
+                  description={p.data.description}
+                  date={p.data.date}
+                  cover={p.data.cover}
+                  video={p.data.video}
+                  href={p.data.video || `/posts/${p.slug}`}
+                />
+              ))
+            ) : (
+              posts.map((p) => (
+                <ArticleCard
+                  title={p.data.title}
+                  description={p.data.description}
+                  date={p.data.date}
+                  volume={p.data.volume}
+                  cover={p.data.cover}
+                  href={`/posts/${p.slug}`}
+                />
+              ))
+            )
           ) : (
             <p class="post-empty">该系列文章正在精选整理中，敬请期待。</p>
           )

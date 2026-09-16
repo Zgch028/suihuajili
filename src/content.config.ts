@@ -27,6 +27,7 @@ const posts = defineCollection({
     description: z.string(),        // 摘要（列表卡 + meta description 兜底）
     tags: z.array(z.string()).default([]),
     cover: z.string().optional(),   // 封面图（可选）
+    video: z.string().optional(),   // 本地视频路径（如 /videos/xxx.mp4），视频号系列用
     volume: z.string().optional(),   // 年卷标识，如「公元969年卷」
   }),
 });

@@ -81,6 +81,16 @@ const articleJsonLd = {
       <div class="prose">
         <Content />
       </div>
+      {
+        post.data.originUrl && (
+          <div class="post__origin">
+            <p>
+              {'本文首发于公众号「岁华纪丽」，原文链接：'}
+              <a href={post.data.originUrl} target="_blank" rel="noopener">点击阅读</a>
+            </p>
+          </div>
+        )
+      }
     </div>
   </article>
 
@@ -198,5 +208,27 @@ const articleJsonLd = {
     border-radius: var(--radius-sm);
     overflow-x: auto;
     font-size: 14px;
+  }
+  /* 页脚：公众号原文链接标注（由 frontmatter 的 originUrl 自动渲染） */
+  .post__origin {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+  .post__origin p {
+    margin: 0;
+    padding-left: 16px;
+    border-left: 3px solid var(--brand-red);
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--ink-soft);
+  }
+  .post__origin a {
+    color: var(--brand-red);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .post__origin a:hover {
+    color: var(--brand-red-soft);
   }
 </style>

@@ -29,6 +29,7 @@ const posts = defineCollection({
     cover: z.string().optional(),   // 封面图（可选）
     video: z.string().optional(),   // 本地视频路径（如 /videos/xxx.mp4），视频号系列用
     volume: z.string().optional(),   // 年卷标识，如「公元969年卷」
+    originUrl: z.string().url().optional(), // 公众号原文链接；填了文章页会自动渲染「原文链接：点击阅读」页脚
   }),
 });
 

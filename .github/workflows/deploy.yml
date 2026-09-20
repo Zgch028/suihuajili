@@ -6,7 +6,7 @@ on:
     branches: [main]
   workflow_dispatch:
 
-# 最小权限原则（pages-action 需要创建 GitHub Deployment 状态）
+# 最小权限原则（wrangler-action 需要创建 GitHub Deployment 状态）
 permissions:
   contents: read
   deployments: write
@@ -34,10 +34,11 @@ jobs:
         run: npm run build
 
       - name: Deploy to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
+        # 注意：cloudflare/pages-action 官方仓库已删除（404），改用 wrangler-action v4
+        uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: suihuajili
-          directory: dist
+          # 部署已构建好的 dist 到 Pages 项目；--branch=main 确保进入生产环境
+          command: pages deploy dist --project-name=suihuajili --branch=main
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}

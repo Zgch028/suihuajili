@@ -3,8 +3,8 @@ title: 《写在最后：从马年到猪年，我们走完了十二生肖》
 date: 2026-09-09
 series: shiershengxiao
 description: 《写在最后：从马年到猪年，我们走完了十二生肖》如果有人在半年前告诉我，我会用半年的时间，写完整整十二个生肖的职场品格系列，我大概会觉得他太夸…
-tags: [生肖, 职场人格, 十二生肖职场人格解码, 猪, 总结]
-volume: 写在最后
+tags: [生肖, 职场人格, 十二生肖职场人格解码, 十二生肖, 总结]
+volume: 全系列·收官篇
 cover: /images/posts/zhu-xiezai-zuihou-cover.jpg
 ---
 

@@ -8,6 +8,22 @@ import JsonLd from '../components/JsonLd.astro';
 import { SITE } from '../data/site';
 
 const series = (await getCollection('series')).sort((a, b) => a.data.order - b.data.order);
+const posts = await getCollection('posts');
+
+// 精选入口：按 slug 查「生肖系列总览篇」，挂在生肖系列卡片上直挂入口。
+// 不写死路径字符串，改 slug 也不会失效；查不到则不显示（其余卡片零影响）。
+const OVERVIEW_SLUG = 'shier-shengxiao-tonglan';
+const overview = posts.find((p) => p.slug === OVERVIEW_SLUG);
+
+const FEATURED: Record<string, { href: string; label: string }> =
+  overview && overview.slug === OVERVIEW_SLUG
+    ? {
+        shiershengxiao: {
+          href: `/posts/${overview.slug}`,
+          label: '总览篇：你是哪一只？',
+        },
+      }
+    : {};
 
 // 系列卡片淡彩映射（对应设计稿低饱和底色）
 const TINT: Record<string, string> = {
@@ -124,6 +140,7 @@ const websiteJsonLd = {
               description={s.data.description}
               href={`/series/${s.slug}`}
               tint={TINT[s.slug] ?? 'var(--tint-1)'}
+              featured={FEATURED[s.slug]}
             />
           ))
         }

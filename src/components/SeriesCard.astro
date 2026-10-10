@@ -1,21 +1,62 @@
 ---
 // 首页系列网格卡片。tint 由调用方按设计稿淡彩映射传入（CSS 变量名）
+// featured：可选的「精选入口」，用于在系列卡上直挂一篇总纲/通览文章（避免嵌套 a 标签，用 data 属性 + 事件委托跳转）
 interface Props {
   title: string;
   tag: string;
   description: string;
   href: string;
   tint: string; // 例如 'var(--tint-1)'
+  featured?: { href: string; label: string };
 }
-const { title, tag, description, href, tint } = Astro.props;
+const { title, tag, description, href, tint, featured } = Astro.props;
 ---
 
-<a class="series-card" href={href} style={`background:${tint}`}>
+<a
+  class="series-card"
+  href={href}
+  style={`background:${tint}`}
+  data-featured-href={featured?.href}
+>
   <span class="series-card__name">{title}</span>
   <span class="series-card__tag">{tag}</span>
   <span class="series-card__desc">{description}</span>
   <span class="series-card__link">查看系列 →</span>
+  {
+    featured && (
+      <span class="series-card__featured" data-featured role="link" tabindex="0">
+        ★ {featured.label}
+      </span>
+    )
+  }
 </a>
+
+{
+  featured && (
+    <script>
+      // 卡片整体是 <a>，内部精选入口不能再嵌套 <a>；
+      // 用事件委托在点击/回车时导航到精选文章，语义与键盘可达性由 role/tabindex 补齐。
+      document.querySelectorAll<HTMLElement>('.series-card[data-featured-href]').forEach((card) => {
+        const target = card.dataset.featuredHref;
+        const entry = card.querySelector<HTMLElement>('[data-featured]');
+        if (!target || !entry) return;
+        const go = (e: Event) => {
+          e.preventDefault();
+          e.stopPropagation();
+          window.location.href = target;
+        };
+        entry.addEventListener('click', go);
+        entry.addEventListener('keydown', (e) => {
+          const ke = e as KeyboardEvent;
+          if (ke.key === 'Enter' || ke.key === ' ') {
+            ke.preventDefault();
+            go(ke);
+          }
+        });
+      });
+    </script>
+  )
+}
 
 <style>
   .series-card {
@@ -53,6 +94,29 @@ const { title, tag, description, href, tint } = Astro.props;
     font-weight: 500;
     color: var(--brand-red);
     margin-top: 4px;
+  }
+  /* 精选入口：与「查看系列」区分，用金色 + 上边框做成卡内次级入口 */
+  .series-card__featured {
+    display: block;
+    margin-top: 10px;
+    padding-top: 12px;
+    border-top: 1px dashed rgba(10, 21, 48, 0.14);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--gold);
+    cursor: pointer;
+    transition: color 0.15s ease;
+  }
+  .series-card__featured:hover,
+  .series-card__featured:focus-visible {
+    color: var(--brand-red);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .series-card__featured:focus-visible {
+    outline: 2px solid var(--brand-red);
+    outline-offset: 3px;
+    border-radius: 2px;
   }
   @media (max-width: 768px) {
     .series-card {

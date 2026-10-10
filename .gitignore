@@ -20,3 +20,7 @@ yarn-error.log*
 .DS_Store
 Thumbs.db
 *.swp
+
+# 迁移脚本临时目录（离线落盘的微信 HTML，禁止入库）
+_*_tmp/
+_tmp/

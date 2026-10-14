@@ -252,11 +252,32 @@ img {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
   margin-top: 28px;
   padding-top: 24px;
   border-top: 1px solid var(--border);
   font-size: 12px;
   color: var(--muted);
+}
+
+/* 页脚备案号（ICP / 公安联网）——法规要求可见可点，跳转官方系统 */
+.footer__beian {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.footer__beian a {
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.footer__beian a:hover {
+  color: var(--ink-soft);
+  text-decoration: underline;
 }
 
 /* 响应式 */

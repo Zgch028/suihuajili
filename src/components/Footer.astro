@@ -1,5 +1,5 @@
 ---
-import { SITE, NAV_LINKS } from '../data/site';
+import { SITE, NAV_LINKS, BEIAN } from '../data/site';
 const seriesLinks = NAV_LINKS.filter((l) => l.href !== '/');
 ---
 
@@ -31,7 +31,14 @@ const seriesLinks = NAV_LINKS.filter((l) => l.href !== '/');
     </div>
     <div class="footer__bottom">
       <span>© 2026 {SITE.name} · {SITE.domain}</span>
-      <span>晋ICP备 ··· 号</span>
+      <span class="footer__beian">
+        <a href={BEIAN.icpUrl} target="_blank" rel="noopener noreferrer">{BEIAN.icp}</a>
+        {BEIAN.police && (
+          <a href={BEIAN.policeUrl} target="_blank" rel="noopener noreferrer">
+            {BEIAN.police}
+          </a>
+        )}
+      </span>
     </div>
   </div>
 </footer>

@@ -25,6 +25,17 @@ export const SITE = {
   ],
 } as const;
 
+// 备案信息（ICP 备案 / 公安联网备案）
+// 法规要求：备案号必须是「真实文本」写进 HTML 源码（严禁图片代替），且链接至官方系统；
+// 备案地为山西（非广东）→ 悬挂「服务备案号」（网站备案号），而非主体备案号。
+export const BEIAN = {
+  icp: '晋ICP备2026015134号-1',
+  icpUrl: 'https://beian.miit.gov.cn/',
+  // 公安联网备案号：公安备案通过后填入（形如「晋公网安备1401XXXXXXXX号」）；留空则页脚自动不渲染
+  police: '',
+  policeUrl: 'https://beian.mps.gov.cn/',
+} as const;
+
 // 顶部导航链接（系列顺序与设计稿一致）
 export const NAV_LINKS = [
   { label: '首页', href: '/' },

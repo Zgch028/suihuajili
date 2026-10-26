@@ -32,7 +32,7 @@ export const BEIAN = {
   icp: '晋ICP备2026015134号-1',
   icpUrl: 'https://beian.miit.gov.cn/',
   // 公安联网备案号：公安备案通过后填入（形如「晋公网安备1401XXXXXXXX号」）；留空则页脚自动不渲染
-  police: '',
+  police: '晋公网安备14011002011408号',
   policeUrl: 'https://beian.mps.gov.cn/',
 } as const;
 

@@ -1,0 +1,146 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import { SITE } from '../../data/site';
+
+const notes = (await getCollection('reading')).sort(
+  (a, b) => a.data.order - b.data.order || b.data.date.getTime() - a.data.date.getTime()
+);
+---
+
+<BaseLayout
+  title={`读书笔记｜${SITE.name}`}
+  description="用 AI 把一本书拆成可复用的认知框架。古典文学、哲学思想、心理认知与社科历史的精读笔记。"
+  keywords={['读书笔记', 'AI读书', '认知框架', '古典文学', ' philosophical']}
+>
+  <Nav active="读书笔记" variant="full" />
+
+  <section class="reading-header">
+    <div class="container">
+      <span class="reading-header__eyebrow">READING NOTES</span>
+      <h1 class="reading-header__title">读书笔记</h1>
+      <p class="reading-header__sub">用 AI 把一本书拆成可复用的认知框架。</p>
+    </div>
+  </section>
+
+  <section class="section section--paper">
+    <div class="container">
+      <div class="reading-shelf">
+        {
+          notes.map((n) => (
+            <a class="book-card" href={`/reading/${n.slug}`}>
+              <div class="book-card__spine">
+                <span class="book-card__title">{n.data.title}</span>
+                <span class="book-card__author">{n.data.author}</span>
+              </div>
+              <div class="book-card__body">
+                {n.data.edition && <span class="book-card__edition">{n.data.edition}</span>}
+                <p>{n.data.description}</p>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+      {notes.length === 0 && <p class="reading-empty">书架正在整理中，敬请期待。</p>}
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .reading-header {
+    background: linear-gradient(135deg, #f7f0e2, #efe6d2);
+    padding: 64px 0 48px;
+    border-bottom: 1px solid var(--border);
+  }
+  .reading-header__eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: var(--gold);
+  }
+  .reading-header__title {
+    font-family: var(--font-serif);
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -1px;
+    margin-top: 8px;
+  }
+  .reading-header__sub {
+    font-size: 16px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    margin-top: 14px;
+  }
+  .reading-shelf {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 22px;
+  }
+  .book-card {
+    display: flex;
+    flex-direction: column;
+    background: #fffdf8;
+    border: 1px solid rgba(120, 100, 70, 0.2);
+    border-radius: 12px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .book-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 26px rgba(80, 60, 30, 0.13);
+  }
+  .book-card__spine {
+    background: linear-gradient(180deg, #8a6a2e, #6d5222);
+    color: #f7f0e2;
+    padding: 26px 20px;
+    min-height: 152px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .book-card__title {
+    font-family: var(--font-serif);
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    line-height: 1.35;
+  }
+  .book-card__author {
+    font-size: 13px;
+    opacity: 0.82;
+  }
+  .book-card__body {
+    padding: 16px 18px 20px;
+  }
+  .book-card__edition {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: rgba(154, 123, 46, 0.14);
+    color: var(--gold);
+    font-weight: 600;
+  }
+  .book-card__body p {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.65;
+    margin: 8px 0 0;
+  }
+  .reading-empty {
+    color: var(--ink-soft);
+    font-size: 15px;
+  }
+  @media (max-width: 640px) {
+    .reading-header__title {
+      font-size: 36px;
+    }
+  }
+</style>

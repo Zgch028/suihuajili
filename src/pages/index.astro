@@ -9,6 +9,12 @@ import { SITE } from '../data/site';
 
 const series = (await getCollection('series')).sort((a, b) => a.data.order - b.data.order);
 const posts = await getCollection('posts');
+const readings = (await getCollection('reading'))
+  .sort((a, b) => a.data.order - b.data.order || b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 4);
+const works = (await getCollection('works'))
+  .sort((a, b) => a.data.order - b.data.order || b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 3);
 
 // 精选入口：按 slug 查「生肖系列总览篇」，挂在生肖系列卡片上直挂入口。
 // 不写死路径字符串，改 slug 也不会失效；查不到则不显示（其余卡片零影响）。
@@ -145,6 +151,63 @@ const websiteJsonLd = {
           ))
         }
       </div>
+    </div>
+  </section>
+
+  <!-- 读书笔记 -->
+  <section class="section section--paper" id="reading">
+    <div class="container">
+      <span class="section__eyebrow">READING NOTES</span>
+      <h2 class="section__title">读书笔记</h2>
+      <p class="section__sub">用 AI 把一本书拆成可复用的认知框架。</p>
+      <div class="book-row">
+        {
+          readings.map((r) => (
+            <a class="book-card" href={`/reading/${r.slug}`}>
+              <div class="book-card__spine">
+                <span class="book-card__title">{r.data.title}</span>
+                <span class="book-card__author">{r.data.author}</span>
+              </div>
+              <div class="book-card__body">
+                {r.data.edition && <span class="book-card__edition">{r.data.edition}</span>}
+                <p>{r.data.description}</p>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+      <a class="section__more" href="/reading">进入书架 →</a>
+    </div>
+  </section>
+
+  <!-- 作品工作室 -->
+  <section class="section" id="works">
+    <div class="container">
+      <span class="section__eyebrow">WORKS STUDIO</span>
+      <h2 class="section__title">作品工作室</h2>
+      <p class="section__sub">用 AI 做的小东西，点开就能用。</p>
+      <div class="work-row">
+        {
+          works.map((w) => (
+            <a class="work-card" href={`/works/${w.slug}`}>
+              <div class="work-card__cover">
+                {w.data.cover ? (
+                  <img src={w.data.cover} alt={w.data.title} />
+                ) : (
+                  <span>{w.data.title.slice(0, 2)}</span>
+                )}
+              </div>
+              <div class="work-card__body">
+                <span class="work-card__tag">{w.data.tags[0] ?? '作品'}</span>
+                <h3>{w.data.title}</h3>
+                <p>{w.data.description}</p>
+                <span class="work-card__cta">打开体验 →</span>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+      <a class="section__more" href="/works">进入工作室 →</a>
     </div>
   </section>
 
@@ -404,7 +467,144 @@ const websiteJsonLd = {
     gap: 12px;
     flex-wrap: wrap;
   }
+  /* 读书笔记 · 书架卡片 */
+  .book-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-top: 28px;
+  }
+  .book-card {
+    display: flex;
+    flex-direction: column;
+    background: #fffdf8;
+    border: 1px solid rgba(120, 100, 70, 0.2);
+    border-radius: 12px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .book-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 26px rgba(80, 60, 30, 0.13);
+  }
+  .book-card__spine {
+    background: linear-gradient(180deg, #8a6a2e, #6d5222);
+    color: #f7f0e2;
+    padding: 22px 18px;
+    min-height: 132px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .book-card__title {
+    font-family: var(--font-serif);
+    font-size: 21px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    line-height: 1.35;
+  }
+  .book-card__author {
+    font-size: 12px;
+    opacity: 0.82;
+  }
+  .book-card__body {
+    padding: 14px 16px 18px;
+  }
+  .book-card__edition {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: rgba(154, 123, 46, 0.14);
+    color: var(--gold);
+    font-weight: 600;
+  }
+  .book-card__body p {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    margin: 8px 0 0;
+  }
+  /* 作品工作室 · 橱窗卡片 */
+  .work-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 28px;
+  }
+  .work-card {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .work-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(10, 21, 48, 0.12);
+  }
+  .work-card__cover {
+    height: 170px;
+    background: linear-gradient(135deg, var(--navy), #2b3a5e);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+    font-family: var(--font-serif);
+    font-size: 34px;
+    overflow: hidden;
+  }
+  .work-card__cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .work-card__body {
+    padding: 18px 20px 22px;
+  }
+  .work-card__tag {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gold);
+  }
+  .work-card__body h3 {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 6px 0 8px;
+    line-height: 1.4;
+  }
+  .work-card__body p {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    margin: 0 0 12px;
+  }
+  .work-card__cta {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--brand-red);
+  }
+  .section__more {
+    display: inline-block;
+    margin-top: 24px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--brand-red);
+    text-decoration: none;
+  }
   @media (max-width: 768px) {
+    .book-row,
+    .work-row {
+      grid-template-columns: 1fr 1fr;
+    }
     .hero__title {
       font-size: 48px;
     }

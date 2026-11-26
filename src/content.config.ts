@@ -33,4 +33,38 @@ const posts = defineCollection({
   }),
 });
 
-export const collections = { series, posts };
+// 读书笔记：28 本 AI 辅助精读笔记，正文为独立 HTML，走 iframe 承载
+const reading = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),              // 书名
+    author: z.string(),             // 作者
+    date: z.coerce.date(),          // 笔记日期
+    description: z.string(),        // 一句话介绍（列表卡 + meta）
+    tags: z.array(z.string()).default([]),
+    cover: z.string().optional(),   // 封面（可选，缺省用书脊卡片）
+    edition: z.string().optional(), // 版本：OCD分格 / 认知框架 / 完整版
+    htmlPath: z.string(),           // 原版 HTML 路径，如 /reading/hongloumeng/index.html
+    featured: z.boolean().default(false),
+    order: z.number().default(99),
+  }),
+});
+
+// 作品工作室：可交互的网页小品，详情页 iframe 内嵌 + 全屏
+const works = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    subtitle: z.string().optional(),
+    date: z.coerce.date(),
+    description: z.string(),
+    tags: z.array(z.string()).default([]),
+    cover: z.string().optional(),
+    demoPath: z.string(),           // 作品入口，如 /works/mingtang/index.html
+    tech: z.array(z.string()).default([]),
+    featured: z.boolean().default(false),
+    order: z.number().default(99),
+  }),
+});
+
+export const collections = { series, posts, reading, works };

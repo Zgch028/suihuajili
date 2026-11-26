@@ -1,0 +1,109 @@
+---
+import { getCollection } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import { SITE } from '../../data/site';
+
+export const getStaticPaths = (async () => {
+  const notes = await getCollection('reading');
+  return notes.map((note) => ({
+    params: { slug: note.slug },
+    props: { note },
+  }));
+}) satisfies GetStaticPaths;
+
+const { note } = Astro.props;
+---
+
+<BaseLayout
+  title={`${note.data.title}｜读书笔记｜${SITE.name}`}
+  description={note.data.description}
+  keywords={note.data.tags}
+>
+  <Nav active="读书笔记" variant="minimal" />
+
+  <section class="note-head">
+    <div class="container">
+      <a class="note-head__crumb" href="/reading">← 返回书架</a>
+      <h1>{note.data.title}</h1>
+      <p class="note-head__meta">
+        {note.data.author}{note.data.edition ? ` · ${note.data.edition}` : ''}
+      </p>
+    </div>
+  </section>
+
+  <section class="note-frame">
+    <iframe
+      src={note.data.htmlPath}
+      title={note.data.title}
+      loading="lazy"
+    ></iframe>
+  </section>
+
+  <section class="note-foot">
+    <div class="container">
+      <a class="btn btn--primary btn--sm" href="/reading">← 返回书架</a>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .note-head {
+    background: linear-gradient(135deg, #f7f0e2, #efe6d2);
+    padding: 36px 0 28px;
+    border-bottom: 1px solid var(--border);
+  }
+  .note-head__crumb {
+    font-size: 14px;
+    color: var(--gold);
+    text-decoration: none;
+  }
+  .note-head h1 {
+    font-family: var(--font-serif);
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.3;
+    margin: 12px 0 6px;
+  }
+  .note-head__meta {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+  .note-frame {
+    background: #efe6d2;
+    padding: 18px;
+  }
+  .note-frame iframe {
+    display: block;
+    width: 100%;
+    height: calc(100vh - 150px);
+    min-height: 700px;
+    border: 0;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 8px 30px rgba(80, 60, 30, 0.12);
+  }
+  .note-foot {
+    padding: 28px 0 48px;
+    background: #efe6d2;
+  }
+  @media (max-width: 640px) {
+    .note-head h1 {
+      font-size: 28px;
+    }
+    .note-frame {
+      padding: 8px;
+    }
+    .note-frame iframe {
+      height: 82vh;
+      min-height: 560px;
+      border-radius: 8px;
+    }
+  }
+</style>

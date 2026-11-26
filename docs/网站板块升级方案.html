@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>岁华纪丽 · 网站板块升级方案 V1</title>
+<style>
+:root{
+  --paper:#f7f0e2; --paper-2:#fffdf8; --ink:#2a241c; --ink-soft:#5b5346;
+  --gold:#9a7b2e; --navy:#10182d; --line:rgba(42,36,28,.14); --muted:#8a8170;
+  --radius:16px;
+  --serif:"Noto Serif SC","Songti SC",SimSun,serif;
+  --sans:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.78;
+  background-image:radial-gradient(circle at 18% 0%,rgba(154,123,46,.07),transparent 55%),
+                   radial-gradient(circle at 92% 8%,rgba(16,24,45,.05),transparent 45%);
+}
+.wrap{max-width:1080px;margin:0 auto;padding:56px 28px 88px}
+.eyebrow{font-size:12px;letter-spacing:2px;color:var(--gold);font-weight:700}
+h1{font-family:var(--serif);font-size:46px;margin:10px 0 12px;letter-spacing:-1px;line-height:1.2}
+.lead{font-size:17px;color:var(--ink-soft);max-width:840px}
+.meta{display:flex;gap:20px;flex-wrap:wrap;margin-top:20px;font-size:13px;color:var(--muted)}
+h2{font-family:var(--serif);font-size:28px;margin:60px 0 6px;padding-top:26px;border-top:1px solid var(--line)}
+h2 .num{color:var(--gold);font-size:15px;margin-right:10px;letter-spacing:1px}
+h3{font-family:var(--serif);font-size:19px;margin:28px 0 10px}
+p{margin:8px 0}
+.callout{background:var(--navy);color:#f2efe6;border-radius:var(--radius);padding:22px 26px;margin:24px 0;border-left:4px solid var(--gold)}
+.callout b{color:#fff}
+.callout span{color:#c9c4ba}
+.grid{display:grid;gap:16px;margin-top:18px}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g2{grid-template-columns:repeat(2,1fr)}
+.card{background:var(--paper-2);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px}
+.card h4{margin:0 0 6px;font-family:var(--serif);font-size:17px}
+.card p{font-size:14px;color:var(--ink-soft);margin:0}
+.tag{display:inline-block;font-size:12px;padding:2px 10px;border-radius:999px;background:rgba(154,123,46,.12);color:var(--gold);font-weight:600}
+.tag.dark{background:var(--navy);color:#fff}
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:14px;background:var(--paper-2);border-radius:12px;overflow:hidden}
+th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:rgba(42,36,28,.05);font-weight:700;font-size:13px}
+tr:last-child td{border-bottom:none}
+code{font-family:Consolas,Monaco,monospace;font-size:13px;background:rgba(42,36,28,.06);padding:1px 6px;border-radius:5px}
+.wire{background:var(--paper-2);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin-top:16px}
+.wire-label{font-size:11px;letter-spacing:1.6px;color:var(--muted);margin-bottom:12px}
+.wbox{border:1.5px dashed rgba(42,36,28,.26);border-radius:10px;padding:14px 16px;margin-bottom:10px;background:rgba(255,255,255,.55)}
+.wbox.hero{background:var(--navy);color:#fff;border-color:transparent;text-align:center;padding:28px 16px}
+.wbox.hero .wt{font-size:24px;color:#fff}
+.wbox.new{border-color:var(--gold);background:rgba(154,123,46,.08);position:relative}
+.wbox.new::after{content:"NEW";position:absolute;top:-9px;right:12px;font-size:10px;letter-spacing:1px;background:var(--gold);color:#fff;padding:2px 8px;border-radius:999px}
+.wt{font-family:var(--serif);font-size:15px;font-weight:700}
+.ws{font-size:12px;color:var(--muted);margin-top:3px}
+.wbox.hero .ws{color:#b9b2a4}
+.wrow{display:flex;gap:8px;margin-top:10px}
+.wcard{flex:1;border:1px solid rgba(42,36,28,.16);border-radius:8px;padding:10px;font-size:12px;text-align:center;background:#fff;color:var(--ink-soft)}
+.wcard.book{background:linear-gradient(180deg,#efe6d2,#fffdf8);border-left:5px solid var(--gold)}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px;font-size:13px}
+.flow span{background:#fff;border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--ink-soft)}
+.flow i{color:var(--gold);font-style:normal}
+ul.clean{margin:8px 0 0;padding-left:20px;font-size:14px;color:var(--ink-soft)}
+ul.clean li{margin:5px 0}
+.step{display:flex;gap:16px;margin-top:18px}
+.step .badge{flex:0 0 46px;height:46px;border-radius:12px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:15px}
+.step.done .badge{background:var(--gold)}
+.step .body h4{margin:0 0 4px;font-size:16px;font-family:var(--serif)}
+.step .body p{margin:0;font-size:14px;color:var(--ink-soft)}
+.check{list-style:none;padding:0;margin:12px 0}
+.check li{padding:7px 0 7px 28px;position:relative;font-size:14px;color:var(--ink-soft);border-bottom:1px dashed var(--line)}
+.check li:last-child{border-bottom:none}
+.check li::before{content:"□";position:absolute;left:6px;color:var(--gold);font-size:15px}
+footer{margin-top:64px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+@media(max-width:760px){
+  .g3,.g2{grid-template-columns:1fr}
+  h1{font-size:32px}
+  .wrow{flex-direction:column}
+  .wrap{padding:36px 18px 64px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">SUIHUAJILI · SITE UPGRADE PLAN</div>
+  <h1>岁华纪丽 · 板块升级方案</h1>
+  <p class="lead">在现有「内容系列」之外，新增「读书笔记」与「作品工作室」两个内容板块，把网站从“文章陈列”升级为“读 · 学 · 做”三位一体的个人数字名片。</p>
+  <div class="meta">
+    <span>版本 V1</span>
+    <span>2026-11-26</span>
+    <span>站点 suihuajili.cn</span>
+    <span>已确认：iframe 承载 · 导航 5 项 · 作品内嵌全屏</span>
+  </div>
+
+  <div class="callout">
+    <b>一句话结论：</b>新增两个板块，技术上不是加两个页面，而是新建两种内容集合。
+    <span>读书笔记是 28 份各自带版式的完整 HTML，作品是 3 个可交互的小应用；它们都不是“文章”，不能塞进现有 posts 模型，否则要么丢设计，要么字段错配。</span>
+  </div>
+
+  <h2><span class="num">01</span>现状诊断</h2>
+  <div class="grid g3">
+    <div class="card">
+      <h4>导航已过载</h4>
+      <p>现有 10 项导航，再加两个板块变 12 项，桌面端拥挤、移动端折行或横向滚动，品牌感被稀释。</p>
+    </div>
+    <div class="card">
+      <h4>内容模型不匹配</h4>
+      <p>当前只有 series + posts（markdown 文章制）。读书笔记有独立版式，作品是 iframe 应用，都不是文章。</p>
+    </div>
+    <div class="card">
+      <h4>首页结构单核</h4>
+      <p>只有“内容系列”一个内容入口，撑不起“会读、会学、会做”的个人品牌叙事。</p>
+    </div>
+  </div>
+
+  <h2><span class="num">02</span>板块定位</h2>
+  <div class="grid g2">
+    <div class="card">
+      <span class="tag">READING · 读书笔记</span>
+      <h4 style="margin-top:10px">不是书评，是认知框架</h4>
+      <p>28 本 AI 辅助精读笔记，按主题分“书架”。读者看到的不只是结论，而是“如何把一本书拆成可复用的思考工具”。</p>
+    </div>
+    <div class="card">
+      <span class="tag dark">WORKS · 作品工作室</span>
+      <h4 style="margin-top:10px">不是作品集，是能点开就用的橱窗</h4>
+      <p>个人办公工作台、儿童学习工作台、现场踏勘采集工作台等网页小品，站内直接体验，按用途分“展台”。</p>
+    </div>
+  </div>
+
+  <h2><span class="num">03</span>信息架构：导航重组为 5 项</h2>
+  <p>现有 9 个内容系列整体收纳进“内容系列”下拉，一级导航只保留 5 个入口，给新板块让出位置。</p>
+  <table>
+    <tr><th>一级导航</th><th>路由</th><th>承载内容</th><th>说明</th></tr>
+    <tr><td>首页</td><td><code>/</code></td><td>Hero + 三大内容区入口</td><td>原有</td></tr>
+    <tr><td>内容系列</td><td><code>/#series</code></td><td>大宋纪丽、十二生肖、二十四节气等 9 个</td><td>下拉收纳</td></tr>
+    <tr><td>读书笔记</td><td><code>/reading</code></td><td>28 本精读笔记</td><td>新增</td></tr>
+    <tr><td>作品工作室</td><td><code>/works</code></td><td>3 个网页小品</td><td>新增</td></tr>
+    <tr><td>关于</td><td><code>/about</code></td><td>个人名片与联系方式</td><td>原有</td></tr>
+  </table>
+  <p style="font-size:14px;color:var(--ink-soft)">二级路由：<code>/reading/[slug]</code> 笔记详情 · <code>/works/[slug]</code> 作品详情与全屏预览。</p>
+
+  <h2><span class="num">04</span>首页布局（读 → 学 → 做）</h2>
+  <div class="wire">
+    <div class="wire-label">首页从上到下 · 线框示意</div>
+    <div class="wbox hero">
+      <div class="wt">岁华纪丽 · 一份记录历史温情的笔记</div>
+      <div class="ws">Hero：站名 + 一句话 + 两个按钮（保留）</div>
+    </div>
+    <div class="wbox"><div class="wt">三个核心价值</div><div class="ws">数字资产 / 搜索引擎引流 / 完整个人名片（保留）</div></div>
+    <div class="wbox">
+      <div class="wt">内容系列</div><div class="ws">现有 9 个系列卡片网格（保留）</div>
+      <div class="wrow">
+        <div class="wcard">大宋纪丽</div><div class="wcard">十二生肖</div><div class="wcard">二十四节气</div><div class="wcard">一宋一词</div><div class="wcard">更多…</div>
+      </div>
+    </div>
+    <div class="wbox new">
+      <div class="wt">读书笔记 · 书架精选</div><div class="ws">横排 4 本书脊卡片 + 「进入书架 →」</div>
+      <div class="wrow">
+        <div class="wcard book">红楼梦</div><div class="wcard book">论语</div><div class="wcard book">思考，快与慢</div><div class="wcard book">人类简史</div>
+      </div>
+    </div>
+    <div class="wbox new">
+      <div class="wt">作品工作室 · 展台精选</div><div class="ws">3 个橱窗卡片（缩略图 + 名称 + 一句话 + 打开体验）</div>
+      <div class="wrow">
+        <div class="wcard">个人办公工作台</div><div class="wcard">儿童学习工作台</div><div class="wcard">现场踏勘采集</div>
+      </div>
+    </div>
+    <div class="wbox"><div class="wt">站内搜索 + AI Agent 认证入口</div><div class="ws">保留</div></div>
+    <div class="wbox"><div class="wt">关于我</div><div class="ws">保留</div></div>
+  </div>
+
+  <h2><span class="num">05</span>读书笔记板块布局</h2>
+  <h3>列表页 <code>/reading</code></h3>
+  <div class="wire">
+    <div class="wire-label">书架式布局</div>
+    <div class="wbox"><div class="wt">读书笔记</div><div class="ws">用 AI 把一本书拆成可复用的认知框架</div></div>
+    <div class="flow">
+      <span>全部</span><span>古典文学</span><span>哲学思想</span><span>心理认知</span><span>社科历史</span><span>科学自然</span><span>AI 与未来</span>
+    </div>
+    <div class="wrow" style="margin-top:14px">
+      <div class="wcard book">红楼梦<br><span style="font-size:11px">OCD 分格</span></div>
+      <div class="wcard book">论语<br><span style="font-size:11px">OCD 分格</span></div>
+      <div class="wcard book">庄子<br><span style="font-size:11px">OCD 分格</span></div>
+      <div class="wcard book">思考，快与慢<br><span style="font-size:11px">完整版</span></div>
+    </div>
+    <p class="ws" style="margin-top:10px">书脊卡片：书名（衬线）+ 作者 + 一句话 + 版本标签（OCD 分格 / 认知框架 / 完整版）</p>
+  </div>
+  <h3>详情页 <code>/reading/[slug]</code></h3>
+  <div class="wire">
+    <div class="wbox"><div class="wt">统一页头</div><div class="ws">站名 · 返回书架 · 书名 / 作者</div></div>
+    <div class="wbox" style="min-height:120px;display:flex;align-items:center;justify-content:center">
+      <div><div class="wt">iframe 正文区</div><div class="ws">原版式完整保留（米色纸感 · 衬线 · 书签色带）</div></div>
+    </div>
+    <div class="wbox"><div class="wt">底部导航</div><div class="ws">上一篇 · 返回书架 · 下一篇</div></div>
+  </div>
+
+  <h2><span class="num">06</span>作品工作室布局</h2>
+  <h3>列表页 <code>/works</code></h3>
+  <div class="wire">
+    <div class="wire-label">橱窗式布局</div>
+    <div class="wbox"><div class="wt">作品工作室</div><div class="ws">用 AI 做的小东西，点开就能用</div></div>
+    <div class="flow"><span>全部</span><span>效率工具</span><span>学习工具</span><span>现场工具</span><span>可视化</span></div>
+    <div class="wrow" style="margin-top:14px">
+      <div class="wcard" style="min-height:64px">个人办公工作台<br><span style="font-size:11px">效率工具</span></div>
+      <div class="wcard" style="min-height:64px">儿童学习工作台<br><span style="font-size:11px">学习工具</span></div>
+      <div class="wcard" style="min-height:64px">现场踏勘采集<br><span style="font-size:11px">现场工具</span></div>
+    </div>
+    <p class="ws" style="margin-top:10px">橱窗卡片：缩略图 + 名称 + 一句话 + 「打开体验」</p>
+  </div>
+  <h3>详情页 <code>/works/[slug]</code></h3>
+  <div class="wire">
+    <div class="wbox"><div class="wt">页头 + 全屏按钮</div><div class="ws">作品名 · 类型标签 · 全屏打开</div></div>
+    <div class="wbox" style="min-height:130px;display:flex;align-items:center;justify-content:center">
+      <div><div class="wt">iframe 预览区</div><div class="ws">站内直接操作 · 一键全屏</div></div>
+    </div>
+    <div class="wbox"><div class="wt">作品说明 + 技术栈标签</div><div class="ws">为什么做 · 怎么用 · HTML / CSS / JS</div></div>
+  </div>
+
+  <h2><span class="num">07</span>内容模型（草案）</h2>
+  <table>
+    <tr><th>集合</th><th>字段</th><th>说明</th></tr>
+    <tr>
+      <td><code>reading</code></td>
+      <td>title / author / date / description / tags / cover / edition / htmlPath / featured / order</td>
+      <td>edition 区分 OCD 分格 / 认知框架 / 完整版；htmlPath 指向 <code>public/reading/</code> 下原文件</td>
+    </tr>
+    <tr>
+      <td><code>works</code></td>
+      <td>title / subtitle / date / description / tags / cover / demoPath / tech[] / featured</td>
+      <td>demoPath 指向 <code>public/works/</code> 下作品入口；tech 显示技术栈</td>
+    </tr>
+  </table>
+
+  <h2><span class="num">08</span>迁移路线</h2>
+  <div class="step done">
+    <div class="badge">P0</div>
+    <div class="body">
+      <h4>骨架 + 样板（本轮可开工）</h4>
+      <p>新建两个内容集合、两个列表页、两个详情页、首页两个新区块；样板各 1 个：红楼梦（读书笔记）、个人办公工作台（作品）。先跑通构建与 iframe 体验。</p>
+    </div>
+  </div>
+  <div class="step">
+    <div class="badge">P1</div>
+    <div class="body">
+      <h4>批量读书笔记</h4>
+      <p>28 本按主题归类、补封面图、批量登记，统一归一到 <code>public/reading/</code>，逐本校验 iframe 展示效果。</p>
+    </div>
+  </div>
+  <div class="step">
+    <div class="badge">P2</div>
+    <div class="body">
+      <h4>作品工作室</h4>
+      <p>3 个网页小品补缩略图与说明，接入 iframe 预览与全屏打开，按用途分类。</p>
+    </div>
+  </div>
+  <div class="step">
+    <div class="badge">P3</div>
+    <div class="body">
+      <h4>导航重组 + SEO</h4>
+      <p>导航收敛为 5 项；sitemap 收录 <code>/reading</code>、<code>/works</code>；增加 Book / SoftwareApplication 结构化数据与站内搜索索引。</p>
+    </div>
+  </div>
+
+  <h2><span class="num">09</span>验收标准</h2>
+  <ul class="check">
+    <li>本地构建通过，两个新板块路由可访问</li>
+    <li>移动端导航不溢出，5 项一级导航完整可见</li>
+    <li>读书笔记原版式完整保留，页面顶部可返回书架</li>
+    <li>作品可在站内直接操作，全屏按钮可用</li>
+    <li>首页两个新区块有精选内容，点击可进入对应板块</li>
+  </ul>
+
+  <footer>
+    <span>岁华纪丽 · 网站板块升级方案 V1</span>
+    <span>下一步：P0 骨架 + 两个样板，验收后再批量迁移</span>
+  </footer>
+
+</div>
+</body>
+</html>

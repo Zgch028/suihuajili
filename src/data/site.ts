@@ -39,13 +39,8 @@ export const BEIAN = {
 // 顶部导航链接（系列顺序与设计稿一致）
 export const NAV_LINKS = [
   { label: '首页', href: '/' },
-  { label: '大宋纪丽', href: '/series/dasongjili' },
-  { label: '十二生肖', href: '/series/shiershengxiao' },
-  { label: '二十四节气', href: '/series/ershisijieqi' },
-  { label: '一宋一词', href: '/series/yisongyici' },
-  { label: '纪丽生活馆', href: '/series/jilishenghuoguan' },
-  { label: '传统佳节记', href: '/series/jiajieji' },
-  { label: '何以@岁华纪丽', href: '/series/heyi-suihuajili' },
-  { label: '元一·钻石监理成长圈', href: '/series/yuanyizuanshi' },
-  { label: '视频号', href: '/series/shipinhao' },
+  { label: '内容系列', href: '/#series' },
+  { label: '读书笔记', href: '/reading' },
+  { label: '作品工作室', href: '/works' },
+  { label: '关于', href: '/about' },
 ] as const;

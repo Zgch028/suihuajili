@@ -1,0 +1,179 @@
+---
+import { getCollection } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import { SITE } from '../../data/site';
+
+export const getStaticPaths = (async () => {
+  const works = await getCollection('works');
+  return works.map((work) => ({
+    params: { slug: work.slug },
+    props: { work },
+  }));
+}) satisfies GetStaticPaths;
+
+const { work } = Astro.props;
+---
+
+<BaseLayout
+  title={`${work.data.title}｜作品工作室｜${SITE.name}`}
+  description={work.data.description}
+  keywords={work.data.tags}
+>
+  <Nav active="作品工作室" variant="minimal" />
+
+  <section class="work-head">
+    <div class="container">
+      <a class="work-head__crumb" href="/works">← 返回作品工作室</a>
+      <span class="work-head__eyebrow">WORKS · {work.data.tags[0] ?? '作品'}</span>
+      <h1>{work.data.title}</h1>
+      {work.data.subtitle && <p class="work-head__sub">{work.data.subtitle}</p>}
+      <div class="work-head__actions">
+        <button class="btn btn--primary btn--sm" id="work-fullscreen" type="button">
+          全屏体验
+        </button>
+        <a class="work-head__open" href={work.data.demoPath} target="_blank" rel="noopener">
+          新窗口打开 ↗
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="work-stage">
+    <div class="work-stage__frame">
+      <iframe
+        id="work-frame"
+        src={work.data.demoPath}
+        title={work.data.title}
+        loading="lazy"
+        allowfullscreen
+        referrerpolicy="no-referrer"
+      ></iframe>
+    </div>
+  </section>
+
+  <section class="section section--paper">
+    <div class="container work-info">
+      <p>{work.data.description}</p>
+      <div class="work-info__tech">
+        {work.data.tech.map((t) => <span>{t}</span>)}
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>
+
+<script is:inline>
+  (function () {
+    var btn = document.getElementById('work-fullscreen');
+    var frame = document.getElementById('work-frame');
+    if (!btn || !frame) return;
+    btn.addEventListener('click', function () {
+      if (frame.requestFullscreen) {
+        frame.requestFullscreen();
+      } else {
+        window.open(frame.src, '_blank');
+      }
+    });
+  })();
+</script>
+
+<style>
+  .work-head {
+    background: var(--navy);
+    padding: 40px 0 34px;
+  }
+  .work-head__crumb {
+    font-size: 14px;
+    color: var(--gold);
+    text-decoration: none;
+  }
+  .work-head__eyebrow {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: var(--gold);
+    margin-top: 18px;
+  }
+  .work-head h1 {
+    font-family: var(--font-serif);
+    font-size: 38px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.3;
+    margin: 8px 0 8px;
+  }
+  .work-head__sub {
+    font-size: 16px;
+    color: #c9c4ba;
+    margin: 0 0 20px;
+  }
+  .work-head__actions {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .work-head__open {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--gold);
+    text-decoration: none;
+  }
+  .work-stage {
+    background: #0b1222;
+    padding: 20px;
+  }
+  .work-stage__frame {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  }
+  .work-stage__frame iframe {
+    display: block;
+    width: 100%;
+    height: calc(100vh - 170px);
+    min-height: 640px;
+    border: 0;
+  }
+  .work-info {
+    padding-top: 8px;
+  }
+  .work-info p {
+    font-size: 16px;
+    color: var(--ink-soft);
+    line-height: 1.75;
+    max-width: 760px;
+    margin: 0;
+  }
+  .work-info__tech {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+  .work-info__tech span {
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: rgba(154, 123, 46, 0.12);
+    color: var(--gold);
+    font-size: 13px;
+    font-weight: 600;
+  }
+  @media (max-width: 640px) {
+    .work-head h1 {
+      font-size: 28px;
+    }
+    .work-stage__frame iframe {
+      height: 80vh;
+      min-height: 520px;
+    }
+  }
+</style>

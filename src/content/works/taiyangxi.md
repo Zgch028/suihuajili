@@ -4,6 +4,7 @@ subtitle: 用 J2000 星历解算，在浏览器里推演二百五十年的行星
 date: 2026-11-26
 description: 按 J2000 平黄道与 Standish 六根数实时解算八大行星位置，可拖动时间轴在 1800–2050 年间正放倒放，并切换俯视、侧视与跟随视角。
 tags: [天文, 三维可视化, Three.js]
+cover: /works/taiyangxi/cover.jpg
 demoPath: /works/taiyangxi/app/index.html
 tech: [Three.js, WebGL, J2000 星历, GLSL]
 featured: true

@@ -4,6 +4,7 @@ subtitle: 把中医经穴与骨度分寸做成可旋转的三维模型
 date: 2026-11-26
 description: 一个可交互的三维经穴定位模型，支持旋转、缩放与穴位查看。
 tags: [中医, 三维可视化, Three.js]
+cover: /works/mingtang/cover.jpg
 demoPath: /works/mingtang/app/index.html
 tech: [Three.js, WebGL, HTML5]
 featured: true

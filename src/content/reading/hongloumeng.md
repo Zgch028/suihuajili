@@ -1,13 +1,15 @@
 ---
 title: 红楼梦
 author: 曹雪芹
-date: 2026-11-26
-description: 用 AI 把《红楼梦》拆成人物关系、家族兴衰与命运隐喻的认知框架。
-tags: [古典文学, 红楼梦, 认知框架]
+category: 古典文学
+date: 2026-08-05
+description: 满纸荒唐言，一把辛酸泪。用认知框架拆解四大家族的兴衰与人物命运。
+tags: [古典文学, 红楼梦, 完整版]
 edition: 完整版
 htmlPath: /reading/hongloumeng/app/index.html
+cover: /reading/hongloumeng/assets/cover.jpg
 featured: true
 order: 1
 ---
 
-《红楼梦》不是一部读完就放下的书。这份笔记用 AI 辅助梳理人物关系、家族兴衰与命运隐喻，把书“读厚”之后再“读薄”，留下一套可以反复调用的理解框架。
+满纸荒唐言，一把辛酸泪。用认知框架拆解四大家族的兴衰与人物命运。

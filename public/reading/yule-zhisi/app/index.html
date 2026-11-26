@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>《娱乐至死》· 读书笔记</title>
+<style>
+  :root{
+    --paper:#f5efe2;
+    --paper-2:#efe7d6;
+    --ink:#3a352c;
+    --ink-soft:#6b6354;
+    --line:#d9cfba;
+    --accent:#3b3f7a;        /* 荧屏靛 */
+    --accent-2:#272a52;      /* 深靛 */
+    --accent-soft:#8a8fc0;
+    --seal:#c0432f;          /* 朱印 */
+    --card:#fbf7ee;
+    --shadow:0 6px 22px rgba(58,53,44,.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:"Noto Serif SC",serif;
+    color:var(--ink);
+    background-color:var(--paper);
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    line-height:1.85;
+    -webkit-font-smoothing:antialiased;
+  }
+  .serif-en{font-family:"Playfair Display",Georgia,serif;}
+
+  /* 顶部书签色带 */
+  .ribbon{
+    position:absolute;top:-2px;left:50%;transform:translateX(-50%);
+    background:linear-gradient(160deg,var(--accent),var(--accent-2));
+    color:#fff;padding:14px 30px 18px;border-radius:0 0 8px 8px;
+    box-shadow:var(--shadow);text-align:center;min-width:160px;z-index:5;
+  }
+  .ribbon .seal{
+    font-family:"Ma Shan Zheng",cursive;font-size:34px;line-height:1;
+    display:block;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.25);
+  }
+  .ribbon small{display:block;font-size:12px;letter-spacing:3px;opacity:.85;margin-top:4px;}
+
+  /* Hero */
+  .hero{
+    position:relative;margin-top:0;height:62vh;min-height:380px;
+    display:flex;align-items:flex-end;justify-content:center;
+    background:#272a52 center/cover no-repeat;
+    overflow:hidden;
+  }
+  .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .hero::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(39,42,82,0) 25%,rgba(39,42,82,.55) 70%,rgba(39,42,82,.92) 100%);
+  }
+  .hero-inner{position:relative;z-index:2;text-align:center;padding:0 22px 58px;max-width:820px;}
+  .hero .eyebrow{color:#cfd2f0;letter-spacing:6px;font-size:13px;margin-bottom:14px;}
+  .hero h1{
+    font-family:"Noto Serif SC",serif;font-weight:700;color:#fff;
+    font-size:clamp(32px,7vw,56px);line-height:1.2;text-shadow:0 2px 18px rgba(0,0,0,.45);
+  }
+  .hero .sub{color:#e9eaf7;font-size:clamp(14px,2.4vw,18px);margin-top:14px;letter-spacing:1px;}
+
+  .container{max-width:920px;margin:0 auto;padding:0 22px 70px;}
+
+  section{margin-top:58px;}
+  .sec-title{
+    font-size:26px;font-weight:700;color:var(--accent-2);
+    display:flex;align-items:center;gap:12px;margin-bottom:8px;
+  }
+  .sec-title::before{content:"";width:6px;height:26px;background:var(--accent);border-radius:3px;display:inline-block;}
+  .sec-sub{color:var(--ink-soft);font-size:14px;margin-bottom:22px;padding-left:18px;}
+
+  /* 书籍信息卡 */
+  .info-card{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:30px 30px 26px;box-shadow:var(--shadow);position:relative;overflow:hidden;
+  }
+  .info-card::before{content:"娱";position:absolute;right:-10px;bottom:-26px;font-family:"Ma Shan Zheng",cursive;font-size:130px;color:rgba(59,63,122,.07);}
+  .info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:20px;}
+  .info-grid .it{background:var(--paper-2);border-radius:10px;padding:14px 16px;}
+  .info-grid .it span{display:block;font-size:12px;color:var(--ink-soft);letter-spacing:2px;margin-bottom:5px;}
+  .info-grid .it b{font-size:15px;color:var(--accent-2);font-weight:600;line-height:1.5;}
+  .overview{
+    background:linear-gradient(120deg,rgba(59,63,122,.10),rgba(59,63,122,.04));
+    border-left:4px solid var(--accent);border-radius:0 10px 10px 0;
+    padding:18px 22px;font-size:17px;color:var(--ink);
+  }
+  .overview b{color:var(--accent-2);}
+
+  /* 双极对比 */
+  .compare{display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:stretch;}
+  .compare .col{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:26px 24px;box-shadow:var(--shadow);
+  }
+  .compare .col h3{font-size:20px;margin-bottom:6px;}
+  .compare .col.l h3{color:var(--accent);}
+  .compare .col.r h3{color:var(--seal);}
+  .compare .col .tag{font-size:12px;letter-spacing:2px;color:var(--ink-soft);margin-bottom:14px;}
+  .compare .col ul{list-style:none;}
+  .compare .col li{position:relative;padding:9px 0 9px 20px;border-top:1px dashed var(--line);font-size:15px;}
+  .compare .col li:first-child{border-top:none;}
+  .compare .col li::before{content:"";position:absolute;left:0;top:18px;width:7px;height:7px;border-radius:50%;}
+  .compare .col.l li::before{background:var(--accent);}
+  .compare .col.r li::before{background:var(--seal);}
+  .vs{
+    align-self:center;justify-self:center;width:64px;height:64px;border-radius:50%;
+    background:linear-gradient(160deg,var(--accent),var(--seal));color:#fff;
+    display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;
+    font-style:italic;font-size:24px;box-shadow:var(--shadow);margin:0 -8px;z-index:2;
+  }
+  .insight{
+    margin-top:20px;background:var(--paper-2);border-radius:12px;padding:18px 22px;
+    font-size:15.5px;color:var(--ink);border:1px dashed var(--accent-soft);
+  }
+  .insight b{color:var(--accent-2);}
+
+  /* 八块基石概念 */
+  .grid8{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+  .chip{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:20px 16px;box-shadow:var(--shadow);position:relative;transition:transform .2s;
+  }
+  .chip:hover{transform:translateY(-4px);}
+  .chip .no{font-family:"Playfair Display",serif;font-size:14px;color:var(--accent-soft);}
+  .chip h4{font-size:17px;color:var(--accent-2);margin:4px 0 8px;}
+  .chip p{font-size:13.5px;color:var(--ink-soft);line-height:1.7;}
+  .chip .en{display:block;font-family:"Playfair Display",serif;font-style:italic;font-size:12px;color:var(--accent-soft);margin-top:8px;}
+
+  /* 脉络图 */
+  .flow{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:30px 24px;box-shadow:var(--shadow);}
+  .flow-row{display:flex;align-items:stretch;gap:0;flex-wrap:wrap;}
+  .flow-step{flex:1 1 0;min-width:120px;text-align:center;position:relative;padding:14px 8px;}
+  .flow-step .dot{
+    width:42px;height:42px;border-radius:50%;margin:0 auto 12px;
+    background:linear-gradient(160deg,var(--accent),var(--accent-2));color:#fff;
+    display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;font-size:16px;
+    box-shadow:var(--shadow);
+  }
+  .flow-step h5{font-size:15px;color:var(--accent-2);margin-bottom:5px;}
+  .flow-step p{font-size:12.5px;color:var(--ink-soft);line-height:1.6;}
+  .flow-step:not(:last-child)::after{
+    content:"";position:absolute;top:21px;right:-8px;width:16px;height:2px;background:var(--accent-soft);
+  }
+
+  /* 金句 */
+  .quote{
+    background:linear-gradient(120deg,rgba(59,63,122,.08),rgba(192,67,47,.05));
+    border-left:4px solid var(--seal);border-radius:0 12px 12px 0;
+    padding:20px 26px;margin-bottom:18px;position:relative;
+  }
+  .quote p{font-size:18px;color:var(--ink);line-height:1.8;}
+  .quote .en{font-family:"Playfair Display",serif;font-style:italic;color:var(--ink-soft);font-size:15px;margin-top:8px;}
+  .quote cite{display:block;margin-top:10px;font-size:13px;color:var(--accent);letter-spacing:1px;}
+
+  /* 行动启发 */
+  .actions{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .act-col{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;box-shadow:var(--shadow);}
+  .act-col h3{font-size:19px;color:var(--accent-2);margin-bottom:14px;display:flex;align-items:center;gap:9px;}
+  .act-col h3 .ic{width:30px;height:30px;border-radius:8px;background:rgba(59,63,122,.12);display:inline-flex;align-items:center;justify-content:center;font-size:16px;}
+  .act-col.l h3 .ic{background:rgba(59,63,122,.14);}
+  .act-col.r h3 .ic{background:rgba(192,67,47,.14);}
+  .act-col ol{list-style:none;counter-reset:a;}
+  .act-col li{counter-increment:a;position:relative;padding:10px 0 10px 34px;border-top:1px dashed var(--line);font-size:14.5px;}
+  .act-col li:first-child{border-top:none;}
+  .act-col li::before{content:counter(a);position:absolute;left:0;top:11px;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;}
+  .act-col.r li::before{background:var(--seal);}
+  .act-col li b{color:var(--accent-2);}
+
+  /* 适合谁读 */
+  .aud{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .aud-box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;box-shadow:var(--shadow);}
+  .aud-box.good{border-top:4px solid var(--accent);}
+  .aud-box.no{border-top:4px solid var(--seal);}
+  .aud-box h3{font-size:18px;margin-bottom:14px;}
+  .aud-box.good h3{color:var(--accent);}
+  .aud-box.no h3{color:var(--seal);}
+  .aud-box li{list-style:none;padding:8px 0 8px 22px;position:relative;font-size:14.5px;}
+  .aud-box.good li::before{content:"✔";position:absolute;left:0;color:var(--accent);}
+  .aud-box.no li::before{content:"✕";position:absolute;left:0;color:var(--seal);}
+
+  /* 页脚书签 */
+  .ribbon-foot{
+    margin:64px auto 0;max-width:920px;text-align:center;padding:30px 22px 10px;
+    border-top:1px solid var(--line);color:var(--ink-soft);font-size:13px;
+  }
+  .ribbon-foot .mark{
+    display:inline-block;font-family:"Ma Shan Zheng",cursive;color:var(--accent);
+    font-size:30px;margin-bottom:8px;
+  }
+
+  @media(max-width:720px){
+    .info-grid{grid-template-columns:1fr;}
+    .compare{grid-template-columns:1fr;}
+    .vs{margin:14px auto;transform:rotate(90deg);}
+    .grid8{grid-template-columns:repeat(2,1fr);}
+    .actions,.aud{grid-template-columns:1fr;}
+    .flow-step:not(:last-child)::after{display:none;}
+    .flow-step{flex-basis:50%;margin-bottom:14px;}
+  }
+  @media(max-width:420px){
+    .grid8{grid-template-columns:1fr;}
+    .flow-step{flex-basis:100%;}
+    .hero h1{font-size:32px;}
+  }
+</style>
+<style id="local-font-fallback">
+/* 站内离线字体兜底：不改动原版式，用本机同族字体替代 Google Fonts，避免跨境请求拖慢首屏 */
+@font-face{font-family:"Noto Serif SC";src:local("Source Han Serif SC"),local("Source Han Serif CN"),local("Noto Serif CJK SC"),local("Songti SC"),local("STSong"),local("SimSun"),local("宋体");font-display:swap;}
+@font-face{font-family:"Playfair Display";src:local("Playfair Display"),local("Georgia"),local("Times New Roman");font-display:swap;}
+@font-face{font-family:"Ma Shan Zheng";src:local("Ma Shan Zheng"),local("STKaiti"),local("Kaiti SC"),local("KaiTi"),local("楷体"),local("STXingkai");font-display:swap;}
+@font-face{font-family:"Noto Sans SC";src:local("Source Han Sans SC"),local("Noto Sans CJK SC"),local("PingFang SC"),local("Hiragino Sans GB"),local("Microsoft YaHei"),local("微软雅黑");font-display:swap;}
+</style>
+</head>
+<body data-pagefind-ignore>
+
+<header class="hero">
+  <img src="/reading/yule-zhisi/assets/cover.jpg" alt="影院胶片" onerror="this.style.display='none'" />
+  <div class="ribbon"><span class="seal">娱</span><small>娱 乐 至 死</small></div>
+  <div class="hero-inner">
+    <div class="eyebrow">[美] 尼尔·波兹曼 著 · 1985</div>
+    <h1>娱乐至死</h1>
+    <div class="sub">Amusing Ourselves to Death · 我们毁于所热爱的东西</div>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- 书籍信息 -->
+  <section id="info">
+    <div class="sec-title">书籍信息</div>
+    <div class="sec-sub">Book · 关于这本书的底色（注：波丝曼即 Neil Postman 之通译「波兹曼」）</div>
+    <div class="info-card">
+      <div class="info-grid">
+        <div class="it"><span>作 者</span><b>尼尔·波兹曼（美）<br>译者 章艳</b></div>
+        <div class="it"><span>领 域</span><b>媒介批判 · 传播学</b></div>
+        <div class="it"><span>核心命题</span><b>媒介即隐喻 · 娱乐化话语</b></div>
+      </div>
+      <div class="overview">
+        <b>一句话总览：</b>在电视（及今日算法媒介）的统治下，政治、新闻、教育、宗教都<b>日渐以娱乐的方式出现</b>，公众话语被削平为表演与碎片——我们不是被暴政奴役，而是<b>心甘情愿成为娱乐的附庸，毁于所热爱的东西</b>。
+      </div>
+    </div>
+  </section>
+
+  <!-- 双极对比 -->
+  <section id="compare">
+    <div class="sec-title">核心张力：阐释时代 与 娱乐业时代</div>
+    <div class="sec-sub">The Soul · 两种媒介统治下的两种心智</div>
+    <div class="compare">
+      <div class="col l">
+        <h3>印刷术 · 阐释时代</h3>
+        <div class="tag">THE AGE OF TYPOGRAPHY · 理性与秩序</div>
+        <ul>
+          <li>文字训练逻辑、连贯与耐心，话语以「论证」为本</li>
+          <li>林肯—道格拉斯辩论长达七小时，听众仍聚精会神</li>
+          <li>真理「穿着文字的外衣」，严肃公共讨论成为可能</li>
+          <li>媒介偏向：冷静、线性、可反驳、重证据</li>
+        </ul>
+      </div>
+      <div class="vs">vs</div>
+      <div class="col r">
+        <h3>电视 · 娱乐业时代</h3>
+        <div class="tag">THE AGE OF SHOW BUSINESS · 表演与瞬时</div>
+        <ul>
+          <li>电视「只有一种不变的声音——娱乐的声音」</li>
+          <li>政治成表演、新闻成故事、宗教成综艺、教育成秀</li>
+          <li>图像偏好瞬时、碎片、情绪，不耐复杂论证</li>
+          <li>媒介偏向：好看、即时、无需思考、被喂养</li>
+        </ul>
+      </div>
+    </div>
+    <div class="insight">
+      <b>收口洞见：</b>奥威尔担心我们憎恨的暴政会毁掉我们；赫胥黎担心我们<b>热爱的娱乐</b>会毁掉我们。波兹曼站在赫胥黎一边——危险不在「被强迫沉默」，而在「在笑声中主动放弃思考」。媒介从来不是中性的容器，<b>媒介即隐喻</b>：它悄悄重塑我们「怎么想」，而不只是「想什么」。
+    </div>
+  </section>
+
+  <!-- 八块基石 -->
+  <section id="concepts">
+    <div class="sec-title">八块基石概念</div>
+    <div class="sec-sub">Eight Keys · 打开这本书的思想工具</div>
+    <div class="grid8">
+      <div class="chip"><div class="no">01</div><h4>媒介即隐喻</h4><p>媒介以隐蔽而强大的暗示定义现实，重塑我们看世界的方式。</p><span class="en">Media as Metaphor</span></div>
+      <div class="chip"><div class="no">02</div><h4>媒介即认识论</h4><p>我们如何「知道真理」，取决于我们用什么媒介表达。</p><span class="en">Media as Epistemology</span></div>
+      <div class="chip"><div class="no">03</div><h4>阐释时代</h4><p>印刷机统治下，理性、秩序与严肃公共话语的黄金期。</p><span class="en">Typographic Era</span></div>
+      <div class="chip"><div class="no">04</div><h4>娱乐业时代</h4><p>电视的统治：一切内容以娱乐面貌出现，无例外。</p><span class="en">Show-Business Era</span></div>
+      <div class="chip"><div class="no">05</div><h4>奥威尔 vs 赫胥黎</h4><p>两种枯萎方式：监狱 vs 滑稽戏，恐惧 vs 欢愉。</p><span class="en">Orwell / Huxley</span></div>
+      <div class="chip"><div class="no">06</div><h4>话语娱乐化</h4><p>政治、新闻、宗教、教育逐一臣服于娱乐的逻辑。</p><span class="en">Discoursified</span></div>
+      <div class="chip"><div class="no">07</div><h4>图像胜文字</h4><p>瞬时、碎片、情绪化的图像，挤走深度与耐心。</p><span class="en">Image Wins</span></div>
+      <div class="chip"><div class="no">08</div><h4>清醒与媒介素养</h4><p>在娱乐洪流中保留严肃思考，分辨真知与表演。</p><span class="en">Literacy</span></div>
+    </div>
+  </section>
+
+  <!-- 脉络图 -->
+  <section id="flow">
+    <div class="sec-title">全书脉络图</div>
+    <div class="sec-sub">The Map · 从预言对勘到警醒自处的六段行程</div>
+    <div class="flow">
+      <div class="flow-row">
+        <div class="flow-step"><div class="dot">1</div><h5>预言对勘</h5><p>奥威尔《1984》vs 赫胥黎《美丽新世界》</p></div>
+        <div class="flow-step"><div class="dot">2</div><h5>媒介即隐喻</h5><p>理论前提：媒介如何悄悄塑造现实</p></div>
+        <div class="flow-step"><div class="dot">3</div><h5>印刷术时代</h5><p>阐释时代：理性、秩序、严肃话语</p></div>
+        <div class="flow-step"><div class="dot">4</div><h5>电视降临</h5><p>娱乐业时代：唯一的声音是娱乐</p></div>
+        <div class="flow-step"><div class="dot">5</div><h5>话语沦陷</h5><p>政治/新闻/宗教/教育被娱乐收编</p></div>
+        <div class="flow-step"><div class="dot">6</div><h5>警醒自处</h5><p>我们毁于所爱，如何保持清醒</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 金句 -->
+  <section id="quotes">
+    <div class="sec-title">金句摘录</div>
+    <div class="sec-sub">Quotes · 书中锋利的时代判词（个人阅读札记，非逐字考据）</div>
+    <div class="quote">
+      <p>「我们将毁于我们所热爱的东西。」</p>
+      <cite>—— 波兹曼引赫胥黎：危险不在暴政，而在被娱乐温柔地掏空</cite>
+    </div>
+    <div class="quote">
+      <p>「有两种方法可以让文化精神枯萎：一种是奥威尔式的——文化成为一个监狱；另一种是赫胥黎式的——文化成为一场滑稽戏。」</p>
+      <cite>—— 《娱乐至死》题眼</cite>
+    </div>
+    <div class="quote">
+      <p>「电视的问题不在于它提供娱乐，而在于所有的内容都以娱乐的形式呈现出来。」</p>
+      <cite>—— 同书 · 论电视的娱乐偏向</cite>
+    </div>
+    <div class="quote">
+      <p>「媒介即隐喻：它以一种隐蔽却强大的暗示力量，重新定义现实世界。」</p>
+      <cite>—— 同书 · 核心命题</cite>
+    </div>
+    <div class="quote">
+      <p>「在印刷机统治的时代，人们能在七小时的辩论中聚精会神地追寻真理。」</p>
+      <cite>—— 同书 · 阐释时代的公共理性（林肯—道格拉斯之例，提炼）</cite>
+    </div>
+  </section>
+
+  <!-- 行动启发 -->
+  <section id="actions">
+    <div class="sec-title">行动启发</div>
+    <div class="sec-sub">Takeaways · 在一個娱乐至死的时代，如何不把自己交给笑声</div>
+    <div class="actions">
+      <div class="act-col l">
+        <h3><span class="ic">🧠</span>认知 · 守住深度思考</h3>
+        <ol>
+          <li><b>给信息分格式：</b>刷到的短视频/热搜是「娱乐」，重要判断请回到长文、书与论证。</li>
+          <li><b>练「不即时」的耐心：</b>刻意读需要啃的书、听完整的讲座，对抗碎片化的心智。</li>
+          <li><b>追问媒介偏见：</b>任何内容先问「它用哪种形式在悄悄塑造我」，再问内容。</li>
+          <li><b>把娱乐当娱乐：</b>享受可以，但别让表演替你完成「理解世界」这件事。</li>
+        </ol>
+      </div>
+      <div class="act-col r">
+        <h3><span class="ic">📣</span>表达 · 别让严肃被削平</h3>
+        <ol>
+          <li><b>公共表达重论证：</b>工作汇报、观点输出，先有结构逻辑，再谈包装。</li>
+          <li><b>警惕「标题党思维」：</b>用情绪换点击的内容，往往是深度思考的敌人。</li>
+          <li><b>给团队留「阐释时间」：</b>开会别全是快闪，留整块时间做严肃讨论。</li>
+          <li><b>做媒介素养的传递者：</b>带身边人分辨娱乐与真知，尤其是孩子。</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 适合谁读 -->
+  <section id="audience">
+    <div class="sec-title">适合谁读</div>
+    <div class="sec-sub">For Whom · 这份媒介警示录，谁会得益</div>
+    <div class="aud">
+      <div class="aud-box good">
+        <h3>推荐阅读</h3>
+        <ul>
+          <li>被短视频/热搜包围、想找回专注力的普通人</li>
+          <li>做内容、传播、营销，需看清媒介偏见的人</li>
+          <li>教育者、家长（关乎童年的消逝与媒介素养）</li>
+          <li>关心公共话语质量与社会文化的人</li>
+          <li>想读一本「提前写好的当下寓言」的思考者</li>
+        </ul>
+      </div>
+      <div class="aud-box no">
+        <h3>可能不合胃口</h3>
+        <ul>
+          <li>只想轻松刷过、不愿被「戳破舒适」的读者</li>
+          <li>期待实操技巧/干货清单、不耐理论推演的人</li>
+          <li>认为「媒介无罪、全看个人」、拒斥结构批判者</li>
+          <li>只接受纯学术语体、不耐受犀利修辞的人</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="ribbon-foot">
+    <div class="mark">娱</div>
+    <p>《娱乐至死》读书笔记 · 龙山大佛 · 优雅纸感阅读笔记模板</p>
+    <p style="margin-top:6px;opacity:.7;">金句为书中判词之阅读札记，非逐字考据原文；Hero 大图来自网络，离线时自动降级为渐变底。</p>
+  </div>
+
+</main>
+</body>
+</html>

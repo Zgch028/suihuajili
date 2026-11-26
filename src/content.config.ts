@@ -39,6 +39,7 @@ const reading = defineCollection({
   schema: z.object({
     title: z.string(),              // 书名
     author: z.string(),             // 作者
+    category: z.string(),           // 书架分区：古典文学 / 哲学思想 / 心理认知 / 社科历史 / 科学自然 / AI与未来
     date: z.coerce.date(),          // 笔记日期
     description: z.string(),        // 一句话介绍（列表卡 + meta）
     tags: z.array(z.string()).default([]),

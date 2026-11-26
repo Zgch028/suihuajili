@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>《人类简史》读书笔记 · 从动物到上帝</title>
+<style>
+  :root{
+    --paper:#f4ecdd;
+    --paper-2:#efe5d2;
+    --ink:#2b2722;
+    --ink-soft:#5a5247;
+    --line:#d8cbb2;
+    --accent:#b5532a;        /* 赭石赤陶 */
+    --accent-dark:#7a3318;
+    --accent-soft:#d98a5e;
+    --gold:#c79a3a;
+    --shadow:rgba(60,40,20,.14);
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:"Noto Serif SC",Georgia,serif;
+    color:var(--ink);
+    background-color:var(--paper);
+    background-image:
+      radial-gradient(rgba(120,90,50,.05) 1px, transparent 1px),
+      radial-gradient(rgba(120,90,50,.04) 1px, transparent 1px);
+    background-size:22px 22px, 22px 22px;
+    background-position:0 0, 11px 11px;
+    line-height:1.85;
+    -webkit-font-smoothing:antialiased;
+  }
+  /* 纸感噪点叠加 */
+  body::before{
+    content:"";
+    position:fixed;inset:0;
+    pointer-events:none;z-index:0;
+    opacity:.4;
+    mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+  }
+  .wrap{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:0 22px 80px;}
+
+  /* ===== 顶部书签色带 ===== */
+  .ribbon{
+    position:relative;z-index:3;
+    width:max-content;max-width:90%;
+    margin:0 auto;
+    background:linear-gradient(180deg,var(--accent),var(--accent-dark));
+    color:#fbeede;
+    padding:14px 46px 16px;
+    text-align:center;
+    box-shadow:0 6px 18px var(--shadow);
+    border-radius:0 0 6px 6px;
+  }
+  .ribbon .glyph{font-family:"Ma Shan Zheng",cursive;font-size:1.5rem;display:block;line-height:1;margin-bottom:2px;color:#ffe6c8;}
+  .ribbon .en{font-family:"Playfair Display",serif;font-style:italic;letter-spacing:.12em;font-size:.72rem;opacity:.92;text-transform:uppercase;}
+  .ribbon .cn{font-weight:600;font-size:1.02rem;letter-spacing:.32em;padding-left:.32em;}
+
+  /* ===== Hero ===== */
+  .hero{
+    position:relative;z-index:2;
+    margin-top:-6px;
+    height:clamp(320px,46vw,520px);
+    border-radius:0 0 var(--radius) var(--radius);
+    overflow:hidden;
+    display:flex;align-items:flex-end;
+    background:linear-gradient(160deg,#3a2415,#7a3318 60%,#b5532a);
+  }
+  .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .hero::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(30,18,8,0) 22%,rgba(30,18,8,.55) 62%,rgba(28,16,7,.94) 100%);
+  }
+  .hero-text{position:relative;z-index:2;padding:34px 30px 38px;color:#fbeede;}
+  .hero-text .kicker{font-family:"Playfair Display",serif;font-style:italic;letter-spacing:.18em;font-size:.82rem;color:var(--accent-soft);text-transform:uppercase;}
+  .hero-text h1{font-family:"Noto Serif SC",serif;font-weight:900;font-size:clamp(2.1rem,6vw,3.4rem);margin:.18em 0 .12em;letter-spacing:.04em;text-shadow:0 2px 14px rgba(0,0,0,.4);}
+  .hero-text .sub{font-size:1rem;opacity:.92;max-width:34em;}
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:54px;}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:22px;border-bottom:2px solid var(--line);padding-bottom:10px;}
+  .sec-head .num{font-family:"Playfair Display",serif;font-style:italic;color:var(--accent);font-size:1.5rem;font-weight:700;}
+  .sec-head h2{font-size:1.5rem;font-weight:700;margin:0;letter-spacing:.04em;}
+  .sec-head .en{font-family:"Playfair Display",serif;font-style:italic;color:var(--ink-soft);font-size:.85rem;margin-left:auto;opacity:.7;}
+
+  /* 书籍信息卡 */
+  .book-card{
+    display:grid;grid-template-columns:1.15fr 1fr;gap:24px;
+    background:var(--paper-2);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:26px 28px;
+    box-shadow:0 8px 22px var(--shadow);
+  }
+  .book-card h3{margin:0 0 4px;font-size:1.3rem;}
+  .meta-row{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0;}
+  .chip{background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:5px 13px;font-size:.82rem;color:var(--ink-soft);}
+  .chip b{color:var(--accent-dark);font-weight:600;}
+  .proposition{background:linear-gradient(180deg,#fff8ec,#f6ecd8);border-left:4px solid var(--accent);padding:14px 18px;border-radius:8px;font-size:.96rem;}
+  .proposition .lab{font-family:"Playfair Display",serif;font-style:italic;color:var(--accent);font-size:.8rem;letter-spacing:.08em;}
+  .overview{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fbeede;border-radius:12px;padding:20px 22px;display:flex;flex-direction:column;justify-content:center;}
+  .overview .lbl{font-family:"Playfair Display",serif;font-style:italic;font-size:.78rem;letter-spacing:.1em;opacity:.9;}
+  .overview p{font-size:1.12rem;font-weight:600;margin:.4em 0 0;line-height:1.6;}
+
+  /* 双系统/张力对比 */
+  .vs-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:stretch;}
+  .vs-col{background:var(--paper-2);border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:0 6px 16px var(--shadow);}
+  .vs-col h3{margin:0 0 6px;font-size:1.18rem;color:var(--accent-dark);}
+  .vs-col .lead{font-size:.92rem;color:var(--ink-soft);margin-bottom:12px;}
+  .vs-col ul{margin:0;padding-left:1.1em;font-size:.92rem;}
+  .vs-col li{margin:7px 0;}
+  .vs-mid{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:84px;}
+  .vs-mid .vs{font-family:"Playfair Display",serif;font-weight:700;font-size:1.6rem;color:var(--accent);}
+  .vs-mid .mini{font-size:.74rem;color:var(--ink-soft);text-align:center;margin-top:6px;max-width:96px;}
+  .vs-note{margin-top:18px;background:#fff8ec;border:1px dashed var(--accent-soft);border-radius:10px;padding:14px 18px;font-size:.95rem;}
+  .vs-note b{color:var(--accent-dark);}
+
+  /* 概念卡片网格 */
+  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+  .card{background:var(--paper-2);border:1px solid var(--line);border-radius:12px;padding:18px 16px;box-shadow:0 5px 14px var(--shadow);transition:transform .18s ease, box-shadow .18s ease;}
+  .card:hover{transform:translateY(-4px);box-shadow:0 12px 24px var(--shadow);}
+  .card .ic{font-family:"Playfair Display",serif;font-style:italic;color:var(--accent);font-size:1.05rem;}
+  .card h4{margin:6px 0 6px;font-size:1.04rem;}
+  .card p{margin:0;font-size:.86rem;color:var(--ink-soft);line-height:1.65;}
+
+  /* 脉络图 */
+  .timeline{position:relative;margin-top:10px;padding-left:8px;}
+  .timeline::before{content:"";position:absolute;left:14px;top:6px;bottom:6px;width:3px;background:linear-gradient(var(--accent),var(--accent-soft));border-radius:3px;}
+  .tl-item{position:relative;padding:0 0 22px 46px;}
+  .tl-item:last-child{padding-bottom:0;}
+  .tl-item .dot{position:absolute;left:6px;top:4px;width:18px;height:18px;border-radius:50%;background:var(--paper);border:3px solid var(--accent);}
+  .tl-item h4{margin:0 0 3px;font-size:1.04rem;color:var(--accent-dark);}
+  .tl-item .stage{font-family:"Playfair Display",serif;font-style:italic;font-size:.78rem;color:var(--ink-soft);}
+  .tl-item p{margin:4px 0 0;font-size:.9rem;color:var(--ink-soft);}
+
+  /* 金句 */
+  .quotes{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  blockquote{margin:0;background:linear-gradient(180deg,#fff8ec,#f4ead6);border-left:5px solid var(--accent);border-radius:0 12px 12px 0;padding:18px 22px;box-shadow:0 5px 14px var(--shadow);}
+  blockquote .q{font-size:1.02rem;font-weight:600;line-height:1.7;}
+  blockquote .from{display:block;margin-top:10px;font-size:.8rem;color:var(--ink-soft);font-family:"Playfair Display",serif;font-style:italic;}
+
+  /* 行动启发 */
+  .action{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .action .col{background:var(--paper-2);border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;box-shadow:0 6px 16px var(--shadow);}
+  .action h3{margin:0 0 12px;color:var(--accent-dark);font-size:1.12rem;display:flex;align-items:center;gap:8px;}
+  .action h3 .tag{background:var(--accent);color:#fbeede;font-size:.7rem;padding:3px 9px;border-radius:999px;font-family:"Playfair Display",serif;font-style:italic;}
+  .action li{margin:9px 0;font-size:.92rem;}
+  .action b{color:var(--accent-dark);}
+
+  /* 适合谁读 */
+  .who{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .who .box{border-radius:12px;padding:18px 22px;border:1px solid var(--line);}
+  .who .yes{background:linear-gradient(180deg,#f1f6ec,#e7f0dc);border-left:5px solid #6f8f4a;}
+  .who .no{background:linear-gradient(180deg,#f7eeea,#f1e3dc);border-left:5px solid #a8745a;}
+  .who h4{margin:0 0 10px;font-size:1.05rem;}
+  .who .yes h4{color:#4f6b32;}
+  .who .no h4{color:#8a4f38;}
+  .who li{font-size:.9rem;margin:7px 0;}
+
+  footer{margin-top:64px;text-align:center;color:var(--ink-soft);font-size:.82rem;border-top:1px solid var(--line);padding-top:24px;}
+  footer .ribbon-mini{display:inline-block;background:linear-gradient(180deg,var(--accent),var(--accent-dark));color:#fbeede;padding:6px 20px;border-radius:0 0 6px 6px;font-family:"Ma Shan Zheng",cursive;font-size:1.1rem;margin-bottom:12px;}
+
+  /* ===== 响应式 ===== */
+  @media(max-width:720px){
+    .book-card{grid-template-columns:1fr;}
+    .vs-grid{grid-template-columns:1fr;}
+    .vs-mid{flex-direction:row;gap:12px;min-width:0;padding:6px 0;}
+    .vs-mid .mini{max-width:none;}
+    .cards{grid-template-columns:repeat(2,1fr);}
+    .quotes,.action,.who{grid-template-columns:1fr;}
+    .hero-text{padding:26px 20px 30px;}
+  }
+  @media(max-width:420px){
+    .wrap{padding:0 16px 60px;}
+    .cards{grid-template-columns:1fr;}
+    .ribbon{padding:12px 26px 14px;}
+    .ribbon .cn{font-size:.9rem;letter-spacing:.2em;}
+    section{margin-top:42px;}
+  }
+</style>
+<style id="local-font-fallback">
+/* 站内离线字体兜底：不改动原版式，用本机同族字体替代 Google Fonts，避免跨境请求拖慢首屏 */
+@font-face{font-family:"Noto Serif SC";src:local("Source Han Serif SC"),local("Source Han Serif CN"),local("Noto Serif CJK SC"),local("Songti SC"),local("STSong"),local("SimSun"),local("宋体");font-display:swap;}
+@font-face{font-family:"Playfair Display";src:local("Playfair Display"),local("Georgia"),local("Times New Roman");font-display:swap;}
+@font-face{font-family:"Ma Shan Zheng";src:local("Ma Shan Zheng"),local("STKaiti"),local("Kaiti SC"),local("KaiTi"),local("楷体"),local("STXingkai");font-display:swap;}
+@font-face{font-family:"Noto Sans SC";src:local("Source Han Sans SC"),local("Noto Sans CJK SC"),local("PingFang SC"),local("Hiragino Sans GB"),local("Microsoft YaHei"),local("微软雅黑");font-display:swap;}
+</style>
+</head>
+<body data-pagefind-ignore>
+
+  <!-- 书签色带 -->
+  <div class="ribbon">
+    <span class="glyph">史</span>
+    <span class="cn">人 类 简 史</span>
+    <span class="en">Sapiens · A Brief History of Humankind</span>
+  </div>
+
+  <!-- Hero -->
+  <header class="hero">
+    <img src="/reading/renlei-jianshi/assets/cover.jpg"
+         alt="旷野与远古遗迹"
+         onerror="this.style.display='none'" />
+    <div class="hero-text">
+      <div class="kicker">A Brief History of Humankind</div>
+      <h1>从动物到上帝</h1>
+      <p class="sub">智人如何靠着「讲故事」的能力，在十万年里爬上食物链顶端，又亲手编织出金钱、帝国与宗教的意义之网。</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- 1. 书籍信息 -->
+    <section id="book">
+      <div class="sec-head">
+        <span class="num">01</span>
+        <h2>书籍信息</h2>
+        <span class="en">About the Book</span>
+      </div>
+      <div class="book-card">
+        <div>
+          <h3>《人类简史：从动物到上帝》</h3>
+          <div class="meta-row">
+            <span class="chip"><b>作者</b>　尤瓦尔·赫拉利</span>
+            <span class="chip"><b>初版</b>　2011（希伯来文）</span>
+            <span class="chip"><b>领域</b>　历史 · 人类学 · 认知科学</span>
+            <span class="chip"><b>译本</b>　中信出版社</span>
+          </div>
+          <div class="proposition">
+            <span class="lab">Core Thesis · 核心命题</span>
+            <p>智人之所以统治地球，不是因为个体更强壮，而是因为拥有了<strong>「大规模灵活虚构」</strong>的能力——能就神话、金钱、国家、公司等并不客观存在的故事达成集体共识，从而进行超大规模协作。</p>
+          </div>
+        </div>
+        <div class="overview">
+          <span class="lbl">One-line Overview</span>
+          <p>「我们以为自己在驾驭历史，其实只是活在自己相信的故事里；而故事，正是智人最危险的超能力。」</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. 核心张力 -->
+    <section id="tension">
+      <div class="sec-head">
+        <span class="num">02</span>
+        <h2>核心张力：想象的秩序 vs 客观的现实</h2>
+        <span class="en">The Central Tension</span>
+      </div>
+      <div class="vs-grid">
+        <div class="vs-col">
+          <h3>想象的现实</h3>
+          <p class="lead">靠「共同相信」才存在的东西</p>
+          <ul>
+            <li><b>金钱</b>：一张纸之所以值钱，是因为我们都信它值钱。</li>
+            <li><b>国家 / 公司 / 法律</b>：没有人在显微镜下找得到「公司」，它们只存在于共同的叙事里。</li>
+            <li><b>宗教与意识形态</b>：以神话为根基的秩序，却驱动着真实的战争与合作。</li>
+            <li><b>人权 / 自由</b>：同样是被建构的价值，而非自然法则。</li>
+          </ul>
+        </div>
+        <div class="vs-mid">
+          <span class="vs">VS</span>
+          <span class="mini">共识，是智人最锋利的协作工具，也是最温柔的牢笼</span>
+        </div>
+        <div class="vs-col">
+          <h3>客观的现实</h3>
+          <p class="lead">不依赖人类信念而存在</p>
+          <ul>
+            <li><b>物理事实</b>：重力、辐射、死亡，信与不信都照样发生。</li>
+            <li><b>生物需求</b>：饥饿、疾病、繁衍，不理会任何教义。</li>
+            <li><b>痛苦与快乐</b>：个体的感受是真实的，但「什么算幸福」却由文化定义。</li>
+            <li><b>演化约束</b>：智人的身体还停留在狩猎采集时代，习惯却已跑进数字文明。</li>
+          </ul>
+        </div>
+      </div>
+      <div class="vs-note">
+        <b>核心洞见：</b>赫拉利把历史一把推开说——真正改变世界的，从来不是「真相」，而是「我们愿意一起相信的虚构」。农业革命让小麦驯化了人，科学革命让人类首次承认「无知」，而今天我们用算法重写新的故事。看清这张网，你才不会被它勒住。
+      </div>
+    </section>
+
+    <!-- 3. 概念卡片 -->
+    <section id="concepts">
+      <div class="sec-head">
+        <span class="num">03</span>
+        <h2>八块认知基石</h2>
+        <span class="en">Key Concepts</span>
+      </div>
+      <div class="cards">
+        <div class="card">
+          <span class="ic">i.</span>
+          <h4>认知革命</h4>
+          <p>约 7 万年前，一次基因突变让智人能讨论虚构事物，从此「八卦」升级为「神话」，协作规模爆炸。</p>
+        </div>
+        <div class="card">
+          <span class="ic">ii.</span>
+          <h4>虚构的能力</h4>
+          <p>只有智人能就「不存在之物」（神、钱、公司）达成共识，这是大规模灵活协作的底层协议。</p>
+        </div>
+        <div class="card">
+          <span class="ic">iii.</span>
+          <h4>农业革命</h4>
+          <p>「史上最大的骗局」——人类以为驯化了作物，实为作物驯化了人，人口增而个体更苦。</p>
+        </div>
+        <div class="card">
+          <span class="ic">iv.</span>
+          <h4>想象的秩序</h4>
+          <p>金钱、帝国、宗教三大秩序跨越文化，把陌生人黏成巨大的合作网络。</p>
+        </div>
+        <div class="card">
+          <span class="ic">v.</span>
+          <h4>文字与数字</h4>
+          <p>从「记事实」到「记清单」，文字让官僚系统处理海量人口，也让历史开始「由胜者书写」。</p>
+        </div>
+        <div class="card">
+          <span class="ic">vi.</span>
+          <h4>科学革命</h4>
+          <p>承认「我们无知」，再用观察与数学换力量——科学、帝国与资本主义成了现代三件套。</p>
+        </div>
+        <div class="card">
+          <span class="ic">vii.</span>
+          <h4>资本主义</h4>
+          <p>「信任未来会增长」的信仰，让信贷存在；增长成了现代宗教，也制造了永不餍足的引擎。</p>
+        </div>
+        <div class="card">
+          <span class="ic">viii.</span>
+          <h4>快乐与意义</h4>
+          <p>演化关心生存繁衍，不关心你的幸福；快乐更多取决于预期而非客观条件——这是全书最私人的一问。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. 脉络图 -->
+    <section id="map">
+      <div class="sec-head">
+        <span class="num">04</span>
+        <h2>全书脉络：三大革命一条线</h2>
+        <span class="en">The Narrative Arc</span>
+      </div>
+      <div class="timeline">
+        <div class="tl-item">
+          <span class="dot"></span>
+          <span class="stage">Stage 1 · 约 70,000 年前</span>
+          <h4>认知革命</h4>
+          <p>智人学会讲虚构故事，走出非洲，灭掉尼安德特人，登上食物链顶端。</p>
+        </div>
+        <div class="tl-item">
+          <span class="dot"></span>
+          <span class="stage">Stage 2 · 约 12,000 年前</span>
+          <h4>农业革命</h4>
+          <p>定居与耕种让人口暴涨，却把人绑在土地与劳作上，「奢侈陷阱」就此成形。</p>
+        </div>
+        <div class="tl-item">
+          <span class="dot"></span>
+          <span class="stage">Stage 3 · 数千年间</span>
+          <h4>人类的融合统一</h4>
+          <p>金钱、帝国、宗教三种「想象的秩序」把孤立部落揉成全球网络，历史开始趋同。</p>
+        </div>
+        <div class="tl-item">
+          <span class="dot"></span>
+          <span class="stage">Stage 4 · 约 500 年前至今</span>
+          <h4>科学革命</h4>
+          <p>承认无知 + 投资研究 + 帝国与资本加持，人类第一次拥有了改天换地的力量。</p>
+        </div>
+        <div class="tl-item">
+          <span class="dot"></span>
+          <span class="stage">Stage 5 · 当下与未来</span>
+          <h4>智神时代</h4>
+          <p>生物科技与算法可能让智人升级为「神」，也提出问题：下一个故事，由谁来讲？</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. 金句 -->
+    <section id="quotes">
+      <div class="sec-head">
+        <span class="num">05</span>
+        <h2>六条值得抄下来的句子</h2>
+        <span class="en">Memorable Lines</span>
+      </div>
+      <div class="quotes">
+        <blockquote>
+          <span class="q">「就算是大批互相不认识的人，只要相信某个故事，就能共同合作。」</span>
+          <span class="from">— 论虚构共识，第二章</span>
+        </blockquote>
+        <blockquote>
+          <span class="q">「农业革命是史上最大的一桩骗局，它让人类以为自己驯化了小麦，其实是小麦驯化了人。」</span>
+          <span class="from">— 论农业革命，第五章</span>
+        </blockquote>
+        <blockquote>
+          <span class="q">「金钱是有史以来最普遍也最有效的互信系统。」</span>
+          <span class="from">— 论金钱的想象本质，第十章</span>
+        </blockquote>
+        <blockquote>
+          <span class="q">「科学革命的一大特色，就是承认『我们无知』。」</span>
+          <span class="from">— 论科学革命，第十二章</span>
+        </blockquote>
+        <blockquote>
+          <span class="q">「快乐并不在于任何客观条件，而在于客观条件与主观预期之间的落差。」</span>
+          <span class="from">— 论幸福，第二十章</span>
+        </blockquote>
+        <blockquote>
+          <span class="q">「我们以为自己驯化了小麦，其实是小麦驯化了我们；我们以为在写历史，其实是历史写我们。」</span>
+          <span class="from">— 个人阅读札记（综合）</span>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- 6. 行动启发 -->
+    <section id="action">
+      <div class="sec-head">
+        <span class="num">06</span>
+        <h2>对认知与决策的行动启发</h2>
+        <span class="en">What To Do With It</span>
+      </div>
+      <div class="action">
+        <div class="col">
+          <h3><span class="tag">认知</span>看穿叙事</h3>
+          <ul>
+            <li><b>追问「这是事实还是故事」：</b>开会时分辨哪些结论是数据，哪些只是共识叙事，别把两者混为一谈。</li>
+            <li><b>警惕「想象的秩序」：</b>股价、头衔、KPI 多半是集体相信才成立，信仰一旦动摇，它们会瞬间蒸发。</li>
+            <li><b>保持「承认无知」的姿势：</b>像科学革命那样，把「我还不懂」当起点，而非丢脸——这是真正学习的入口。</li>
+            <li><b>识别你被驯化的「小麦」：</b>有哪些习惯/指标在替别人养肥你？定期做减法。</li>
+          </ul>
+        </div>
+        <div class="col">
+          <h3><span class="tag">决策</span>借势协作</h3>
+          <ul>
+            <li><b>用共同故事凝聚团队：</b>使命、愿景本质是「虚构」，但正是它让陌生人高效协作，别嫌它空。</li>
+            <li><b>把预期当变量管理：</b>快乐/满意度取决于预期落差，调低不合理预期常比追逐更多更高效。</li>
+            <li><b>为「增长信仰」设边界：</b>信贷驱动进步，也驱动透支；分清「该借的未来」与「被故事绑架的贪婪」。</li>
+            <li><b>留一手「重写故事」的能力：</b>旧秩序会崩，能讲故事、能换框架的人，最不容易被时代甩下。</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. 适合谁读 -->
+    <section id="who">
+      <div class="sec-head">
+        <span class="num">07</span>
+        <h2>适合谁读</h2>
+        <span class="en">Who Should Read</span>
+      </div>
+      <div class="who">
+        <div class="box yes">
+          <h4>✓ 推荐给</h4>
+          <ul>
+            <li>想建立「大历史」框架、打通文史哲边界的读者</li>
+            <li>创业者 / 管理者：理解「共识」与「叙事」如何驱动组织</li>
+            <li>对人类起源、认知科学、未来科技感到好奇的人</li>
+            <li>愿意被挑战常识、不介意「被冒犯一下世界观」的思考者</li>
+          </ul>
+        </div>
+        <div class="box no">
+          <h4>✕ 可能不合适</h4>
+          <ul>
+            <li>想要严谨学术考证、逐条引用文献的读者（本书偏综述与观点）</li>
+            <li>期待「某某王朝逐年编年」的传统历史读物爱好者</li>
+            <li>对「解构神圣叙事」敏感、希望历史保持温情者</li>
+            <li>只想看轻松故事、不愿被宏大命题绕脑的读者</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="ribbon-mini">史</div>
+      <div>《人类简史》读书笔记 · 纸感阅读版 · 单文件 HTML</div>
+      <div style="margin-top:6px;opacity:.7;">内容为依据原著的阅读札记与提炼，金句为意译概括，非逐字原文摘抄。</div>
+    </footer>
+
+  </main>
+</body>
+</html>

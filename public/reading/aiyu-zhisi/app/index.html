@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>《爱欲之死》读书笔记 · OCD 对象中心分格</title>
+<style>
+:root{--paper:#f4ecdc;--ink:#33271d;--ink-soft:#6b5b49;--seal:#7a3b54;--seal-deep:#542637;--gold:#b89a5e;--vermil:#9c3f3a;--line:#d8c7a8;--card:#fbf6ea;--shadow:rgba(60,40,20,.14);}
+*{box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{margin:0;font-family:"Noto Serif SC",serif;color:var(--ink);background-color:var(--paper);
+ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+ line-height:1.85;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:1000px;margin:0 auto;padding:0 22px 80px;}
+/* Hero */
+.hero{position:relative;min-height:62vh;display:flex;align-items:flex-end;justify-content:center;background:#2a1622;overflow:hidden;}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 38%;}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(42,22,34,0) 18%,rgba(42,22,34,.42) 55%,rgba(42,22,34,.92) 100%);}
+.hero-inner{position:relative;z-index:2;text-align:center;padding:0 20px 56px;width:100%;}
+.hero .seal{display:inline-block;font-family:"Ma Shan Zheng",cursive;font-size:clamp(2.6rem,9vw,4.4rem);color:#fdf6ea;background:var(--seal);border:2px solid rgba(255,240,220,.55);padding:.12em .28em;border-radius:8px;transform:rotate(-3deg);box-shadow:0 10px 30px rgba(0,0,0,.4);margin-bottom:18px;}
+.hero h1{font-weight:900;color:#fcf4e6;font-size:clamp(2rem,7vw,3.4rem);letter-spacing:.06em;margin:.1em 0 .25em;text-shadow:0 2px 16px rgba(0,0,0,.6);}
+.hero .sub{color:#f0dcc4;font-size:clamp(.95rem,2.6vw,1.15rem);letter-spacing:.18em;text-shadow:0 1px 10px rgba(0,0,0,.55);}
+/* 书签色带 */
+.ribbon{position:relative;margin:-26px auto 40px;width:max-content;max-width:90%;background:var(--seal);color:#fdf6ea;padding:10px 30px;border-radius:4px;font-size:1rem;letter-spacing:.22em;box-shadow:0 8px 22px var(--shadow);}
+.ribbon::before,.ribbon::after{content:"";position:absolute;top:0;width:0;height:0;border:16px solid var(--seal-deep);}
+.ribbon::before{left:-18px;border-left-color:transparent;}.ribbon::after{right:-18px;border-right-color:transparent;}
+/* 区块 */
+section{margin:54px 0;}
+.sec-title{font-size:1.5rem;font-weight:700;color:var(--seal-deep);display:flex;align-items:center;gap:12px;margin:0 0 6px;}
+.sec-title .num{font-family:"Playfair Display",serif;font-style:italic;color:var(--gold);font-size:1.6rem;}
+.sec-sub{color:var(--ink-soft);margin:0 0 22px;font-size:.95rem;}
+/* 书籍信息卡 */
+.book-card{background:var(--card);border:1px solid var(--line);border-left:6px solid var(--seal);border-radius:10px;padding:24px 26px;box-shadow:0 6px 18px var(--shadow);}
+.book-meta{display:flex;flex-wrap:wrap;gap:10px 26px;margin-bottom:16px;} .book-meta b{color:var(--seal-deep);margin-right:6px;}
+.overview{background:linear-gradient(180deg,#fbf3e2,#f6ead2);border:1px dashed var(--gold);border-radius:10px;padding:18px 22px;margin-top:6px;}
+/* OCD 说明 legend */
+.legend{background:#f6ecd6;border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin-bottom:22px;font-size:.9rem;color:var(--ink-soft);display:flex;gap:12px;align-items:flex-start;}
+.legend .tag{font-family:"Playfair Display",serif;font-style:italic;color:var(--vermil);font-weight:700;font-size:1.05rem;white-space:nowrap;flex-shrink:0;}
+/* OCD 对象卡网格 */
+.ocd-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.ocd{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:0;box-shadow:0 6px 16px var(--shadow);overflow:hidden;display:flex;flex-direction:column;}
+.ocd .ocd-head{background:var(--seal);color:#fdf6ea;text-align:center;padding:13px 14px;}
+.ocd .ocd-head .name{font-weight:700;font-size:1.1rem;letter-spacing:.04em;display:block;}
+.ocd .ocd-head .tag{display:inline-block;font-size:.72rem;letter-spacing:.1em;background:rgba(255,255,255,.18);padding:2px 11px;border-radius:20px;margin-top:7px;}
+.ocd .ocd-body{padding:16px 18px;flex:1;}
+.ocd .field{margin-bottom:11px;}
+.ocd .field:last-child{margin-bottom:0;}
+.ocd .field .lab{font-size:.72rem;letter-spacing:.1em;color:var(--seal);font-weight:700;display:flex;align-items:center;gap:6px;}
+.ocd .field .lab::before{content:"";width:6px;height:6px;background:var(--gold);border-radius:50%;display:inline-block;flex-shrink:0;}
+.ocd .field .val{font-size:.92rem;color:var(--ink);line-height:1.7;margin-top:2px;}
+.ocd .field .val.orig{font-weight:600;color:var(--seal-deep);}
+/* 脉络图 */
+.flow{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.act{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 16px;box-shadow:0 5px 14px var(--shadow);border-top:4px solid var(--gold);}
+.act .step{font-family:"Playfair Display",serif;color:var(--seal);font-weight:700;}
+.act h4{color:var(--seal-deep);margin:.3em 0 .4em;font-size:1.02rem;}
+.act p{font-size:.88rem;color:var(--ink-soft);margin:0;}
+/* 金句 */
+.quote{background:linear-gradient(180deg,#fbf3e2,#f5e9d0);border-left:6px solid var(--seal);border-radius:10px;padding:20px 24px;margin:18px 0;box-shadow:0 5px 14px var(--shadow);}
+.quote .from{display:block;margin-top:8px;color:var(--ink-soft);font-size:.9rem;}
+/* 双栏 */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.act-card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 6px 16px var(--shadow);} .act-card h4{color:var(--seal-deep);margin-top:0;}
+.act-card ul{margin:.4em 0 0;padding-left:1.2em;} .act-card li{margin:8px 0;}
+/* 适合谁读 */
+.who{display:grid;grid-template-columns:1fr 1fr;gap:18px;} .who-box{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px;box-shadow:0 5px 14px var(--shadow);}
+.who-box h4{margin-top:0;color:var(--seal-deep);} .who-box ul{margin:.4em 0 0;padding-left:1.2em;} .who-box li{margin:7px 0;}
+footer{text-align:center;color:var(--ink-soft);font-size:.85rem;margin-top:60px;padding-top:26px;border-top:1px solid var(--line);}
+footer .seal-sm{display:inline-block;font-family:"Ma Shan Zheng",cursive;color:var(--seal);border:1.5px solid var(--seal);border-radius:6px;padding:2px 12px;transform:rotate(-2deg);margin-bottom:10px;}
+@media (max-width:720px){.ocd-grid{grid-template-columns:repeat(2,1fr);}.flow{grid-template-columns:repeat(2,1fr);}.two-col,.who{grid-template-columns:1fr;}}
+@media (max-width:420px){.wrap{padding:0 16px 60px;}.ocd-grid{grid-template-columns:1fr;}.flow{grid-template-columns:1fr;}}
+</style>
+<style id="local-font-fallback">
+/* 站内离线字体兜底：不改动原版式，用本机同族字体替代 Google Fonts，避免跨境请求拖慢首屏 */
+@font-face{font-family:"Noto Serif SC";src:local("Source Han Serif SC"),local("Source Han Serif CN"),local("Noto Serif CJK SC"),local("Songti SC"),local("STSong"),local("SimSun"),local("宋体");font-display:swap;}
+@font-face{font-family:"Playfair Display";src:local("Playfair Display"),local("Georgia"),local("Times New Roman");font-display:swap;}
+@font-face{font-family:"Ma Shan Zheng";src:local("Ma Shan Zheng"),local("STKaiti"),local("Kaiti SC"),local("KaiTi"),local("楷体"),local("STXingkai");font-display:swap;}
+@font-face{font-family:"Noto Sans SC";src:local("Source Han Sans SC"),local("Noto Sans CJK SC"),local("PingFang SC"),local("Hiragino Sans GB"),local("Microsoft YaHei"),local("微软雅黑");font-display:swap;}
+</style>
+</head>
+<body data-pagefind-ignore>
+
+<header class="hero">
+  <img src="/reading/aiyu-zhisi/assets/cover.jpg" alt="图书馆书架" onerror="this.style.display='none'"/>
+  <div class="hero-inner">
+    <span class="seal">愛</span>
+    <h1>《爱欲之死》读书笔记</h1>
+    <div class="sub">OCD · OBJECT-CENTERED DOCUMENTATION</div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="ribbon">韩炳哲 · 他者消逝时代的情感诊断</div>
+
+  <!-- 1. 书籍信息卡 -->
+  <section>
+    <h2 class="sec-title"><span class="num">i</span>书籍信息</h2>
+    <p class="sec-sub">对象：这部书本身——它是什么、讲什么、为什么值得读。</p>
+    <div class="book-card">
+      <div class="book-meta">
+        <div><b>作者</b>[德] 韩炳哲（Byung-Chul Han，1959—）著 / 宋娀 译</div>
+        <div><b>领域</b>哲学 · 批判理论 · 新自由主义社会批评</div>
+        <div><b>成书</b>原作 Agonie des Eros（2012）· 中信出版集团 2019</div>
+        <div><b>核心命题</b>爱欲之死，源于「他者」的结构性消亡</div>
+      </div>
+      <div class="overview">
+        <b>一句话总览：</b>一份当代情感的精神诊断书——当世界被拉平成「相同」、人被驯化成自我剥削的功绩主体，能言说「你」的爱欲正在悄悄死去；韩炳哲开出的药方，是重新允许他者、否定性与「无用」的存在。
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. OCD 核心概念对象卡 -->
+  <section>
+    <h2 class="sec-title"><span class="num">ii</span>核心概念 · 对象卡</h2>
+    <p class="sec-sub">八个关键词，每个都是可检索的「概念对象」：释义 / 书中定位 / 现代映射。</p>
+    <div class="legend">
+      <span class="tag">OCD 分格</span>
+      <span>本页采用 <b>Object-Centered Documentation（对象中心文档）</b>：核心内容拆为自包含的「对象卡」，每张含统一字段、在网格中整齐排布。读任意一张都不依赖其他卡片——概念彼此独立，却共同拼出韩炳哲的诊断全景。</span>
+    </div>
+    <div class="ocd-grid">
+      <div class="ocd">
+        <div class="ocd-head"><span class="name">爱欲 Eros</span><span class="tag">核心</span></div>
+        <div class="ocd-body">
+          <div class="field"><span class="lab">释义</span><div class="val">指向他者、渴望不可占有之物的欲望；以「否定性」为氧。</div></div>
+          <div class="field"><span class="lab">书中定位</span><div class="val orig">爱欲需要距离与不可征服的他者，是「能够言说『你』」的能力。</div></div>
+          <div class="field"><span class="lab">现代映射</span><div class="val">一切被即时满足、可点播消费，爱欲失去他者便窒息。</div></div>
+        </div>
+      </div>
+      <div class="ocd">
+        <div class="ocd-head"><span class="name">色情 Porno</span><span class="tag">对立</span></div>
+        <div class="ocd-body">
+          <div class="field"><span class="lab">释义</span><div class="val">平滑、无距离、自我指涉的感官呈现，爱欲的对立面。</div></div>
+          <div class="field"><span class="lab">书中定位</span><div class="val orig">色情把身体变成可消费的图像，消除他者与神秘。</div></div>
+          <div class="field"><span class="lab">现代映射</span><div class="val">社交媒体的「展示自我」是一种精神色情——全透明、无留白。</div></div>
+        </div>
+      </div>
+      <div class="ocd">
+        <div class="ocd-head"><span class="name">他者 der Andere</span><span class="tag">前提</span></div>
+        <div class="ocd-body">
+          <div class="field"><span class="lab">释义</span><div class="val">不可被我同化、归类、消耗的那个「你」（列维纳斯）。</div></div>
+          <div class="field"><span class="lab">书中定位</span><div class="val orig">爱以承认他者为前提；他者缺席，爱便沦为自恋。</div></div>
+          <div class="field"><span class="lab">现代映射</span><div class="val">算法只投喂「像我」的内容，他者被静默过滤。</div></div>
+        </div>
+      </div>
+      <div class="ocd">
+        <div class="ocd-head"><span class="name">同质化地狱</span><span class="tag">Hölle des Gleichen</span></div>
+        <div class="ocd-body">
+          <div class="field"><span class="lab">释义</span><div class="val">我们爱同者、排斥异者，世界被拉平为「相同」。</div></div>
+          <div class="field"><span class="lab">书中定位</span><div class="val orig">其恶不在压迫，而在「根本不再有异己」。</div></div>
+          <div class="field"><span class="lab">现代映射</span><div class="val">信息茧房、圈层回音壁——温和而无墙的地狱。</div></div>
+        </div>
+      </div>
+      <div class="ocd">
+        <div class="ocd-head"><span class="name">自恋 Narzissmus</span><span class="tag">症候</span></div>
+        <div class="ocd-body">
+          <div class="field"><span class="lab">释义</span><div class="val">没有他者的爱，爱上一个镜像的自己。</div></div>
+          <div class="field"><span class="lab">书中定位</span><div class="val orig">「整个世界只是自我的一个倒影」；功绩主体即自恋主体。</div></div>
+          <div class="field"><span class="lab">现代映射</span><div class="val">打卡式自律、个人品牌化，是对自我的剥削式热爱。</div></div>
+        </div>
+      </div>
+      <div class="ocd">
+        <div class="ocd-head"><span class="name">绩效社会</span><span class="tag">Leistungsgesellschaft</span></div>
+        <div class="ocd-body">
+          <div class="field"><span class="lab">释义</span><div class="val">以「能够」取代「应当」的肯定性社会，人人自我剥削。</div></div>
+          <div class="field"><span class="lab">书中定位</span><div class="val orig">暴力来自「你能」，而非「你必须」——自我驱动的奴役。</div></div>
+          <div class="field"><span class="lab">现代映射</span><div class="val">内卷、自我 KPI、自愿的功绩主体。</div></div>
+        </div>
+      </div>
+      <div class="ocd">
+        <div class="ocd-head"><span class="name">否定性 Negativität</span><span class="tag">爱欲之氧</span></div>
+        <div class="ocd-body">
+          <div class="field"><span class="lab">释义</span><div class="val">他者带来的阻力、痛苦、不可通约。</div></div>
+          <div class="field"><span class="lab">书中定位</span><div class="val orig">爱欲需要否定性；没有痛感，只剩平滑的舒适。</div></div>
+          <div class="field"><span class="lab">现代映射</span><div class="val">我们删除一切不快，也删掉了爱欲的条件。</div></div>
+        </div>
+      </div>
+      <div class="ocd">
+        <div class="ocd-head"><span class="name">徒劳 / 懒惰</span><span class="tag">Müßiggang</span></div>
+        <div class="ocd-body">
+          <div class="field"><span class="lab">释义</span><div class="val">不生产、不效用、允许「无用」的闲暇。</div></div>
+          <div class="field"><span class="lab">书中定位</span><div class="val orig">爱欲是「超越了工作绩效和能力」的关系；懒惰是对绩效的抵抗。</div></div>
+          <div class="field"><span class="lab">现代映射</span><div class="val">把「休息」也 KPI 化的时代，徒劳是一种救赎。</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. OCD 核心论断对象卡 -->
+  <section>
+    <h2 class="sec-title"><span class="num">iii</span>核心论断 · 对象卡</h2>
+    <p class="sec-sub">六条锋利诊断，每个都是「论断对象」：论题 / 原意 / 锋芒 / 启示。</p>
+    <div class="ocd-grid">
+      <div class="ocd">
+        <div class="ocd-head"><span class="name">爱欲之死，源于他者之死</span><span class="tag">总论断</span></div>
+        <div class="ocd-body">
+          <div class="field"><span class="lab">原意</span><div class="val orig">当代不再有真正的他者，只有可消费的同者，爱欲因此窒息。</div></div>
+          <div class="field"><span class="lab">锋芒</span><div class="val">批判消费主义与数字平滑把「你」削成「我想要的」。</div></div>
+          <div class="field"><span class="lab">启示</span><div class="val">关系里先承认对方「不可被我搞定」，爱才可能发生。</div></div>
+        </div>
+      </div>
+      <div class="ocd">
+        <div class="ocd-head"><span class="name">色情取代爱欲</span><span class="tag">亲密</span></div>
+        <div class="ocd-body">
+          <div class="field"><span class="lab">原意</span><div class="val orig">色情是消除距离与神秘的呈现，爱欲恰恰靠距离存活。</div></div>
+          <div class="field"><span class="lab">锋芒</span><div class="val">批判把亲密变成可点播、可展示。</div></div>
+          <div class="field"><span class="lab">启示</span><div class="val">留白与不可见，是亲密的稀缺资源。</div></div>
+        </div>
+      </div>
+      <div class="ocd">
+        <div class="ocd-head"><span class="name">绩效社会是温和的暴力</span><span class="tag">自我剥削</span></div>
+        <div class="ocd-body">
+          <div class="field"><span class="lab">原意</span><div class="val orig">不再有人逼你，是你自己逼自己「还能更好」。</div></div>
+          <div class="field"><span class="lab">锋芒</span><div class="val">批判自我优化意识形态与功绩主体。</div></div>
+          <div class="field"><span class="lab">启示</span><div class="val">把「我能」换成偶尔的「我不必」。</div></div>
+        </div>
+      </div>
+      <div class="ocd">
+        <div class="ocd-head"><span class="name">自恋者没有世界</span><span class="tag">镜像</span></div>
+        <div class="ocd-body">
+          <div class="field"><span class="lab">原意</span><div class="val orig">自恋只看见镜像，丧失与他者的真实联结。</div></div>
+          <div class="field"><span class="lab">锋芒</span><div class="val">批判个人品牌化、展示型存在。</div></div>
+          <div class="field"><span class="lab">启示</span><div class="val">少经营人设，多进入不被看见的关系。</div></div>
+        </div>
+      </div>
+      <div class="ocd">
+        <div class="ocd-head"><span class="name">同质化地狱没有围墙</span><span class="tag">茧房</span></div>
+        <div class="ocd-body">
+          <div class="field"><span class="lab">原意</span><div class="val orig">它不靠压迫，靠「大家都一样」的舒适。</div></div>
+          <div class="field"><span class="lab">锋芒</span><div class="val">批判算法投喂与回音壁。</div></div>
+          <div class="field"><span class="lab">启示</span><div class="val">主动找「不像我」的信息与人。</div></div>
+        </div>
+      </div>
+      <div class="ocd">
+        <div class="ocd-head"><span class="name">爱需要徒劳</span><span class="tag">无用之功</span></div>
+        <div class="ocd-body">
+          <div class="field"><span class="lab">原意</span><div class="val orig">爱是无用之功，不为产出；一旦计入回报便不是爱。</div></div>
+          <div class="field"><span class="lab">锋芒</span><div class="val">批判关系功利化、情绪价值记账。</div></div>
+          <div class="field"><span class="lab">启示</span><div class="val">允许一些「没有结果」的付出。</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. 脉络图 -->
+  <section>
+    <h2 class="sec-title"><span class="num">iv</span>论证脉络 · 六幕</h2>
+    <p class="sec-sub">沿书中逻辑，从「他者消逝」到「呼唤徒劳」，串成一条消亡与自救的链条。</p>
+    <div class="flow">
+      <div class="act"><div class="step">01</div><h4>他者消逝</h4><p>数字平滑与消费逻辑把异者滤除，世界只剩可归类、可消耗的「同」。</p></div>
+      <div class="act"><div class="step">02</div><h4>色情当道</h4><p>距离与神秘被消除，亲密变成可展示的图像，爱欲失其所凭。</p></div>
+      <div class="act"><div class="step">03</div><h4>绩效自恋</h4><p>自我优化的功绩主体，爱上一个镜像的自己，不再向外敞开。</p></div>
+      <div class="act"><div class="step">04</div><h4>否定性缺席</h4><p>只留肯定与舒适，痛感、风险、不可控被删除，爱欲缺氧。</p></div>
+      <div class="act"><div class="step">05</div><h4>爱欲之死</h4><p>能言说「你」、向他者臣服的能力退化，关系沦为消费。</p></div>
+      <div class="act"><div class="step">06</div><h4>呼唤徒劳</h4><p>以懒惰、无用、距离与承认「无能为力」，重新养出爱欲。</p></div>
+    </div>
+  </section>
+
+  <!-- 5. 金句 -->
+  <section>
+    <h2 class="sec-title"><span class="num">v</span>金句引用</h2>
+    <p class="sec-sub">通行大意，非逐字考据；标注主题便于回查原书。</p>
+    <div class="quote">爱欲的前提，是他者的存在。<span class="from">—— 他者之死</span></div>
+    <div class="quote">我们生活在一个同质化的地狱里。<span class="from">—— 同质化地狱</span></div>
+    <div class="quote">色情是爱欲的消亡，因为它消除了距离。<span class="from">—— 色情</span></div>
+    <div class="quote">在绩效社会中，人是自己的奴隶主。<span class="from">—— 功绩主体</span></div>
+    <div class="quote">爱是一种「无所事事的目光」。<span class="from">—— 徒劳的生命</span></div>
+  </section>
+
+  <!-- 6. 行动启发 -->
+  <section>
+    <h2 class="sec-title"><span class="num">vi</span>行动启发</h2>
+    <p class="sec-sub">把对象卡里的诊断，落到关系协作与自我安顿两件日常里。</p>
+    <div class="two-col">
+      <div class="act-card">
+        <h4>工作 · 关系与协作</h4>
+        <ul>
+          <li><b>保留他者：</b>开会先听「不像我」的意见，别只凑同温层。</li>
+          <li><b>别把关系 KPI 化：</b>合作不计较即时情绪回报，允许不被量化。</li>
+          <li><b>允许徒劳：</b>有些投入本就不该折算成产出，恰恰是有价值的那种。</li>
+        </ul>
+      </div>
+      <div class="act-card">
+        <h4>做人 · 自我与亲密</h4>
+        <ul>
+          <li><b>抵抗自恋：</b>少经营人设，多进入不被看见、不被点赞的关系。</li>
+          <li><b>留距离：</b>亲密需要不可见与留白，不是全透明、全汇报。</li>
+          <li><b>偷闲：</b>把休息从 KPI 里摘出来，懒惰是爱欲的氧。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. 适合谁读 -->
+  <section>
+    <h2 class="sec-title"><span class="num">vii</span>适合谁读</h2>
+    <p class="sec-sub">对象中心，也意味着你可以只挑「对象」读——不必从头啃到尾。</p>
+    <div class="who">
+      <div class="who-box">
+        <h4>推荐</h4>
+        <ul>
+          <li>被关系疏离感、亲密倦怠困扰的人</li>
+          <li>反感内卷、自我优化与功绩叙事的人</li>
+          <li>爱哲学与批判理论、读得进短章的人</li>
+          <li>内容 / 社媒从业者（理解「展示型自我」）</li>
+        </ul>
+      </div>
+      <div class="who-box">
+        <h4>可能不合适</h4>
+        <ul>
+          <li>想要实用沟通术、恋爱技巧的人</li>
+          <li>排斥批判理论、只认结论的人</li>
+          <li>只读得进鸡汤爽文、排斥灰暗诊断的人</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="seal-sm">愛</div>
+    <div>读书笔记 · OCD 对象中心分格 ｜ 金句为通行大意，非逐字考据，仅供个人阅读参考</div>
+    <div>龙山大佛 · 阅读札记 ｜ 单文件 HTML，手机端自适应不裁切</div>
+  </footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>韦政通《中国思想史》研读笔记 · 对象中心分格</title>
+<style>
+  :root{
+    --paper:#f7f2e8;
+    --paper-2:#efe7d6;
+    --ink:#2b2b2b;
+    --ink-soft:#5a5347;
+    --line:#ddd2bd;
+    --accent:#2f5d52;        /* 青史黛绿 */
+    --accent-dark:#1c3d38;
+    --accent-light:#7fae9f;
+    --seal:#b04a3f;
+    --gold:#b89a5e;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:"Noto Serif SC",serif;
+    color:var(--ink);
+    background-color:var(--paper);
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/></svg>");
+    line-height:1.85;
+    font-size:17px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:0 22px 80px;}
+
+  /* ===== Hero ===== */
+  .hero{
+    position:relative;
+    height:60vh;min-height:380px;
+    margin:0 -22px 0;
+    display:flex;align-items:flex-end;justify-content:center;
+    overflow:hidden;
+    background:linear-gradient(135deg,var(--accent-dark),#3f7d6e 60%,var(--accent-light));
+  }
+  .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .hero::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(to top,rgba(20,45,40,.92) 0%,rgba(20,45,40,.45) 42%,rgba(20,45,40,.12) 100%);
+  }
+  .hero-inner{position:relative;z-index:2;text-align:center;color:#f6f1e7;padding:0 24px 56px;max-width:760px;}
+  .hero-kicker{
+    font-family:"Playfair Display",serif;font-style:italic;
+    letter-spacing:.18em;font-size:14px;opacity:.85;margin-bottom:10px;
+  }
+  .hero h1{
+    font-family:"Noto Serif SC",serif;font-weight:900;
+    font-size:clamp(32px,5.6vw,54px);line-height:1.15;letter-spacing:.02em;
+    text-shadow:0 2px 18px rgba(0,0,0,.45);
+  }
+  .hero-sub{
+    margin-top:14px;font-size:15px;opacity:.9;letter-spacing:.04em;
+  }
+
+  /* ===== 书签色带 ===== */
+  .bookmark{
+    position:relative;width:120px;margin:-34px auto 0;z-index:5;
+    background:linear-gradient(180deg,var(--accent),var(--accent-dark));
+    color:#f6f1e7;text-align:center;padding:16px 0 22px;
+    border-radius:6px 6px 0 0;
+    box-shadow:0 8px 22px rgba(28,61,56,.35);
+  }
+  .bookmark::after{
+    content:"";position:absolute;bottom:-18px;left:0;right:0;height:18px;
+    background:linear-gradient(135deg,var(--accent-dark) 50%,transparent 50%),
+               linear-gradient(225deg,var(--accent-dark) 50%,transparent 50%);
+    background-size:50% 100%;background-repeat:no-repeat;background-position:0 0,100% 0;
+  }
+  .bookmark .glyph{font-family:"Ma Shan Zheng",cursive;font-size:46px;line-height:1;display:block;}
+  .bookmark .tag{font-size:11px;letter-spacing:.3em;opacity:.85;margin-top:6px;}
+
+  /* ===== 区块标题 ===== */
+  .sec{margin-top:58px;}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:22px;}
+  .sec-head .num{
+    font-family:"Playfair Display",serif;font-weight:800;font-size:34px;
+    color:var(--accent);opacity:.55;
+  }
+  .sec-head h2{
+    font-family:"Noto Serif SC",serif;font-weight:700;font-size:26px;letter-spacing:.04em;
+    color:var(--ink);
+  }
+  .sec-head .en{font-family:"Playfair Display",serif;font-style:italic;color:var(--ink-soft);font-size:14px;letter-spacing:.05em;}
+  .rule{height:1px;background:linear-gradient(to right,var(--accent),transparent);margin-top:10px;}
+
+  /* ===== 书籍信息卡 ===== */
+  .infocard{
+    background:var(--paper-2);border:1px solid var(--line);border-left:5px solid var(--accent);
+    border-radius:10px;padding:24px 26px;
+    box-shadow:0 4px 16px rgba(0,0,0,.05);
+  }
+  .infocard .title-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:14px;margin-bottom:8px;}
+  .infocard h3{font-size:24px;font-weight:700;}
+  .infocard .meta{color:var(--ink-soft);font-size:14px;letter-spacing:.03em;}
+  .infocard .meta b{color:var(--accent-dark);font-weight:700;}
+  .infogrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px;}
+  .infogrid .cell{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:14px 16px;}
+  .infogrid .cell .k{font-size:12px;letter-spacing:.16em;color:var(--accent);margin-bottom:6px;}
+  .infogrid .cell .v{font-size:15px;line-height:1.7;color:var(--ink);}
+  .infogrid .cell .v small{display:block;color:var(--ink-soft);font-size:12.5px;margin-top:4px;}
+
+  /* ===== 一句话总览 ===== */
+  .overview{
+    margin-top:18px;background:linear-gradient(135deg,rgba(127,174,159,.20),rgba(47,93,82,.10));
+    border:1px dashed var(--accent-light);border-radius:10px;padding:22px 26px;
+    font-size:19px;line-height:1.9;color:var(--accent-dark);font-weight:500;
+  }
+  .overview b{color:var(--seal);font-weight:700;}
+
+  /* ===== OCD legend ===== */
+  .ocd-legend{
+    margin-top:18px;background:var(--paper-2);border:1px solid var(--line);border-radius:10px;
+    padding:18px 22px;font-size:14.5px;color:var(--ink-soft);line-height:1.85;
+  }
+  .ocd-legend b{color:var(--accent-dark);}
+  .ocd-legend .badge{
+    display:inline-block;font-family:"Playfair Display",serif;font-weight:800;font-size:12px;
+    letter-spacing:.12em;color:#fff;background:var(--accent);padding:3px 10px;border-radius:20px;margin-right:8px;
+  }
+
+  /* ===== 对象卡网格 ===== */
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:24px;}
+  .obj{
+    background:var(--paper-2);border:1px solid var(--line);border-radius:10px;
+    padding:18px 20px;box-shadow:0 3px 12px rgba(0,0,0,.04);
+    display:flex;flex-direction:column;
+  }
+  .obj .ohead{display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-bottom:12px;border-bottom:1px dotted var(--line);}
+  .obj .odot{width:9px;height:9px;border-radius:50%;background:var(--accent);flex:none;}
+  .obj .oname{font-size:19px;font-weight:700;color:var(--ink);}
+  .obj .osrc{
+    margin-left:auto;font-size:11.5px;letter-spacing:.08em;color:var(--accent-dark);
+    background:rgba(127,174,159,.35);padding:2px 9px;border-radius:12px;white-space:nowrap;
+  }
+  .obj .field{margin-bottom:10px;}
+  .obj .field:last-child{margin-bottom:0;}
+  .obj .flabel{
+    font-size:11.5px;letter-spacing:.14em;color:var(--accent);font-weight:700;
+    display:inline-block;margin-bottom:2px;
+  }
+  .obj .fval{font-size:15px;line-height:1.78;color:var(--ink-soft);}
+  .obj .fval strong{color:var(--ink);font-weight:700;}
+
+  /* ===== 脉络图 ===== */
+  .flow{display:flex;flex-direction:column;gap:0;margin-top:24px;}
+  .stage{
+    display:grid;grid-template-columns:54px 1fr;gap:16px;align-items:stretch;
+  }
+  .stage .sn{
+    font-family:"Playfair Display",serif;font-weight:800;font-size:22px;color:#fff;
+    background:var(--accent);border-radius:50%;width:46px;height:46px;
+    display:flex;align-items:center;justify-content:center;align-self:center;flex:none;
+    box-shadow:0 3px 10px rgba(47,93,82,.3);
+  }
+  .stage .body{
+    background:var(--paper-2);border:1px solid var(--line);border-left:4px solid var(--accent-light);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:8px 0;
+  }
+  .stage .body h4{font-size:17px;font-weight:700;margin-bottom:3px;}
+  .stage .body p{font-size:14.5px;color:var(--ink-soft);line-height:1.7;}
+
+  /* ===== 金句 ===== */
+  .quotes{margin-top:24px;display:flex;flex-direction:column;gap:16px;}
+  .quote{
+    position:relative;background:var(--paper-2);border:1px solid var(--line);
+    border-radius:10px;padding:20px 24px 18px 56px;
+  }
+  .quote::before{
+    content:"\201C";position:absolute;left:18px;top:6px;
+    font-family:"Playfair Display",serif;font-size:54px;color:var(--accent);opacity:.45;
+  }
+  .quote p{font-size:17px;line-height:1.85;color:var(--ink);font-style:italic;}
+  .quote .src{display:block;margin-top:8px;font-size:12.5px;color:var(--accent-dark);letter-spacing:.04em;font-style:normal;}
+
+  /* ===== 双栏行动启发 ===== */
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:24px;}
+  .pane{background:var(--paper-2);border:1px solid var(--line);border-radius:10px;padding:20px 22px;}
+  .pane h4{font-size:18px;font-weight:700;color:var(--accent-dark);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--line);}
+  .pane ul{list-style:none;}
+  .pane li{position:relative;padding-left:20px;margin-bottom:11px;font-size:15px;line-height:1.78;color:var(--ink-soft);}
+  .pane li::before{content:"▍";position:absolute;left:0;color:var(--accent);font-size:13px;top:2px;}
+
+  /* ===== 适合谁读 ===== */
+  .who{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:24px;}
+  .who .col{background:var(--paper-2);border:1px solid var(--line);border-radius:10px;padding:20px 22px;}
+  .who .col.rec{border-left:5px solid var(--accent);}
+  .who .col.skip{border-left:5px solid var(--seal);}
+  .who h4{font-size:17px;font-weight:700;margin-bottom:12px;}
+  .who .col.rec h4{color:var(--accent-dark);}
+  .who .col.skip h4{color:var(--seal);}
+  .who .col ul{list-style:none;}
+  .who .col li{position:relative;padding-left:22px;margin-bottom:10px;font-size:15px;line-height:1.7;color:var(--ink-soft);}
+  .who .col.rec li::before{content:"✓";position:absolute;left:0;color:var(--accent);font-weight:700;}
+  .who .col.skip li::before{content:"✕";position:absolute;left:0;color:var(--seal);font-weight:700;}
+
+  .note{margin-top:22px;font-size:13px;color:var(--ink-soft);line-height:1.7;font-style:italic;
+    border-left:3px solid var(--accent-light);padding-left:14px;}
+
+  footer{margin-top:70px;text-align:center;color:var(--ink-soft);font-size:13px;letter-spacing:.06em;}
+  footer .ribbon{display:inline-block;background:var(--accent);color:#fff;padding:5px 16px;border-radius:4px;margin-bottom:12px;font-family:"Ma Shan Zheng",cursive;font-size:18px;}
+
+  /* ===== 响应式 ===== */
+  @media (max-width:720px){
+    .infogrid{grid-template-columns:1fr;}
+    .grid{grid-template-columns:1fr;}
+    .two{grid-template-columns:1fr;}
+    .who{grid-template-columns:1fr;}
+    body{font-size:16px;}
+  }
+  @media (max-width:420px){
+    .wrap{padding:0 16px 60px;}
+    .hero{margin:0 -16px;}
+    .sec-head h2{font-size:22px;}
+    .infocard{padding:18px 18px;}
+    .obj .osrc{display:none;}
+  }
+</style>
+<style id="local-font-fallback">
+/* 站内离线字体兜底：不改动原版式，用本机同族字体替代 Google Fonts，避免跨境请求拖慢首屏 */
+@font-face{font-family:"Noto Serif SC";src:local("Source Han Serif SC"),local("Source Han Serif CN"),local("Noto Serif CJK SC"),local("Songti SC"),local("STSong"),local("SimSun"),local("宋体");font-display:swap;}
+@font-face{font-family:"Playfair Display";src:local("Playfair Display"),local("Georgia"),local("Times New Roman");font-display:swap;}
+@font-face{font-family:"Ma Shan Zheng";src:local("Ma Shan Zheng"),local("STKaiti"),local("Kaiti SC"),local("KaiTi"),local("楷体"),local("STXingkai");font-display:swap;}
+@font-face{font-family:"Noto Sans SC";src:local("Source Han Sans SC"),local("Noto Sans CJK SC"),local("PingFang SC"),local("Hiragino Sans GB"),local("Microsoft YaHei"),local("微软雅黑");font-display:swap;}
+</style>
+</head>
+<body data-pagefind-ignore>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <img src="/reading/zhongguo-sixiang-shi/assets/cover.jpg"
+         alt="图书馆书架"
+         onerror="this.style.display='none'" />
+    <div class="hero-inner">
+      <div class="hero-kicker">A History of Chinese Thought · Wei Zhengtong</div>
+      <h1>中国思想史 · 研读</h1>
+      <div class="hero-sub">韦政通 著 ｜ 以学术流派为经、思想家个案为纬 ｜ 先秦至明清的思想长卷</div>
+    </div>
+  </header>
+
+  <div class="wrap">
+
+    <!-- 书签色带 -->
+    <div class="bookmark">
+      <span class="glyph">史</span>
+      <span class="tag">WEI · SIXINGSHI</span>
+    </div>
+
+    <!-- ===== 书籍信息卡 ===== -->
+    <section class="sec">
+      <div class="infocard">
+        <div class="title-row">
+          <h3>《中国思想史》</h3>
+          <span class="meta">韦政通 著 · 吉林出版集团「新版」简体本</span>
+        </div>
+        <div class="meta">
+          作者：<b>韦政通</b>（1927–2018，江苏镇江人，台湾资深学者、思想家、哲学家；师从牟宗三、徐复观，倡传统的现代转化）　|　性质：<b>中国思想通史</b>（先秦至明清，近百万字）
+        </div>
+        <div class="infogrid">
+          <div class="cell">
+            <div class="k">领 域</div>
+            <div class="v">思想通史 · 中国哲学<small>学术流派史 · 思想家个案 · 儒释道流变</small></div>
+          </div>
+          <div class="cell">
+            <div class="k">核心命题</div>
+            <div class="v">把数千年思想读成一条有生命的河<small>多元发展 → 儒学制度化 → 佛学兴起 → 儒学复兴</small></div>
+          </div>
+          <div class="cell">
+            <div class="k">版本落点</div>
+            <div class="v">1979–1980 台初版<small>2009 吉林新版（ISBN 978-7-80762-780-7）· 上下 2 册</small></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="overview">
+        一句话总览：<b>韦政通的《中国思想史》是「把数千年思想读成一条有生命的河」</b>——他以学派流变为经、以思想家个案为纬，用客观公平的笔，让儒释道的交锋与自我更新第一次对普通读者也晓畅可亲。
+      </div>
+    </section>
+
+    <!-- ===== OCD 说明 ===== -->
+    <section class="sec">
+      <div class="ocd-legend">
+        <span class="badge">OCD</span>
+        <b>对象中心文档（Object-Centered Documentation）结构说明</b>：本页内容以<strong>「对象卡」</strong>为单位呈现，每张卡含<strong>统一字段</strong>（如 释义 / 书中定位 / 今用映射），可脱离上下文单独取用、在网格中整齐排布。有趣的是——这部通史本身就是 OCD 的范本：它把「中国思想」这件庞然大物，按<strong>时代盛行的学术流派</strong>拆成一件件自包含的对象（子学、制度化、玄学、佛学、复兴），读者按需取用、拼回全景。下面我们把「核心分期、核心论断、读法脉络」做成三组对象卡，形成研读结构。
+      </div>
+    </section>
+
+    <!-- ===== 对象网格一：核心分期 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">01</span>
+        <h2>核心分期</h2>
+        <span class="en">The Four Movements</span>
+      </div>
+      <div class="rule"></div>
+      <div class="grid">
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">子学时代</span><span class="osrc">甲篇 · 多元发展</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">先秦百家争鸣，儒墨道法名阴阳并出竞秀，孔子至《淮南子》为限界，思想最自由多元。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">甲篇起笔，全书最具活力的「源头」，<strong>学派之林自此而立</strong>。</div></div>
+          <div class="field"><span class="flabel">今用映射</span><div class="fval">组织/创新最活跃时，都容得下异见；一统口径往往意味着停滞。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">儒学制度化</span><span class="osrc">乙篇 · 独尊</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">汉武「罢黜百家、独尊儒术」，董仲舒援阴阳五行入儒，儒学由学说变国家意识形态。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">乙篇前半，思想被体制收编，<strong>「制度化」既立正统也收生机</strong>。</div></div>
+          <div class="field"><span class="flabel">今用映射</span><div class="fval">任何主张一旦「被官方化」，要警惕它从活思想退化成装饰。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">玄学兴起</span><span class="osrc">乙篇 · 魏晋</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">乱世中援道入儒，何晏、王弼以《老》《庄》解《易》，谈玄辨名、越名教任自然。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">乙篇后半，儒学失势后精神的<strong>退守与思辨自救</strong>。</div></div>
+          <div class="field"><span class="flabel">今用映射</span><div class="fval">主流叙事崩塌时，人往往退回「为什么活」的根本问题。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">佛学时代</span><span class="osrc">丙篇 · 中国化</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">佛教自汉入、至唐鼎盛，隋唐诸宗并立，六祖惠能完成禅宗中国化，直指本心。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">丙篇，外来思想在本土落地的<strong>范本</strong>，与儒道相互激荡。</div></div>
+          <div class="field"><span class="flabel">今用映射</span><div class="fval">引进任何外来方法，最高形态是「本土化」而非照搬。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">儒学复兴</span><span class="osrc">丁篇 · 更新</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">唐中叶古文运动起，宋明理学重建儒学（周张程朱陆王），至清戴震批判总结。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">丁篇，传统的<strong>自我更新</strong>——被佛学冲击后反以新形态回归。</div></div>
+          <div class="field"><span class="flabel">今用映射</span><div class="fval">守成者的最高形态是更新，传承从不是复制旧物。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">人文主义主线</span><span class="osrc">贯穿全书</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">从《诗》《书》人文思想、孔子「人能弘道」，到历代人本精神，一条红线贯串全书。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">韦政通亲定的<strong>读史主线</strong>，免读者陷于断章。</div></div>
+          <div class="field"><span class="flabel">今用映射</span><div class="fval">读任何大部头，先抓一条主线，细节才有挂靠。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">思想史独立生命</span><span class="osrc">方法论</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">主张思想有自身演变的内在逻辑，不纯由经济、社会决定——「思想史有独立生命」。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">全书方法论核心，<strong>平衡内因与外因</strong>看思想流变。</div></div>
+          <div class="field"><span class="flabel">今用映射</span><div class="fval">分析趋势别只盯外力，人的主体性不可被环境决定论抹掉。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">客观公平视角</span><span class="osrc">写作态度</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">尽力摈弃学派偏见，把每个思想家还原到其历史语境再下评断。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">贯穿全书的<strong>态度底色</strong>，也是它「通俗却不浅」的根。</div></div>
+          <div class="field"><span class="flabel">今用映射</span><div class="fval">做重要评价前，先列对方「有理处」，再开口。</div></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 对象网格二：核心论断 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">02</span>
+        <h2>核心论断</h2>
+        <span class="en">Key Theses</span>
+      </div>
+      <div class="rule"></div>
+      <div class="grid">
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">多元共生</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">先秦「道术将为天下裂」，诸子并出却各有其理，多元是思想最富活力的状态。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">隐含批评：<strong>独尊一家</strong>虽立正统，却也扼杀创造活力。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">团队与组织要容异见，统一口径常是衰退前兆。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">传统的更新（孔子）</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">韦政通视孔子为「传统的更新者」——整理旧文化、赋之以新意，而非单纯守成。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">翻案：<strong>孔子是转化者</strong>，把周文从礼制升华为人文精神。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">守成的最高形态是更新；传承是活化，不是复制。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">创造的反叛（老子）</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">韦以「创造的反叛」概括老子——对周文礼法既破且立，启道家一脉。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">指出：<strong>反叛也能是创造</strong>，非只剩破坏。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">年轻人「离经叛道」里，可能藏着真创新，慎压。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">思想自主性</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">思想史有独立生命，社会、经济只是其一因，不纯由外力决定。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">反对<strong>经济/政治决定论</strong>式地简化思想史。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">看趋势别只盯外部压力，人的主体性才是变量。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">人文一贯</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">中国思想以人为中心，神本让位人本，是一条与西方中世纪不同的脉络。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">以<strong>人本</strong>对照神本，显中国思想特质。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">做产品、带团队，最终要回到「对人有没有用、好不好」。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">客观公平</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">评一家先还原其历史处境，不预设立场、不挟学派之见。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">作者<strong>自省学派之见</strong>，连自己都警惕偏见。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">重要判断前，先写「对方哪里对」，再写自己哪里不同。</div></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 论证脉络 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">03</span>
+        <h2>读法脉络</h2>
+        <span class="en">The Reading Path</span>
+      </div>
+      <div class="rule"></div>
+      <div class="flow">
+
+        <div class="stage">
+          <div class="sn">1</div>
+          <div class="body"><h4>孔子以前的文化 → 探源</h4><p>殷周宗教与道德、鲁文化之「礼」、《诗》《书》《左传》人文萌芽，及管仲、晏婴、子产等先驱——先有土壤，孔子才出。</p></div>
+        </div>
+
+        <div class="stage">
+          <div class="sn">2</div>
+          <div class="body"><h4>子学时代 → 多元竞秀</h4><p>孔、墨、老、庄、荀、韩并出，百家争鸣；韦以「思想的多元发展」为全书最有活力的一幕。</p></div>
+        </div>
+
+        <div class="stage">
+          <div class="sn">3</div>
+          <div class="body"><h4>儒学制度化 → 独尊与定型</h4><p>董仲舒援阴阳五行入儒、汉武帝独尊儒术，儒学由学说变国家意识形态，成正统亦收生机。</p></div>
+        </div>
+
+        <div class="stage">
+          <div class="sn">4</div>
+          <div class="body"><h4>玄学佛学 → 异质碰撞</h4><p>魏晋玄学援道入儒，佛教自汉传入并渐兴盛，本土与外来思想在碰撞中彼此改变。</p></div>
+        </div>
+
+        <div class="stage">
+          <div class="sn">5</div>
+          <div class="body"><h4>佛学时代 → 中国化完成</h4><p>隋唐诸宗并立，六祖惠能禅宗直指本心，佛教完成本土化，与儒道鼎足而三。</p></div>
+        </div>
+
+        <div class="stage">
+          <div class="sn">6</div>
+          <div class="body"><h4>儒学复兴 → 传统更新</h4><p>韩柳古文运动起，宋明理学重建儒学（程朱陆王），清戴震批判总结——传统在受冲击后自我更新。</p></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 金句 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">04</span>
+        <h2>金句摘录</h2>
+        <span class="en">Quotable Lines</span>
+      </div>
+      <div class="rule"></div>
+      <div class="quotes">
+
+        <div class="quote">
+          <p>中国思想史，是一部人文主义精神一贯发展的历史。</p>
+          <span class="src">— 书中观点大意（韦政通以「人文主义」为贯穿全书之红线）</span>
+        </div>
+
+        <div class="quote">
+          <p>思想的多元发展，往往是一个社会最有活力的时候。</p>
+          <span class="src">— 书中观点大意（评子学时代百家争鸣）</span>
+        </div>
+
+        <div class="quote">
+          <p>孔子是传统的更新者，而非单纯的守成者。</p>
+          <span class="src">— 书中观点大意（韦政通对孔子的核心定位）</span>
+        </div>
+
+        <div class="quote">
+          <p>老子对周文，是一种「创造的反叛」。</p>
+          <span class="src">— 书中观点大意（韦政通以「创造的反叛」概括老子）</span>
+        </div>
+
+        <div class="quote">
+          <p>评价一个思想家，要先把他还原到他的历史处境里去。</p>
+          <span class="src">— 书中观点大意（「客观公平视角」的方法自觉）</span>
+        </div>
+
+      </div>
+      <p class="note">注：以上金句依韦政通《中国思想史》中的观点大意整理，非逐字考据；具体行文请以原书（吉林出版集团 2009 新版 / 水牛出版社繁体本）为准。韦政通自承本书两处疏失：未设佛教「三论宗」专节、未为道教思想立专章，明清部分论述亦相对简略——读时可与其它专史互参。</p>
+    </section>
+
+    <!-- ===== 行动启发 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">05</span>
+        <h2>行动启发</h2>
+        <span class="en">So What</span>
+      </div>
+      <div class="rule"></div>
+      <div class="two">
+
+        <div class="pane">
+          <h4>治学 · 读通史与做研究</h4>
+          <ul>
+            <li><strong>主线牵引：</strong>读大部头先抓一条红线（本书是「人文主义」），免陷细节迷路。</li>
+            <li><strong>流派为经：</strong>按「时代盛行学派」搭骨架，比按人物年表更清楚，也更易记。</li>
+            <li><strong>客观去偏：</strong>评价先还原历史语境、列对方有理处，再下笔——像作者那样自省学派之见。</li>
+            <li><strong>敢标不足：</strong>韦自承漏三论宗、无道教专章；真学者把疏失写在前头，比掩饰更可信。</li>
+          </ul>
+        </div>
+
+        <div class="pane">
+          <h4>做人 · 识变与守本</h4>
+          <ul>
+            <li><strong>多元容异：</strong>最活跃时都容得下异见，组织里别急着统一口径。</li>
+            <li><strong>传统的更新：</strong>守成的最高形态是更新，别把传承当复制旧物。</li>
+            <li><strong>创造的反叛：</strong>有价值的反叛常是创造，给「离经叛道」留一点空间。</li>
+            <li><strong>思想自主：</strong>外力只是其一因，环境决定论抹不掉人的主体性——你仍有选择。</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 适合谁读 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">06</span>
+        <h2>适合谁读</h2>
+        <span class="en">Who Should Read</span>
+      </div>
+      <div class="rule"></div>
+      <div class="who">
+        <div class="col rec">
+          <h4>推荐读</h4>
+          <ul>
+            <li>想系统通览中国思想、一本书从先秦读到清的读者</li>
+            <li>哲学 / 历史 / 国学专业学生：当教材与脉络底本引用</li>
+            <li>爱「看思想怎么流变」的人：学派交锋与自我更新</li>
+            <li>管理者 / 教育者：借思想史照见组织与传统的更新逻辑</li>
+            <li>已读单家（孔孟老庄）想拼成全景图者</li>
+          </ul>
+        </div>
+        <div class="col skip">
+          <h4>暂不合适</h4>
+          <ul>
+            <li>只求一家一题深度者——这是通史，点到即止</li>
+            <li>想要「最新西方理论」视角者——本书当代西论借鉴较少</li>
+            <li>想读道教 / 民间思想专章者——作者自承未设</li>
+            <li>急需强行动清单者——这是史不是术，重脉络不重步骤</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="note">
+        说明：韦政通（1927–2018），江苏镇江人，台湾资深学者、思想家、哲学家，师从牟宗三、徐复观，著有《中国思想史》《中国哲学辞典》《中国的智慧》《传统的更新》《先秦七大哲学家》《孔子》等近三十部。《中国思想史》初版于 1979–1980 年（台湾大林出版社，后版权转水牛出版社，至 2015 年已印行至第十六版）；2009 年 8 月由吉林出版集团有限责任公司出版简体新版（ISBN 978-7-80762-780-7），分上下两册，近百万字，被多所大学采为哲学系与文科教材，誉为「20 世纪中国思想史研究的里程碑之作」。全书以学术流派为主线，分甲篇子学时代、乙篇儒学制度化与玄学兴起、丙篇佛学时代、丁篇儒学复兴四段。本页为研读笔记，内容依公开版本信息整理。
+      </p>
+    </section>
+
+    <footer>
+      <div class="ribbon">史</div>
+      <div>韦政通《中国思想史》研读笔记 · 对象中心分格（OCD）· 龙山大佛工作台</div>
+      <div style="margin-top:6px;opacity:.7;">配色 青史黛绿（名垂青史）｜ 米色纸感 ｜ 衬线标题 ｜ 响应式不裁切</div>
+    </footer>
+
+  </div>
+</body>
+</html>

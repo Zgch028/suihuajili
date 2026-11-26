@@ -9,9 +9,11 @@ import { SITE } from '../data/site';
 
 const series = (await getCollection('series')).sort((a, b) => a.data.order - b.data.order);
 const posts = await getCollection('posts');
-const readings = (await getCollection('reading'))
-  .sort((a, b) => a.data.order - b.data.order || b.data.date.getTime() - a.data.date.getTime())
-  .slice(0, 4);
+const allReadings = (await getCollection('reading')).sort(
+  (a, b) => a.data.order - b.data.order || b.data.date.getTime() - a.data.date.getTime()
+);
+// 精选优先，不足 4 本再用其余补位，保证首页四本来自不同书架
+const readings = [...allReadings.filter((r) => r.data.featured), ...allReadings.filter((r) => !r.data.featured)].slice(0, 4);
 const works = (await getCollection('works'))
   .sort((a, b) => a.data.order - b.data.order || b.data.date.getTime() - a.data.date.getTime())
   .slice(0, 3);

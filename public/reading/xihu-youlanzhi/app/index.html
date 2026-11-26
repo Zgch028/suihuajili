@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>《西湖游览志》· 读书笔记</title>
+<style>
+  :root{
+    --paper:#f5efe2;
+    --paper-2:#efe7d6;
+    --ink:#3a352c;
+    --ink-soft:#6b6354;
+    --line:#d9cfba;
+    --accent:#2e6b5a;        /* 烟柳青·西湖 */
+    --accent-2:#1d4a3e;      /* 深湖 */
+    --accent-soft:#7fae9f;
+    --seal:#b04a3f;          /* 朱印 */
+    --card:#fbf7ee;
+    --shadow:0 6px 22px rgba(58,53,44,.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:"Noto Serif SC",serif;
+    color:var(--ink);
+    background-color:var(--paper);
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    line-height:1.85;
+    -webkit-font-smoothing:antialiased;
+  }
+  .serif-en{font-family:"Playfair Display",Georgia,serif;}
+
+  /* 顶部书签色带 */
+  .ribbon{
+    position:absolute;top:-2px;left:50%;transform:translateX(-50%);
+    background:linear-gradient(160deg,var(--accent),var(--accent-2));
+    color:#fff;padding:14px 30px 18px;border-radius:0 0 8px 8px;
+    box-shadow:var(--shadow);text-align:center;min-width:160px;z-index:5;
+  }
+  .ribbon .seal{
+    font-family:"Ma Shan Zheng",cursive;font-size:34px;line-height:1;
+    display:block;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.25);
+  }
+  .ribbon small{display:block;font-size:12px;letter-spacing:3px;opacity:.8;margin-top:4px;}
+
+  /* Hero */
+  .hero{
+    position:relative;margin-top:0;height:62vh;min-height:380px;
+    display:flex;align-items:flex-end;justify-content:center;
+    background:#1d4a3e center/cover no-repeat;
+    overflow:hidden;
+  }
+  .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .hero::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(29,74,62,0) 25%,rgba(29,74,62,.55) 70%,rgba(29,74,62,.92) 100%);
+  }
+  .hero-inner{position:relative;z-index:2;text-align:center;padding:0 22px 58px;max-width:820px;}
+  .hero .eyebrow{color:#cfe6df;letter-spacing:6px;font-size:13px;margin-bottom:14px;}
+  .hero h1{
+    font-family:"Noto Serif SC",serif;font-weight:700;color:#fff;
+    font-size:clamp(32px,7vw,58px);line-height:1.2;text-shadow:0 2px 18px rgba(0,0,0,.45);
+  }
+  .hero .sub{color:#eaf3ef;font-size:clamp(14px,2.4vw,18px);margin-top:14px;letter-spacing:1px;}
+
+  .container{max-width:920px;margin:0 auto;padding:0 22px 70px;}
+
+  section{margin-top:58px;}
+  .sec-title{
+    font-size:26px;font-weight:700;color:var(--accent-2);
+    display:flex;align-items:center;gap:12px;margin-bottom:8px;
+  }
+  .sec-title::before{content:"";width:6px;height:26px;background:var(--accent);border-radius:3px;display:inline-block;}
+  .sec-sub{color:var(--ink-soft);font-size:14px;margin-bottom:22px;padding-left:18px;}
+
+  /* 书籍信息卡 */
+  .info-card{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:30px 30px 26px;box-shadow:var(--shadow);position:relative;overflow:hidden;
+  }
+  .info-card::before{content:"志";position:absolute;right:-10px;bottom:-26px;font-family:"Ma Shan Zheng",cursive;font-size:130px;color:rgba(46,107,90,.07);}
+  .info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:20px;}
+  .info-grid .it{background:var(--paper-2);border-radius:10px;padding:14px 16px;}
+  .info-grid .it span{display:block;font-size:12px;color:var(--ink-soft);letter-spacing:2px;margin-bottom:5px;}
+  .info-grid .it b{font-size:16px;color:var(--accent-2);font-weight:600;}
+  .overview{
+    background:linear-gradient(120deg,rgba(46,107,90,.10),rgba(46,107,90,.04));
+    border-left:4px solid var(--accent);border-radius:0 10px 10px 0;
+    padding:18px 22px;font-size:17px;color:var(--ink);
+  }
+  .overview b{color:var(--accent-2);}
+
+  /* 双极对比 */
+  .compare{display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:stretch;}
+  .compare .col{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:26px 24px;box-shadow:var(--shadow);
+  }
+  .compare .col h3{font-size:20px;margin-bottom:6px;}
+  .compare .col.l h3{color:var(--accent);}
+  .compare .col.r h3{color:var(--seal);}
+  .compare .col .tag{font-size:12px;letter-spacing:2px;color:var(--ink-soft);margin-bottom:14px;}
+  .compare .col ul{list-style:none;}
+  .compare .col li{position:relative;padding:9px 0 9px 20px;border-top:1px dashed var(--line);font-size:15px;}
+  .compare .col li:first-child{border-top:none;}
+  .compare .col li::before{content:"";position:absolute;left:0;top:18px;width:7px;height:7px;border-radius:50%;}
+  .compare .col.l li::before{background:var(--accent);}
+  .compare .col.r li::before{background:var(--seal);}
+  .vs{
+    align-self:center;justify-self:center;width:64px;height:64px;border-radius:50%;
+    background:linear-gradient(160deg,var(--accent),var(--seal));color:#fff;
+    display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;
+    font-style:italic;font-size:24px;box-shadow:var(--shadow);margin:0 -8px;z-index:2;
+  }
+  .insight{
+    margin-top:20px;background:var(--paper-2);border-radius:12px;padding:18px 22px;
+    font-size:15.5px;color:var(--ink);border:1px dashed var(--accent-soft);
+  }
+  .insight b{color:var(--accent-2);}
+
+  /* 八块基石概念 */
+  .grid8{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+  .chip{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:20px 16px;box-shadow:var(--shadow);position:relative;transition:transform .2s;
+  }
+  .chip:hover{transform:translateY(-4px);}
+  .chip .no{font-family:"Playfair Display",serif;font-size:14px;color:var(--accent-soft);}
+  .chip h4{font-size:17px;color:var(--accent-2);margin:4px 0 8px;}
+  .chip p{font-size:13.5px;color:var(--ink-soft);line-height:1.7;}
+  .chip .en{display:block;font-family:"Playfair Display",serif;font-style:italic;font-size:12px;color:var(--accent-soft);margin-top:8px;}
+
+  /* 脉络图 */
+  .flow{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:30px 24px;box-shadow:var(--shadow);}
+  .flow-row{display:flex;align-items:stretch;gap:0;flex-wrap:wrap;}
+  .flow-step{flex:1 1 0;min-width:120px;text-align:center;position:relative;padding:14px 8px;}
+  .flow-step .dot{
+    width:42px;height:42px;border-radius:50%;margin:0 auto 12px;
+    background:linear-gradient(160deg,var(--accent),var(--accent-2));color:#fff;
+    display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;font-size:16px;
+    box-shadow:var(--shadow);
+  }
+  .flow-step h5{font-size:15px;color:var(--accent-2);margin-bottom:5px;}
+  .flow-step p{font-size:12.5px;color:var(--ink-soft);line-height:1.6;}
+  .flow-step:not(:last-child)::after{
+    content:"";position:absolute;top:21px;right:-8px;width:16px;height:2px;background:var(--accent-soft);
+  }
+
+  /* 金句 */
+  .quote{
+    background:linear-gradient(120deg,rgba(46,107,90,.08),rgba(176,74,63,.05));
+    border-left:4px solid var(--seal);border-radius:0 12px 12px 0;
+    padding:20px 26px;margin-bottom:18px;position:relative;
+  }
+  .quote p{font-size:18px;color:var(--ink);line-height:1.8;}
+  .quote .en{font-family:"Playfair Display",serif;font-style:italic;color:var(--ink-soft);font-size:15px;margin-top:8px;}
+  .quote cite{display:block;margin-top:10px;font-size:13px;color:var(--accent);letter-spacing:1px;}
+
+  /* 行动启发 */
+  .actions{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .act-col{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;box-shadow:var(--shadow);}
+  .act-col h3{font-size:19px;color:var(--accent-2);margin-bottom:14px;display:flex;align-items:center;gap:9px;}
+  .act-col h3 .ic{width:30px;height:30px;border-radius:8px;background:rgba(46,107,90,.12);display:inline-flex;align-items:center;justify-content:center;font-size:16px;}
+  .act-col.l h3 .ic{background:rgba(46,107,90,.14);}
+  .act-col.r h3 .ic{background:rgba(176,74,63,.14);}
+  .act-col ol{list-style:none;counter-reset:a;}
+  .act-col li{counter-increment:a;position:relative;padding:10px 0 10px 34px;border-top:1px dashed var(--line);font-size:14.5px;}
+  .act-col li:first-child{border-top:none;}
+  .act-col li::before{content:counter(a);position:absolute;left:0;top:11px;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;}
+  .act-col.r li::before{background:var(--seal);}
+  .act-col li b{color:var(--accent-2);}
+
+  /* 适合谁读 */
+  .aud{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .aud-box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;box-shadow:var(--shadow);}
+  .aud-box.good{border-top:4px solid var(--accent);}
+  .aud-box.no{border-top:4px solid var(--seal);}
+  .aud-box h3{font-size:18px;margin-bottom:14px;}
+  .aud-box.good h3{color:var(--accent);}
+  .aud-box.no h3{color:var(--seal);}
+  .aud-box li{list-style:none;padding:8px 0 8px 22px;position:relative;font-size:14.5px;}
+  .aud-box.good li::before{content:"✔";position:absolute;left:0;color:var(--accent);}
+  .aud-box.no li::before{content:"✕";position:absolute;left:0;color:var(--seal);}
+
+  /* 页脚书签 */
+  .ribbon-foot{
+    margin:64px auto 0;max-width:920px;text-align:center;padding:30px 22px 10px;
+    border-top:1px solid var(--line);color:var(--ink-soft);font-size:13px;
+  }
+  .ribbon-foot .mark{
+    display:inline-block;font-family:"Ma Shan Zheng",cursive;color:var(--accent);
+    font-size:30px;margin-bottom:8px;
+  }
+
+  @media(max-width:720px){
+    .info-grid{grid-template-columns:1fr;}
+    .compare{grid-template-columns:1fr;}
+    .vs{margin:14px auto;transform:rotate(90deg);}
+    .grid8{grid-template-columns:repeat(2,1fr);}
+    .actions,.aud{grid-template-columns:1fr;}
+    .flow-step:not(:last-child)::after{display:none;}
+    .flow-step{flex-basis:50%;margin-bottom:14px;}
+  }
+  @media(max-width:420px){
+    .grid8{grid-template-columns:1fr;}
+    .flow-step{flex-basis:100%;}
+    .hero h1{font-size:32px;}
+  }
+</style>
+<style id="local-font-fallback">
+/* 站内离线字体兜底：不改动原版式，用本机同族字体替代 Google Fonts，避免跨境请求拖慢首屏 */
+@font-face{font-family:"Noto Serif SC";src:local("Source Han Serif SC"),local("Source Han Serif CN"),local("Noto Serif CJK SC"),local("Songti SC"),local("STSong"),local("SimSun"),local("宋体");font-display:swap;}
+@font-face{font-family:"Playfair Display";src:local("Playfair Display"),local("Georgia"),local("Times New Roman");font-display:swap;}
+@font-face{font-family:"Ma Shan Zheng";src:local("Ma Shan Zheng"),local("STKaiti"),local("Kaiti SC"),local("KaiTi"),local("楷体"),local("STXingkai");font-display:swap;}
+@font-face{font-family:"Noto Sans SC";src:local("Source Han Sans SC"),local("Noto Sans CJK SC"),local("PingFang SC"),local("Hiragino Sans GB"),local("Microsoft YaHei"),local("微软雅黑");font-display:swap;}
+</style>
+</head>
+<body data-pagefind-ignore>
+
+<header class="hero">
+  <img src="/reading/xihu-youlanzhi/assets/cover.jpg" alt="西湖烟波" onerror="this.style.display='none'" />
+  <div class="ribbon"><span class="seal">湖</span><small>西 湖 游 览 志</small></div>
+  <div class="hero-inner">
+    <div class="eyebrow">明 · 田汝成 著</div>
+    <h1>西湖游览志</h1>
+    <div class="sub">一部把「地理方志」写成「文人山水长卷」的湖山记忆</div>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- 书籍信息 -->
+  <section id="info">
+    <div class="sec-title">书籍信息</div>
+    <div class="sec-sub">Book · 关于这本书的底色</div>
+    <div class="info-card">
+      <div class="info-grid">
+        <div class="it"><span>作 者</span><b>田汝成（明）</b></div>
+        <div class="it"><span>领 域</span><b>地方志 · 山水游记</b></div>
+        <div class="it"><span>核心命题</span><b>湖山掌故，志游一体</b></div>
+      </div>
+      <div class="overview">
+        <b>一句话总览：</b>以「游览」为线索，熔<b>山水形胜、寺观兴废、风俗岁时、题咏掌故</b>于一炉——既是一部带人逛西湖的导游之书，也是一部杭州的城市记忆与文人雅趣集成。
+      </div>
+    </div>
+  </section>
+
+  <!-- 双极对比 -->
+  <section id="compare">
+    <div class="sec-title">核心张力：记 与 游</div>
+    <div class="sec-sub">The Soul · 这部书的两条筋骨</div>
+    <div class="compare">
+      <div class="col l">
+        <h3>记（考据求实）</h3>
+        <div class="tag">THE RECORD · 地理方志的骨架</div>
+        <ul>
+          <li>山川形胜、湖堤分脉，一一标其方位</li>
+          <li>寺观园林的建置兴废，考其源流年代</li>
+          <li>地名典故、典章旧闻，纠讹补阙</li>
+          <li>重「有据」：引典籍、核史实，不妄下笔</li>
+        </ul>
+      </div>
+      <div class="vs">vs</div>
+      <div class="col r">
+        <h3>游（文人雅趣）</h3>
+        <div class="tag">THE RAMBLE · 山水长卷的性情</div>
+        <ul>
+          <li>烟柳画桥、苏堤春晓，写其可观可玩</li>
+          <li>龙舟观潮、市井游乐，录其岁时风情</li>
+          <li>白苏题咏、高僧名士，缀以诗酒唱和</li>
+          <li>重「有情」：把冷知识写成让人想去的风景</li>
+        </ul>
+      </div>
+    </div>
+    <div class="insight">
+      <b>收口洞见：</b>志不离游，游不废志。田汝成的本事，是让一部「方志」不生硬——考据是它的骨，游览是它的气，骨气俱全，西湖才从地图上的一座湖，变成读书人心里的一处「可游可居」。这正是中国文人「读万卷书，行万里路」的活标本。
+    </div>
+  </section>
+
+  <!-- 八块基石 -->
+  <section id="concepts">
+    <div class="sec-title">八块基石概念</div>
+    <div class="sec-sub">Eight Keys · 翻开这本书你会遇见的风景</div>
+    <div class="grid8">
+      <div class="chip"><div class="no">01</div><h4>西湖十景</h4><p>苏堤春晓、断桥残雪等胜景之雏形，书中已见品题脉络。</p><span class="en">Ten Scenes</span></div>
+      <div class="chip"><div class="no">02</div><h4>南山北山</h4><p>南高峰、北高峰、飞来峰——湖山分脉，寺隐其间。</p><span class="en">Hills</span></div>
+      <div class="chip"><div class="no">03</div><h4>寺观林立</h4><p>灵隐、净慈、昭庆，兴废考据见一代香火盛衰。</p><span class="en">Temples</span></div>
+      <div class="chip"><div class="no">04</div><h4>地名掌故</h4><p>白苏浚湖、名园遗迹，一石一桥皆有来历。</p><span class="en">Anecdotes</span></div>
+      <div class="chip"><div class="no">05</div><h4>风俗岁时</h4><p>湖上龙舟、江边观潮、四季游乐，市井气十足。</p><span class="en">Customs</span></div>
+      <div class="chip"><div class="no">06</div><h4>题咏艺文</h4><p>历代诗人咏湖名篇，白诗苏词尤为点睛。</p><span class="en">Poetry</span></div>
+      <div class="chip"><div class="no">07</div><h4>人物遗事</h4><p>隐士、高僧、名媛、侠客，湖山养出各色人等。</p><span class="en">Figures</span></div>
+      <div class="chip"><div class="no">08</div><h4>考据辨证</h4><p>纠讹补阙的硬功夫，方志之「信」由此而立。</p><span class="en">Textual</span></div>
+    </div>
+  </section>
+
+  <!-- 脉络图 -->
+  <section id="flow">
+    <div class="sec-title">全书脉络图</div>
+    <div class="sec-sub">The Map · 从总叙到杂记的六段行程</div>
+    <div class="flow">
+      <div class="flow-row">
+        <div class="flow-step"><div class="dot">1</div><h5>总叙形胜</h5><p>开篇勾勒西湖全貌与湖山大势</p></div>
+        <div class="flow-step"><div class="dot">2</div><h5>南山诸胜</h5><p>南屏、虎跑、净慈一带寺观园林</p></div>
+        <div class="flow-step"><div class="dot">3</div><h5>北山诸胜</h5><p>灵隐、飞来峰、北高峰沿湖名胜</p></div>
+        <div class="flow-step"><div class="dot">4</div><h5>湖堤与岛</h5><p>白堤、苏堤、孤山，堤岛之间风物</p></div>
+        <div class="flow-step"><div class="dot">5</div><h5>风俗岁时</h5><p>游乐、观潮、市井，录一时人情</p></div>
+        <div class="flow-step"><div class="dot">6</div><h5>题咏考辨</h5><p>诗赋艺文与志余杂记，收束全志</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 金句 -->
+  <section id="quotes">
+    <div class="sec-title">金句摘录</div>
+    <div class="sec-sub">Quotes · 书中述景与西湖题咏（个人阅读札记，非逐字考据）</div>
+    <div class="quote">
+      <p>「西湖山水之胜，古今艳称，然游览之趣，要在领略，不在穷历。」</p>
+      <cite>—— 田汝成《西湖游览志》序意（概括）</cite>
+    </div>
+    <div class="quote">
+      <p>「欲把西湖比西子，淡妆浓抹总相宜。」</p>
+      <p class="en">West Lake is like the fair lady, whether she is richly adorned or plainly dressed.</p>
+      <cite>—— 苏轼《饮湖上初晴后雨》（田著所重题咏）</cite>
+    </div>
+    <div class="quote">
+      <p>「未能抛得杭州去，一半勾留是此湖。」</p>
+      <cite>—— 白居易《春题湖上》（西湖吏隐双美之证）</cite>
+    </div>
+    <div class="quote">
+      <p>「山寺月中寻桂子，郡亭枕上看潮头。」</p>
+      <cite>—— 白居易《忆江南》（岁时风物之趣）</cite>
+    </div>
+    <div class="quote">
+      <p>「赖有岳于双少保，人间始觉重西湖。」</p>
+      <cite>—— 袁宏道 评（湖山因忠烈而重，田著亦载其遗事）</cite>
+    </div>
+  </section>
+
+  <!-- 行动启发 -->
+  <section id="actions">
+    <div class="sec-title">行动启发</div>
+    <div class="sec-sub">Takeaways · 从一部方志里，能借到什么劲</div>
+    <div class="actions">
+      <div class="act-col l">
+        <h3><span class="ic">📝</span>工作 · 做记录的两轨</h3>
+        <ol>
+          <li><b>考据 + 体验双轨：</b>像田汝成既查典籍又亲历湖山——写报告、做复盘，既要有「依据」，也要有「在场感」。</li>
+          <li><b>把专业写让人爱读：</b>方志也能写出游览之趣；技术文档、方案汇报，加了「人味」才传得开。</li>
+          <li><b>纠讹补阙是信任：</b>敢标出处、敢正误，长期看比「写得多」更立得住。</li>
+          <li><b>建自己的「地方志」：</b>项目、客户、流程，都值得留一份可游可查的脉络。</li>
+        </ol>
+      </div>
+      <div class="act-col r">
+        <h3><span class="ic">🍃</span>生活 · 行旅与闲情</h3>
+        <ol>
+          <li><b>行旅要慢、要记、要品：</b>「领略不在穷历」——走马观花不如一处坐透。</li>
+          <li><b>留一处「可游可居」：</b>给生活留片精神山水，不必远行，案头一书一茶亦是。</li>
+          <li><b>岁时感：</b>借四时风物调节节奏，端午看水、秋夜赏月，把日子过出层次。</li>
+          <li><b>把所知留给后来人：</b>你逛过的城、踩过的坑，记下来，就是别人的「游览志」。</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 适合谁读 -->
+  <section id="audience">
+    <div class="sec-title">适合谁读</div>
+    <div class="sec-sub">For Whom · 这份湖山记忆，谁会欢喜</div>
+    <div class="aud">
+      <div class="aud-box good">
+        <h3>推荐阅读</h3>
+        <ul>
+          <li>爱杭州、爱江南山水的人文旅人</li>
+          <li>地方志、风物志、城市记忆爱好者</li>
+          <li>文旅、园林、文博相关从业者</li>
+          <li>想「读万卷书行万里路」的慢读者</li>
+          <li>教娃逛西湖、做乡土教育的家长老师</li>
+        </ul>
+      </div>
+      <div class="aud-box no">
+        <h3>可能不合胃口</h3>
+        <ul>
+          <li>只想看跌宕故事、快节奏叙事的读者</li>
+          <li>对典故考据、地名源流无感的人</li>
+          <li>期待「攻略式」实用路线清单的游客</li>
+          <li>不耐文言半文半白语体的读者</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="ribbon-foot">
+    <div class="mark">湖</div>
+    <p>《西湖游览志》读书笔记 · 龙山大佛 · 优雅纸感阅读笔记模板</p>
+    <p style="margin-top:6px;opacity:.7;">金句为书中述景与历代西湖题咏之阅读札记，非逐字考据原文；Hero 大图来自网络，离线时自动降级为渐变底。</p>
+  </div>
+
+</main>
+</body>
+</html>

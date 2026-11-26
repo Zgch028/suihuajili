@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>《知行合一王阳明》读书笔记 · 用快与慢的眼光看心学</title>
+<style>
+  :root{
+    --paper:#f4ecdc;
+    --paper-2:#efe4cf;
+    --ink:#2f2a22;
+    --ink-soft:#6b5f4f;
+    --seal:#2f5d62;        /* 水墨黛青 */
+    --seal-deep:#1f4040;
+    --gold:#bf9b46;
+    --line:#cfc4a8;
+    --card:#fbf6ea;
+    --shadow:rgba(40,50,50,.14);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:"Noto Serif SC",serif;
+    color:var(--ink);
+    background-color:var(--paper);
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+    line-height:1.85;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:0 22px 80px;}
+
+  /* ===== Hero ===== */
+  .hero{
+    position:relative;
+    min-height:62vh;
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    background:#15201f;
+    overflow:hidden;
+  }
+  .hero img{
+    position:absolute;inset:0;width:100%;height:100%;
+    object-fit:cover;object-position:center 38%;
+    filter:saturate(.92) contrast(1.02);
+  }
+  .hero::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(to bottom,
+      rgba(21,32,31,0) 18%,
+      rgba(21,32,31,.42) 55%,
+      rgba(21,32,31,.92) 100%);
+  }
+  .hero-inner{
+    position:relative;z-index:2;
+    text-align:center;padding:0 20px 56px;width:100%;
+  }
+  .hero .seal{
+    display:inline-block;
+    font-family:"Ma Shan Zheng",cursive;
+    font-size:clamp(2.6rem,9vw,4.4rem);
+    color:#fdf6ea;
+    background:var(--seal);
+    border:2px solid rgba(255,240,220,.55);
+    padding:.12em .28em;
+    border-radius:8px;
+    transform:rotate(-3deg);
+    box-shadow:0 10px 30px rgba(0,0,0,.4);
+    margin-bottom:18px;
+  }
+  .hero h1{
+    font-family:"Noto Serif SC",serif;
+    font-weight:900;
+    color:#fcf4e6;
+    font-size:clamp(1.9rem,6.6vw,3.2rem);
+    letter-spacing:.05em;
+    margin:.1em 0 .25em;
+    text-shadow:0 2px 16px rgba(0,0,0,.6);
+  }
+  .hero .sub{
+    color:#ecdcc4;
+    font-size:clamp(.95rem,2.6vw,1.15rem);
+    letter-spacing:.16em;
+    text-shadow:0 1px 10px rgba(0,0,0,.55);
+  }
+
+  /* ===== 书签色带 ===== */
+  .ribbon{
+    position:relative;
+    margin:-26px auto 40px;
+    width:max-content;
+    max-width:90%;
+    background:var(--seal);
+    color:#fdf6ea;
+    padding:10px 30px;
+    border-radius:4px;
+    font-size:1rem;
+    letter-spacing:.22em;
+    box-shadow:0 8px 22px var(--shadow);
+  }
+  .ribbon::before,.ribbon::after{
+    content:"";position:absolute;top:0;width:0;height:0;
+    border:16px solid var(--seal-deep);
+  }
+  .ribbon::before{left:-18px;border-left-color:transparent;}
+  .ribbon::after{right:-18px;border-right-color:transparent;}
+
+  /* ===== 通用区块 ===== */
+  section{margin:54px 0;}
+  .sec-title{
+    font-size:1.5rem;font-weight:700;color:var(--seal-deep);
+    display:flex;align-items:center;gap:12px;margin:0 0 6px;
+  }
+  .sec-title .num{
+    font-family:"Playfair Display",serif;font-style:italic;
+    color:var(--gold);font-size:1.6rem;
+  }
+  .sec-sub{color:var(--ink-soft);margin:0 0 22px;font-size:.95rem;letter-spacing:.04em;}
+
+  /* 书籍信息卡 */
+  .book-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-left:6px solid var(--seal);
+    border-radius:10px;
+    padding:24px 26px;
+    box-shadow:0 6px 18px var(--shadow);
+  }
+  .book-meta{display:flex;flex-wrap:wrap;gap:10px 26px;margin-bottom:16px;}
+  .book-meta div{font-size:.95rem;}
+  .book-meta b{color:var(--seal-deep);font-weight:700;margin-right:6px;}
+  .overview{
+    background:linear-gradient(180deg,#fbf3e2,#f5ead0);
+    border:1px dashed var(--gold);
+    border-radius:10px;
+    padding:18px 22px;
+    margin-top:6px;
+    font-size:1.06rem;
+  }
+  .overview b{color:var(--seal-deep);}
+
+  /* 双系统对比 */
+  .vs-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:stretch;}
+  .vs-col{
+    background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:22px;box-shadow:0 6px 16px var(--shadow);
+  }
+  .vs-col h3{margin:.2em 0 .4em;font-size:1.2rem;color:var(--seal-deep);}
+  .vs-col .tag{font-size:.8rem;letter-spacing:.14em;color:var(--ink-soft);}
+  .vs-col ul{margin:.6em 0 0;padding-left:1.1em;font-size:.96rem;}
+  .vs-col li{margin:.35em 0;}
+  .vs-mid{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    min-width:64px;
+  }
+  .vs-mid .vs{font-family:"Playfair Display",serif;font-weight:700;font-size:2rem;color:var(--gold);}
+  .vs-mid .dot{width:10px;height:10px;border-radius:50%;background:var(--seal);margin:8px 0;}
+  .insight{
+    margin-top:18px;background:#f1f4ee;border-radius:10px;padding:16px 20px;
+    border:1px solid var(--line);font-size:1rem;
+  }
+  .insight b{color:var(--seal-deep);}
+
+  /* 偏误卡片 */
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  .bias{
+    background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:20px;box-shadow:0 6px 16px var(--shadow);
+    position:relative;overflow:hidden;
+  }
+  .bias::before{
+    content:"";position:absolute;top:0;left:0;width:100%;height:4px;background:var(--seal);
+  }
+  .bias .en{font-family:"Playfair Display",serif;font-style:italic;color:var(--gold);font-size:.92rem;}
+  .bias h4{margin:.2em 0 .5em;font-size:1.16rem;color:var(--seal-deep);}
+  .bias p{margin:.3em 0;font-size:.95rem;}
+  .bias .ex{background:#f0e9d3;border-radius:8px;padding:10px 12px;margin-top:10px;font-size:.9rem;color:var(--ink-soft);}
+  .bias .ex b{color:var(--seal);}
+
+  /* 脉络图 */
+  .flow{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .act{
+    background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:18px 16px;box-shadow:0 5px 14px var(--shadow);
+    border-top:4px solid var(--gold);
+  }
+  .act .step{font-family:"Playfair Display",serif;color:var(--seal);font-weight:700;font-size:1.1rem;}
+  .act h4{margin:.3em 0 .4em;font-size:1.08rem;color:var(--seal-deep);}
+  .act p{margin:0;font-size:.92rem;color:var(--ink-soft);}
+
+  /* 金句 */
+  .quote{
+    background:linear-gradient(180deg,#fbf3e2,#f5e9d0);
+    border-left:6px solid var(--seal);
+    border-radius:10px;padding:20px 24px;margin:18px 0;
+    box-shadow:0 5px 14px var(--shadow);
+  }
+  .quote .text{font-size:1.18rem;line-height:1.7;color:var(--ink);}
+  .quote .from{display:block;margin-top:8px;color:var(--ink-soft);font-size:.9rem;letter-spacing:.05em;}
+
+  /* 行动启发 */
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .act-card{
+    background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:22px;box-shadow:0 6px 16px var(--shadow);
+  }
+  .act-card h4{margin:.1em 0 .6em;color:var(--seal-deep);font-size:1.15rem;}
+  .act-card li{margin:.5em 0;font-size:.96rem;}
+  .act-card b{color:var(--seal);}
+
+  /* 适合谁读 */
+  .who{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .who-box{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px;box-shadow:0 5px 14px var(--shadow);}
+  .who-box h4{margin:.1em 0 .6em;font-size:1.1rem;}
+  .who-box.good h4{color:var(--seal-deep);}
+  .who-box.bad h4{color:var(--ink-soft);}
+  .who-box li{font-size:.95rem;margin:.4em 0;}
+
+  footer{
+    text-align:center;color:var(--ink-soft);font-size:.85rem;
+    margin-top:60px;padding-top:26px;border-top:1px solid var(--line);letter-spacing:.06em;
+  }
+  footer .seal-sm{
+    display:inline-block;font-family:"Ma Shan Zheng",cursive;
+    color:var(--seal);border:1.5px solid var(--seal);border-radius:6px;
+    padding:2px 12px;transform:rotate(-2deg);margin-bottom:10px;
+  }
+
+  /* ===== 响应式 ===== */
+  @media (max-width:720px){
+    .vs-grid{grid-template-columns:1fr;}
+    .vs-mid{flex-direction:row;min-width:0;gap:10px;padding:6px 0;}
+    .vs-mid .vs{font-size:1.5rem;}
+    .cards{grid-template-columns:repeat(2,1fr);}
+    .flow{grid-template-columns:repeat(2,1fr);}
+    .two-col,.who{grid-template-columns:1fr;}
+  }
+  @media (max-width:420px){
+    .wrap{padding:0 16px 60px;}
+    .cards{grid-template-columns:1fr;}
+    .flow{grid-template-columns:1fr;}
+    .book-meta{gap:8px 18px;}
+  }
+</style>
+<style id="local-font-fallback">
+/* 站内离线字体兜底：不改动原版式，用本机同族字体替代 Google Fonts，避免跨境请求拖慢首屏 */
+@font-face{font-family:"Noto Serif SC";src:local("Source Han Serif SC"),local("Source Han Serif CN"),local("Noto Serif CJK SC"),local("Songti SC"),local("STSong"),local("SimSun"),local("宋体");font-display:swap;}
+@font-face{font-family:"Playfair Display";src:local("Playfair Display"),local("Georgia"),local("Times New Roman");font-display:swap;}
+@font-face{font-family:"Ma Shan Zheng";src:local("Ma Shan Zheng"),local("STKaiti"),local("Kaiti SC"),local("KaiTi"),local("楷体"),local("STXingkai");font-display:swap;}
+@font-face{font-family:"Noto Sans SC";src:local("Source Han Sans SC"),local("Noto Sans CJK SC"),local("PingFang SC"),local("Hiragino Sans GB"),local("Microsoft YaHei"),local("微软雅黑");font-display:swap;}
+</style>
+</head>
+<body data-pagefind-ignore>
+
+  <!-- ===== HERO ===== -->
+  <header class="hero">
+    <img src="/reading/zhixing-heyi/assets/cover.jpg"
+         alt="图书馆书架"
+         onerror="this.style.display='none'" />
+    <div class="hero-inner">
+      <div class="seal">心</div>
+      <h1>知行合一王阳明</h1>
+      <div class="sub">用「快与慢」的眼光，读懂五百年前的「心学」</div>
+    </div>
+  </header>
+
+  <div class="ribbon">度阴山 · 人物传记 · 阳明心学</div>
+
+  <main class="wrap">
+
+    <!-- 书籍信息 -->
+    <section>
+      <h2 class="sec-title"><span class="num">Ⅰ</span>书籍信息</h2>
+      <div class="book-card">
+        <div class="book-meta">
+          <div><b>作者</b>度阴山（当代通俗历史作家）</div>
+          <div><b>领域</b>人物传记 · 中国哲学（阳明心学）通俗读本</div>
+          <div><b>核心命题</b>知行合一——真知必能行，致良知即把心里的「知道」变成脚下的「做到」</div>
+        </div>
+        <div class="overview">
+          <b>一句话总览：</b>《知行合一王阳明》用通俗笔法还原王阳明跌宕的一生，核心只一句话——
+          你「知道」却「做不到」，是因为那根本<b>不是真知</b>。真知，自带行动力。
+          而卡尼曼在《思考，快与慢》里拆解的「想」与「做」之间的裂痕，王阳明五百年前就用「知行合一」作答了。
+        </div>
+      </div>
+    </section>
+
+    <!-- 双系统框架 -->
+    <section>
+      <h2 class="sec-title"><span class="num">Ⅱ</span>系统 1 与系统 2：知与行的千年裂痕</h2>
+      <p class="sec-sub">卡尼曼把思维分成「快思考（系统1）」与「慢思考（系统2）」。借这把尺，王阳明的「知行」难题一目了然。</p>
+      <div class="vs-grid">
+        <div class="vs-col">
+          <div class="tag">SYSTEM 1 · 行而不知</div>
+          <h3>凭本能、习气去「做」</h3>
+          <ul>
+            <li><b>反应快</b>：本能驱动，说赖床就赖床、说刷手机就刷</li>
+            <li><b>悬空不落</b>：做的时候，心里并没有「知」</li>
+            <li><b>被习气推着走</b>：旧习惯比新道理更有力</li>
+            <li>代表：未悟道的众人、被习气驱动的本我</li>
+          </ul>
+        </div>
+        <div class="vs-mid">
+          <div class="vs">VS</div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+        <div class="vs-col">
+          <div class="tag">SYSTEM 2 · 知而不行</div>
+          <h3>能想清楚道理却「落不了地」</h3>
+          <ul>
+            <li><b>想得深</b>：读了很多书、懂很多道理</li>
+            <li><b>悬在空中</b>：道理停在脑子里，没变成行动</li>
+            <li><b>以「知」自满</b>：以为懂了就等于做到了</li>
+            <li>代表：只钻研章句、未致良知的学者</li>
+          </ul>
+        </div>
+      </div>
+      <div class="insight">
+        <b>核心洞见：</b>王阳明的答案是 <b>「致良知」</b>——让系统2的「知」与系统1的「行」在良知上合一。
+        不是「先懂再干」，而是<b>「干出来的懂才是真懂」</b>。最厉害的人，是把良知练成肌肉记忆：
+        系统2沉淀为系统1，知行之间再无裂痕。
+      </div>
+    </section>
+
+    <!-- 认知偏误卡片 -->
+    <section>
+      <h2 class="sec-title"><span class="num">Ⅲ</span>为何「知行难合一」：六种认知偏误</h2>
+      <p class="sec-sub">《思考，快与慢》列出的思维陷阱，正是「懂很多却过不好」的底层原因。下面每张卡片：左边是偏误，右边是心学的解药。</p>
+      <div class="cards">
+        <div class="bias">
+          <div class="en">Anchoring</div>
+          <h4>锚定效应</h4>
+          <p>被旧注解、权威或旧习钉住，不敢直抵本心。</p>
+          <div class="ex"><b>例：</b>世人被朱熹「格物」注解锚住，王阳明却疑「格竹」为何致病，跳出锚点，悟「心即理」。</div>
+        </div>
+        <div class="bias">
+          <div class="en">Availability</div>
+          <h4>可得性偏误</h4>
+          <p>只记得最近一次失败，良知被「近因」遮蔽。</p>
+          <div class="ex"><b>例：</b>想改变时，脑子里先蹦出「我以前试过不行」，于是原地不动，假装没看见能成的路。</div>
+        </div>
+        <div class="bias">
+          <div class="en">Loss Aversion</div>
+          <h4>损失厌恶</h4>
+          <p>怕「放下旧我/私利」的损失，大过「变好」的获得。</p>
+          <div class="ex"><b>例：</b>知道该改，但改意味着承认过去错、让渡利益，于是用拖延把「知道」熬成「没做」。</div>
+        </div>
+        <div class="bias">
+          <div class="en">Framing</div>
+          <h4>框架效应</h4>
+          <p>同一件事换种说法，良知的声音就被盖住。</p>
+          <div class="ex"><b>例：</b>把「帮团队」框架成「被剥削」，良知便沉默；重框为「练本事」，行动自然跟上。</div>
+        </div>
+        <div class="bias">
+          <div class="en">Overconfidence</div>
+          <h4>过度自信</h4>
+          <p>把「听过、读过」误当成「会了、做到了」。</p>
+          <div class="ex"><b>例：</b>读完书觉得「我懂了」，实则未行。王阳明直斥：未行，即未知。</div>
+        </div>
+        <div class="bias">
+          <div class="en">Confirmation</div>
+          <h4>确认偏误</h4>
+          <p>只搜罗「我做不到」的佐证，过滤掉反例。</p>
+          <div class="ex"><b>例：</b>想戒烟，专看「有人抽了一辈子也长寿」；想行动，专记「别人也都拖延」。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 脉络图 -->
+    <section>
+      <h2 class="sec-title"><span class="num">Ⅳ</span>全书章节脉络</h2>
+      <p class="sec-sub">从少年立志到「此心光明」，六幕读尽一生与一学。</p>
+      <div class="flow">
+        <div class="act"><div class="step">01</div><h4>少年立志</h4><p>读圣贤书、欲做圣人，格竹失败，埋下怀疑旧说的种子。</p></div>
+        <div class="act"><div class="step">02</div><h4>宦海跌宕</h4><p>触怒权阉刘瑾，廷杖流放贵州龙场，绝境之中逼近大道。</p></div>
+        <div class="act"><div class="step">03</div><h4>龙场悟道</h4><p>悟「圣人之道，吾性自足」——心即理，知行本是一体。</p></div>
+        <div class="act"><div class="step">04</div><h4>事上磨练</h4><p>平匪患、平宁王朱宸濠之乱，把心学用在真刀真枪的现场。</p></div>
+        <div class="act"><div class="step">05</div><h4>讲学致良知</h4><p>晚年揭「致良知」宗旨，立四句教，把学问交还给人人本心。</p></div>
+        <div class="act"><div class="step">06</div><h4>此心光明</h4><p>临终遗言「此心光明，亦复何言」——知行合一，终成一人。</p></div>
+      </div>
+    </section>
+
+    <!-- 金句 -->
+    <section>
+      <h2 class="sec-title"><span class="num">Ⅴ</span>金句摘录</h2>
+      <p class="sec-sub">以下为书中引述之王阳明语录或通行大意，非逐字考据本。</p>
+      <div class="quote">
+        <span class="text">「知是行之始，行是知之成。」</span>
+        <span class="from">—— 王阳明 · 知行合一 核心命题</span>
+      </div>
+      <div class="quote">
+        <span class="text">「你未看此花时，此花与汝心同归于寂；你来看此花时，则此花颜色一时明白起来。」</span>
+        <span class="from">—— 心外无物 ·《传习录》</span>
+      </div>
+      <div class="quote">
+        <span class="text">「破山中贼易，破心中贼难。」</span>
+        <span class="from">—— 王阳明 · 致友人的感慨</span>
+      </div>
+      <div class="quote">
+        <span class="text">「致良知。」</span>
+        <span class="from">—— 晚年三大宗旨之一（知、行、良知合一）</span>
+      </div>
+      <div class="quote">
+        <span class="text">「此心光明，亦复何言。」</span>
+        <span class="from">—— 临终遗言</span>
+      </div>
+    </section>
+
+    <!-- 行动启发 -->
+    <section>
+      <h2 class="sec-title"><span class="num">Ⅵ</span>对工作与决策的启发</h2>
+      <p class="sec-sub">把上面那套认知框架，从「读心学」搬回「过日子」。</p>
+      <div class="two-col">
+        <div class="act-card">
+          <h4>工作：让知落地</h4>
+          <ul>
+            <li><b>用「行」检验「知」：</b>学完一个方法，当天就用一次，别等「完全懂了」——干出来的懂才是真懂。</li>
+            <li><b>警惕过度自信：</b>别把「听过」当「会了」，交付出结果，才算真知。</li>
+            <li><b>在事上磨练：</b>把每个难题当练心场，而非躲着的麻烦；难题即道场。</li>
+            <li><b>重框叙事：</b>把「又要吃苦」重框成「在长本事」，行动力立刻不同。</li>
+          </ul>
+        </div>
+        <div class="act-card">
+          <h4>决策：守住本心</h4>
+          <ul>
+            <li><b>直面损失厌恶：</b>改习惯的「损失」多是假象，不改成才是真损失。</li>
+            <li><b>跳出锚定：</b>别被「一直都这样」「别人都这样」钉死，回到自己的良知试问。</li>
+            <li><b>致良知做减法：</b>重要决定先问「这事我心里坦不坦」，常比算账更准。</li>
+            <li><b>破心中贼：</b>最大的对手不是外人，是那个「知道却不动」的自己。</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 适合谁读 -->
+    <section>
+      <h2 class="sec-title"><span class="num">Ⅶ</span>适合谁读</h2>
+      <div class="who">
+        <div class="who-box good">
+          <h4>推荐给</h4>
+          <ul>
+            <li>「懂很多道理，却过不好这一生」的人——本书正对症</li>
+            <li>管理者：事上磨练、破心中贼，本是带人带己的功夫</li>
+            <li>国学 / 哲学入门读者：通俗好读，不必先读《传习录》</li>
+            <li>长期拖延、知行脱节、想真正改变习惯的人</li>
+          </ul>
+        </div>
+        <div class="who-box bad">
+          <h4>可能不合适</h4>
+          <ul>
+            <li>要严谨学术考据的读者（本书是通俗传记，非义理专著）</li>
+            <li>期待纯故事、无说理的轻松读物者</li>
+            <li>对儒家 / 心学背景完全无兴趣者</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="seal-sm">心</div>
+      <div>米色纸感读书笔记 · 以《思考，快与慢》之眼读《知行合一王阳明》</div>
+      <div>阅读札记，金句为书中引述或通行大意，非逐字考据本。</div>
+    </footer>
+
+  </main>
+</body>
+</html>

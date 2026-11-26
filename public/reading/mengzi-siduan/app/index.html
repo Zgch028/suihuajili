@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>《孟子·四端》读书笔记 · 对象中心分格</title>
+<style>
+  :root{
+    --paper:#f7f2e8;
+    --paper-2:#efe7d6;
+    --ink:#2b2b2b;
+    --ink-soft:#5a5347;
+    --line:#ddd2bd;
+    --accent:#3f7d52;        /* 萌芽绿 */
+    --accent-dark:#285239;
+    --accent-light:#8bbf9c;
+    --seal:#b04a3f;
+    --gold:#b89a5e;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:"Noto Serif SC",serif;
+    color:var(--ink);
+    background-color:var(--paper);
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/></svg>");
+    line-height:1.85;
+    font-size:17px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:0 22px 80px;}
+
+  /* ===== Hero ===== */
+  .hero{
+    position:relative;
+    height:60vh;min-height:380px;
+    margin:0 -22px 0;
+    display:flex;align-items:flex-end;justify-content:center;
+    overflow:hidden;
+    background:linear-gradient(135deg,var(--accent-dark),#4f9a68 60%,var(--accent-light));
+  }
+  .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .hero::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(to top,rgba(25,50,38,.92) 0%,rgba(25,50,38,.45) 42%,rgba(25,50,38,.12) 100%);
+  }
+  .hero-inner{position:relative;z-index:2;text-align:center;color:#f6f1e7;padding:0 24px 56px;max-width:760px;}
+  .hero-kicker{
+    font-family:"Playfair Display",serif;font-style:italic;
+    letter-spacing:.18em;font-size:14px;opacity:.85;margin-bottom:10px;
+  }
+  .hero h1{
+    font-family:"Noto Serif SC",serif;font-weight:900;
+    font-size:clamp(34px,6vw,58px);line-height:1.1;letter-spacing:.02em;
+    text-shadow:0 2px 18px rgba(0,0,0,.45);
+  }
+  .hero-sub{
+    margin-top:14px;font-size:15px;opacity:.9;letter-spacing:.04em;
+  }
+
+  /* ===== 书签色带 ===== */
+  .bookmark{
+    position:relative;width:120px;margin:-34px auto 0;z-index:5;
+    background:linear-gradient(180deg,var(--accent),var(--accent-dark));
+    color:#f6f1e7;text-align:center;padding:16px 0 22px;
+    border-radius:6px 6px 0 0;
+    box-shadow:0 8px 22px rgba(40,82,57,.35);
+  }
+  .bookmark::after{
+    content:"";position:absolute;bottom:-18px;left:0;right:0;height:18px;
+    background:linear-gradient(135deg,var(--accent-dark) 50%,transparent 50%),
+               linear-gradient(225deg,var(--accent-dark) 50%,transparent 50%);
+    background-size:50% 100%;background-repeat:no-repeat;background-position:0 0,100% 0;
+  }
+  .bookmark .glyph{font-family:"Ma Shan Zheng",cursive;font-size:46px;line-height:1;display:block;}
+  .bookmark .tag{font-size:11px;letter-spacing:.3em;opacity:.85;margin-top:6px;}
+
+  /* ===== 区块标题 ===== */
+  .sec{margin-top:58px;}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:22px;}
+  .sec-head .num{
+    font-family:"Playfair Display",serif;font-weight:800;font-size:34px;
+    color:var(--accent);opacity:.55;
+  }
+  .sec-head h2{
+    font-family:"Noto Serif SC",serif;font-weight:700;font-size:26px;letter-spacing:.04em;
+    color:var(--ink);
+  }
+  .sec-head .en{font-family:"Playfair Display",serif;font-style:italic;color:var(--ink-soft);font-size:14px;letter-spacing:.05em;}
+  .rule{height:1px;background:linear-gradient(to right,var(--accent),transparent);margin-top:10px;}
+
+  /* ===== 书籍信息卡 ===== */
+  .infocard{
+    background:var(--paper-2);border:1px solid var(--line);border-left:5px solid var(--accent);
+    border-radius:10px;padding:24px 26px;
+    box-shadow:0 4px 16px rgba(0,0,0,.05);
+  }
+  .infocard .title-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:14px;margin-bottom:8px;}
+  .infocard h3{font-size:24px;font-weight:700;}
+  .infocard .meta{color:var(--ink-soft);font-size:14px;letter-spacing:.03em;}
+  .infocard .meta b{color:var(--accent-dark);font-weight:700;}
+  .infogrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px;}
+  .infogrid .cell{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:14px 16px;}
+  .infogrid .cell .k{font-size:12px;letter-spacing:.16em;color:var(--accent);margin-bottom:6px;}
+  .infogrid .cell .v{font-size:15px;line-height:1.7;color:var(--ink);}
+  .infogrid .cell .v small{display:block;color:var(--ink-soft);font-size:12.5px;margin-top:4px;}
+
+  /* ===== 一句话总览 ===== */
+  .overview{
+    margin-top:18px;background:linear-gradient(135deg,rgba(139,191,156,.18),rgba(63,125,82,.10));
+    border:1px dashed var(--accent-light);border-radius:10px;padding:22px 26px;
+    font-size:19px;line-height:1.9;color:var(--accent-dark);font-weight:500;
+  }
+  .overview b{color:var(--seal);font-weight:700;}
+
+  /* ===== OCD legend ===== */
+  .ocd-legend{
+    margin-top:18px;background:var(--paper-2);border:1px solid var(--line);border-radius:10px;
+    padding:18px 22px;font-size:14.5px;color:var(--ink-soft);line-height:1.85;
+  }
+  .ocd-legend b{color:var(--accent-dark);}
+  .ocd-legend .badge{
+    display:inline-block;font-family:"Playfair Display",serif;font-weight:800;font-size:12px;
+    letter-spacing:.12em;color:#fff;background:var(--accent);padding:3px 10px;border-radius:20px;margin-right:8px;
+  }
+
+  /* ===== 对象卡网格 ===== */
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:24px;}
+  .obj{
+    background:var(--paper-2);border:1px solid var(--line);border-radius:10px;
+    padding:18px 20px;box-shadow:0 3px 12px rgba(0,0,0,.04);
+    display:flex;flex-direction:column;
+  }
+  .obj .ohead{display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-bottom:12px;border-bottom:1px dotted var(--line);}
+  .obj .odot{width:9px;height:9px;border-radius:50%;background:var(--accent);flex:none;}
+  .obj .oname{font-size:19px;font-weight:700;color:var(--ink);}
+  .obj .osrc{
+    margin-left:auto;font-size:11.5px;letter-spacing:.08em;color:var(--accent-dark);
+    background:rgba(139,191,156,.3);padding:2px 9px;border-radius:12px;white-space:nowrap;
+  }
+  .obj .field{margin-bottom:10px;}
+  .obj .field:last-child{margin-bottom:0;}
+  .obj .flabel{
+    font-size:11.5px;letter-spacing:.14em;color:var(--accent);font-weight:700;
+    display:inline-block;margin-bottom:2px;
+  }
+  .obj .fval{font-size:15px;line-height:1.78;color:var(--ink-soft);}
+  .obj .fval strong{color:var(--ink);font-weight:700;}
+
+  /* ===== 脉络图 ===== */
+  .flow{display:flex;flex-direction:column;gap:0;margin-top:24px;}
+  .stage{
+    display:grid;grid-template-columns:54px 1fr;gap:16px;align-items:stretch;
+  }
+  .stage .sn{
+    font-family:"Playfair Display",serif;font-weight:800;font-size:22px;color:#fff;
+    background:var(--accent);border-radius:50%;width:46px;height:46px;
+    display:flex;align-items:center;justify-content:center;align-self:center;flex:none;
+    box-shadow:0 3px 10px rgba(63,125,82,.3);
+  }
+  .stage .body{
+    background:var(--paper-2);border:1px solid var(--line);border-left:4px solid var(--accent-light);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:8px 0;
+  }
+  .stage .body h4{font-size:17px;font-weight:700;margin-bottom:3px;}
+  .stage .body p{font-size:14.5px;color:var(--ink-soft);line-height:1.7;}
+
+  /* ===== 金句 ===== */
+  .quotes{margin-top:24px;display:flex;flex-direction:column;gap:16px;}
+  .quote{
+    position:relative;background:var(--paper-2);border:1px solid var(--line);
+    border-radius:10px;padding:20px 24px 18px 56px;
+  }
+  .quote::before{
+    content:"\201C";position:absolute;left:18px;top:6px;
+    font-family:"Playfair Display",serif;font-size:54px;color:var(--accent);opacity:.45;
+  }
+  .quote p{font-size:17px;line-height:1.85;color:var(--ink);font-style:italic;}
+  .quote .src{display:block;margin-top:8px;font-size:12.5px;color:var(--accent-dark);letter-spacing:.04em;font-style:normal;}
+
+  /* ===== 双栏行动启发 ===== */
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:24px;}
+  .pane{background:var(--paper-2);border:1px solid var(--line);border-radius:10px;padding:20px 22px;}
+  .pane h4{font-size:18px;font-weight:700;color:var(--accent-dark);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--line);}
+  .pane ul{list-style:none;}
+  .pane li{position:relative;padding-left:20px;margin-bottom:11px;font-size:15px;line-height:1.78;color:var(--ink-soft);}
+  .pane li::before{content:"▍";position:absolute;left:0;color:var(--accent);font-size:13px;top:2px;}
+
+  /* ===== 适合谁读 ===== */
+  .who{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:24px;}
+  .who .col{background:var(--paper-2);border:1px solid var(--line);border-radius:10px;padding:20px 22px;}
+  .who .col.rec{border-left:5px solid var(--accent);}
+  .who .col.skip{border-left:5px solid var(--seal);}
+  .who h4{font-size:17px;font-weight:700;margin-bottom:12px;}
+  .who .col.rec h4{color:var(--accent-dark);}
+  .who .col.skip h4{color:var(--seal);}
+  .who .col ul{list-style:none;}
+  .who .col li{position:relative;padding-left:22px;margin-bottom:10px;font-size:15px;line-height:1.7;color:var(--ink-soft);}
+  .who .col.rec li::before{content:"✓";position:absolute;left:0;color:var(--accent);font-weight:700;}
+  .who .col.skip li::before{content:"✕";position:absolute;left:0;color:var(--seal);font-weight:700;}
+
+  .note{margin-top:22px;font-size:13px;color:var(--ink-soft);line-height:1.7;font-style:italic;
+    border-left:3px solid var(--accent-light);padding-left:14px;}
+
+  footer{margin-top:70px;text-align:center;color:var(--ink-soft);font-size:13px;letter-spacing:.06em;}
+  footer .ribbon{display:inline-block;background:var(--accent);color:#fff;padding:5px 16px;border-radius:4px;margin-bottom:12px;font-family:"Ma Shan Zheng",cursive;font-size:18px;}
+
+  /* ===== 响应式 ===== */
+  @media (max-width:720px){
+    .infogrid{grid-template-columns:1fr;}
+    .grid{grid-template-columns:1fr;}
+    .two{grid-template-columns:1fr;}
+    .who{grid-template-columns:1fr;}
+    body{font-size:16px;}
+  }
+  @media (max-width:420px){
+    .wrap{padding:0 16px 60px;}
+    .hero{margin:0 -16px;}
+    .sec-head h2{font-size:22px;}
+    .infocard{padding:18px 18px;}
+    .obj .osrc{display:none;}
+  }
+</style>
+<style id="local-font-fallback">
+/* 站内离线字体兜底：不改动原版式，用本机同族字体替代 Google Fonts，避免跨境请求拖慢首屏 */
+@font-face{font-family:"Noto Serif SC";src:local("Source Han Serif SC"),local("Source Han Serif CN"),local("Noto Serif CJK SC"),local("Songti SC"),local("STSong"),local("SimSun"),local("宋体");font-display:swap;}
+@font-face{font-family:"Playfair Display";src:local("Playfair Display"),local("Georgia"),local("Times New Roman");font-display:swap;}
+@font-face{font-family:"Ma Shan Zheng";src:local("Ma Shan Zheng"),local("STKaiti"),local("Kaiti SC"),local("KaiTi"),local("楷体"),local("STXingkai");font-display:swap;}
+@font-face{font-family:"Noto Sans SC";src:local("Source Han Sans SC"),local("Noto Sans CJK SC"),local("PingFang SC"),local("Hiragino Sans GB"),local("Microsoft YaHei"),local("微软雅黑");font-display:swap;}
+</style>
+</head>
+<body data-pagefind-ignore>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <img src="/reading/mengzi-siduan/assets/cover.jpg"
+         alt="图书馆书架"
+         onerror="this.style.display='none'" />
+    <div class="hero-inner">
+      <div class="hero-kicker">Mencius · The Four Beginnings</div>
+      <h1>孟子 · 四端</h1>
+      <div class="hero-sub">《孟子·公孙丑上》｜ 儒家 · 人性论 · 性善之说</div>
+    </div>
+  </header>
+
+  <div class="wrap">
+
+    <!-- 书签色带 -->
+    <div class="bookmark">
+      <span class="glyph">端</span>
+      <span class="tag">MENGZI</span>
+    </div>
+
+    <!-- ===== 书籍信息卡 ===== -->
+    <section class="sec">
+      <div class="infocard">
+        <div class="title-row">
+          <h3>《孟子·四端》</h3>
+          <span class="meta">选自《孟子·公孙丑上》</span>
+        </div>
+        <div class="meta">
+          作者：<b>孟子</b>（孟轲，战国中期邹人，受业于子思之门人，尊称「亚圣」）　|　成书：孟子与其弟子编撰，列「四书」之一
+        </div>
+        <div class="infogrid">
+          <div class="cell">
+            <div class="k">领 域</div>
+            <div class="v">儒家经典<small>人性论 · 伦理学 · 仁政学说</small></div>
+          </div>
+          <div class="cell">
+            <div class="k">核心命题</div>
+            <div class="v">人皆有四端，性本善<small>恻隐·羞恶·辞让·是非，扩而充之可达天下</small></div>
+          </div>
+          <div class="cell">
+            <div class="k">四端对应</div>
+            <div class="v">仁 · 义 · 礼 · 智<small>四心为「端」，四德为所发之果</small></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="overview">
+        一句话总览：<b>孟子说，每个人心里都埋着四颗善的种子</b>——见人受苦会痛、见不义会耻、对人会谦、遇事能辨；它们微弱如星火，却「扩而充之」足以温暖四海。
+      </div>
+    </section>
+
+    <!-- ===== OCD 说明 ===== -->
+    <section class="sec">
+      <div class="ocd-legend">
+        <span class="badge">OCD</span>
+        <b>对象中心文档（Object-Centered Documentation）结构说明</b>：本页核心内容以<strong>「对象卡」</strong>为单位呈现，每张卡含<strong>统一字段</strong>（如 所发之德 / 原文喻象 / 今日之用），可脱离上下文单独取用、在网格中整齐排布。孟子的「四端」本就是四件离散而自明的「物」，最宜拆成对象卡——比连续长文更易检索与回看。下面分三组对象网格：<b>四端本体</b>（是什么）、<b>核心论断</b>（孟子说了什么）、<b>论证脉络</b>（如何推演）。
+      </div>
+    </section>
+
+    <!-- ===== 对象网格一：四端本体 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">01</span>
+        <h2>四端本体</h2>
+        <span class="en">The Four Beginnings</span>
+      </div>
+      <div class="rule"></div>
+      <div class="grid">
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">恻隐之心</span><span class="osrc">→ 仁</span></div>
+          <div class="field"><span class="flabel">所发之德</span><div class="fval">仁：对他人的痛悯与亲爱，道德情感的源头。</div></div>
+          <div class="field"><span class="flabel">原文喻象</span><div class="fval">「今人乍见孺子将入于井，皆有怵惕恻隐之心」——不假思索、无关利害的惊痛。</div></div>
+          <div class="field"><span class="flabel">今日之用</span><div class="fval">见人受苦，先共情再判断；别让「与我无关」钝化这本能。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">羞恶之心</span><span class="osrc">→ 义</span></div>
+          <div class="field"><span class="flabel">所发之德</span><div class="fval">义：当为则当、不当为则耻，道德的自发刹车。</div></div>
+          <div class="field"><span class="flabel">原文喻象</span><div class="fval">「羞恶」——耻于自身行不义、恶于不义加于身，良知先判对错。</div></div>
+          <div class="field"><span class="flabel">今日之用</span><div class="fval">守底线比守利益难，也更重要；能「耻」才能立。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">辞让之心</span><span class="osrc">→ 礼</span></div>
+          <div class="field"><span class="flabel">所发之德</span><div class="fval">礼：对人分寸、恭敬与秩序，关系得以安稳的枢纽。</div></div>
+          <div class="field"><span class="flabel">原文喻象</span><div class="fval">「辞让」——推让、不敢僭越，对他人的位分与空间有敬畏。</div></div>
+          <div class="field"><span class="flabel">今日之用</span><div class="fval">会「让」的人不抢戏、不越界，团队与关系更不内耗。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">是非之心</span><span class="osrc">→ 智</span></div>
+          <div class="field"><span class="flabel">所发之德</span><div class="fval">智：明辨善恶、知所止，不是知识多而是良知先亮。</div></div>
+          <div class="field"><span class="flabel">原文喻象</span><div class="fval">「是非」——天然能分辨对错，不待外教而自明。</div></div>
+          <div class="field"><span class="flabel">今日之用</span><div class="fval">信息爆炸里，先问「这事对不对」再算「有没有利」。</div></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 对象网格二：核心论断 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">02</span>
+        <h2>核心论断</h2>
+        <span class="en">Key Theses</span>
+      </div>
+      <div class="rule"></div>
+      <div class="grid">
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">性善论</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">人性本善，四端是人人自带的光，不是外铄强加。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">把道德从「外在规训」翻转为「内在自有」，反对性本恶/本私。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">信人能好，也信自己本有向善的种子，不自我矮化。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">孺子入井</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">乍见稚子将坠井，无人能不动恻隐——且无关交好、邀誉、避声。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">证明仁义不是教化结果，而是瞬间即发的本能反应。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">别用「动机不纯」解构所有善意，先承认善念真实存在。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">扩而充之</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">四端如种子，须「扩而充之」才能长成参天德行，非守着端芽即可。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">有善端 ≠ 成善人，关键在养护与扩展，空谈性善毫无用处。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">一次善意不算数，把它变成习惯与制度才算数。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">火始燃泉始达</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">「若火之始然，泉之始达」——善端虽微，却自有其势与方向。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">起点再小也有去处，怕的是被压灭，而非慢。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">别嫌善小不为，微火可燎原，微泉可成川。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">不忍人之政</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">以「不忍人之心」行「不忍人之政」——上位者的同理心须落地为制度温度。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">仁政的根基不是术，是统治者先有「不忍」的能力。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">管理即领导：先有同理，才有好政策与好团队。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">四体之喻</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">「人之有是四端也，犹其有四体也」——四端如四肢般本具，非圣独占。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">说自己「没有善心」是自贼（自我伤害），非实情。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">否认良知，是对自己的伤害；承认它，才有起点。</div></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 论证脉络 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">03</span>
+        <h2>论证脉络</h2>
+        <span class="en">The Argument</span>
+      </div>
+      <div class="rule"></div>
+      <div class="flow">
+
+        <div class="stage">
+          <div class="sn">1</div>
+          <div class="body"><h4>乍见孺子 → 恻隐即发</h4><p>任何人猝见稚子将坠井，皆生怵惕恻隐——善念不假外求，无关利害算计。</p></div>
+        </div>
+        <div class="connector" style="height:14px;"></div>
+
+        <div class="stage">
+          <div class="sn">2</div>
+          <div class="body"><h4>由此推之 → 四端本具</h4><p>恻隐既人人皆有，则羞恶、辞让、是非亦然——四端非圣人所独，是普遍人性。</p></div>
+        </div>
+        <div class="connector" style="height:14px;"></div>
+
+        <div class="stage">
+          <div class="sn">3</div>
+          <div class="body"><h4>四端定位 → 仁义礼智之端</h4><p>四心分别为仁、义、礼、智四德之「发端」——端是种子，德是长成的果。</p></div>
+        </div>
+        <div class="connector" style="height:14px;"></div>
+
+        <div class="stage">
+          <div class="sn">4</div>
+          <div class="body"><h4>性本善立 → 善是内在自有</h4><p>四端本具，故人性本善；道德非外铄强加，而是心中自带的光。</p></div>
+        </div>
+        <div class="connector" style="height:14px;"></div>
+
+        <div class="stage">
+          <div class="sn">5</div>
+          <div class="body"><h4>扩而充之 → 火燃泉达</h4><p>善端须养护扩展，「若火之始然，泉之始达」——微而有力，怕压灭非怕慢。</p></div>
+        </div>
+        <div class="connector" style="height:14px;"></div>
+
+        <div class="stage">
+          <div class="sn">6</div>
+          <div class="body"><h4>达于天下 → 足以保四海</h4><p>「苟能充之，足以保四海；苟不充之，不足以事父母」——个人善端推及，即成天下治道。</p></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 金句 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">04</span>
+        <h2>金句摘录</h2>
+        <span class="en">Quotable Lines</span>
+      </div>
+      <div class="rule"></div>
+      <div class="quotes">
+
+        <div class="quote">
+          <p>恻隐之心，仁之端也；羞恶之心，义之端也；辞让之心，礼之端也；是非之心，智之端也。</p>
+          <span class="src">— 《孟子·公孙丑上》（四端正名）</span>
+        </div>
+
+        <div class="quote">
+          <p>人皆有不忍人之心。</p>
+          <span class="src">— 《孟子·公孙丑上》（性善总纲）</span>
+        </div>
+
+        <div class="quote">
+          <p>凡有四端于我者，知皆扩而充之矣，若火之始然，泉之始达。</p>
+          <span class="src">— 《孟子·公孙丑上》（善端须养）</span>
+        </div>
+
+        <div class="quote">
+          <p>苟能充之，足以保四海；苟不充之，不足以事父母。</p>
+          <span class="src">— 《孟子·公孙丑上》（充端之效）</span>
+        </div>
+
+        <div class="quote">
+          <p>人之有是四端也，犹其有四体也。</p>
+          <span class="src">— 《孟子·公孙丑上》（四端本具之喻）</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 行动启发 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">05</span>
+        <h2>行动启发</h2>
+        <span class="en">So What</span>
+      </div>
+      <div class="rule"></div>
+      <div class="two">
+
+        <div class="pane">
+          <h4>工作 · 以不忍之心领导</h4>
+          <ul>
+            <li><strong>用「不忍」做管理起点：</strong>看见团队成员的难处，政策与安排才有温度，而非只盯指标。</li>
+            <li><strong>扩而充之：</strong>一次对的事，复盘子、制度化，别只当偶然闪光便过去。</li>
+            <li><strong>是非之心在前：</strong>决策先过「对不对」再算「值不值」，利不可凌义。</li>
+            <li><strong>辞让之心：</strong>功劳让人、位分有节，领导者不抢戏，团队才不内耗。</li>
+          </ul>
+        </div>
+
+        <div class="pane">
+          <h4>做人 · 养护心中四端</h4>
+          <ul>
+            <li><strong>养护善端：</strong>每天做件不求回报的善，别让恻隐之心病久成钝。</li>
+            <li><strong>耻于不义：</strong>能「羞恶」才有底线，别用世故消解良知、把妥协当成熟。</li>
+            <li><strong>信自己本善：</strong>不自我矮化为「人性本私」，也给人向善的机会与耐心。</li>
+            <li><strong>火燃泉达：</strong>从微善开始，相信小行动的累积势能，不嫌善小不为。</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 适合谁读 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">06</span>
+        <h2>适合谁读</h2>
+        <span class="en">Who Should Read</span>
+      </div>
+      <div class="rule"></div>
+      <div class="who">
+        <div class="col rec">
+          <h4>推荐读</h4>
+          <ul>
+            <li>在功利喧嚣里，想重建「人性本善」信心的人</li>
+            <li>管理者 / 家长：想以「不忍人之心」做有温度的领导与教养</li>
+            <li>伦理学、教育、国学爱好者</li>
+            <li>常陷「我是不是太天真」自我怀疑的善意者</li>
+            <li>想理解儒家「性善—仁政」逻辑链条的读者</li>
+          </ul>
+        </div>
+        <div class="col skip">
+          <h4>暂不合适</h4>
+          <ul>
+            <li>只想要权谋厚黑、零和博弈实操的读者</li>
+            <li>先入「性恶」立场、排斥儒家者（可先读《荀子》对照）</li>
+            <li>期待严密哲学论证、不耐语录体者</li>
+            <li>情绪正低落、易感「道理都懂做不到」者，缓读为宜</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="note">
+        说明：四端说出自《孟子·公孙丑上》。孟子名轲，邹（今山东邹城）人，战国中期儒家代表，受业于子思之门人，后世尊为「亚圣」。《孟子》与《论语》《大学》《中庸》合称「四书」。金句为原文摘录，个别通行本字句（如「然」通「燃」）依注本处理；引用请以原典为准。
+      </p>
+    </section>
+
+    <footer>
+      <div class="ribbon">端</div>
+      <div>《孟子·四端》读书笔记 · 对象中心分格（OCD）· 龙山大佛工作台</div>
+      <div style="margin-top:6px;opacity:.7;">配色 萌芽绿 ｜ 米色纸感 ｜ 衬线标题 ｜ 响应式不裁切</div>
+    </footer>
+
+  </div>
+</body>
+</html>

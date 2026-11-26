@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>《时间简史》读书笔记 · 从大爆炸到时间尽头</title>
+<style>
+  :root{
+    --paper:#f3ede1;
+    --paper-2:#ece3d2;
+    --ink:#2a2620;
+    --ink-soft:#5e584c;
+    --bookmark:#21456b;      /* 深空靛蓝 */
+    --bookmark-deep:#16304f;
+    --accent:#2f6f9e;        /* 星河蓝 */
+    --gold:#b8902f;          /* 星金 */
+    --line:#d8ccb4;
+    --card:#fbf6ec;
+    --shadow:rgba(22,48,79,.12);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Noto Serif SC",serif;
+    color:var(--ink);
+    background-color:var(--paper);
+    background-image:
+      radial-gradient(circle at 20% 18%, rgba(184,144,47,.06), transparent 42%),
+      radial-gradient(circle at 85% 75%, rgba(47,111,158,.06), transparent 40%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    line-height:1.85;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:0 22px}
+
+  /* ===== 书签色带 ===== */
+  .bookmark{
+    position:absolute;top:0;left:50%;transform:translateX(-50%);
+    width:64px;height:96px;
+    background:linear-gradient(180deg,var(--bookmark),var(--bookmark-deep));
+    border-radius:0 0 8px 8px;
+    box-shadow:0 6px 16px rgba(22,48,79,.35);
+    display:flex;align-items:flex-end;justify-content:center;
+    padding-bottom:12px;z-index:6;
+  }
+  .bookmark::after{
+    content:"宙";font-family:"Ma Shan Zheng",serif;color:#f3ede1;
+    font-size:30px;line-height:1;opacity:.94;
+  }
+
+  /* ===== HERO ===== */
+  .hero{
+    position:relative;height:62vh;min-height:420px;max-height:620px;
+    overflow:hidden;display:flex;align-items:flex-end;
+    background:radial-gradient(circle at 60% 30%, #1b3a5e, #0d1b2e 70%);
+  }
+  .hero img{
+    position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+    filter:saturate(.9) brightness(.85);
+  }
+  .hero .mask{
+    position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(13,27,46,.25) 0%,rgba(13,27,46,.45) 38%,rgba(13,27,46,.90) 100%);
+  }
+  .hero .hero-inner{position:relative;z-index:2;width:100%;padding:0 22px 46px}
+  .hero .eyebrow{
+    color:#cfe0f2;letter-spacing:.34em;font-size:13px;font-weight:500;
+    text-transform:uppercase;margin-bottom:14px;
+  }
+  .hero h1{
+    font-family:"Ma Shan Zheng",serif;
+    color:#fdf8ec;font-size:clamp(46px,9vw,88px);line-height:1.04;
+    text-shadow:0 4px 22px rgba(0,0,0,.5);font-weight:400;
+  }
+  .hero .sub{
+    color:#dce8f6;font-size:clamp(15px,2.4vw,19px);margin-top:14px;
+    font-weight:400;letter-spacing:.04em;max-width:580px;
+    text-shadow:0 2px 10px rgba(0,0,0,.45);
+  }
+  .hero .tag{
+    display:inline-block;margin-top:18px;padding:7px 16px;border-radius:30px;
+    background:rgba(33,69,107,.82);color:#fdf8ec;font-size:13px;
+    letter-spacing:.1em;border:1px solid rgba(243,237,225,.35);
+  }
+
+  /* ===== 通用区块 ===== */
+  section{padding:60px 0;border-bottom:1px solid var(--line)}
+  section:last-of-type{border-bottom:none}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:30px}
+  .sec-head .num{
+    font-family:"Playfair Display",serif;font-style:italic;
+    font-size:30px;color:var(--gold);font-weight:500;
+  }
+  .sec-head h2{
+    font-size:clamp(24px,4.5vw,32px);font-weight:700;color:var(--ink);
+    letter-spacing:.02em;position:relative;
+  }
+  .sec-head h2::after{
+    content:"";display:block;width:54px;height:3px;margin-top:10px;
+    background:linear-gradient(90deg,var(--bookmark),var(--gold));border-radius:3px;
+  }
+
+  /* 书籍信息卡 */
+  .book-meta{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:0;
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    overflow:hidden;box-shadow:0 10px 30px var(--shadow);
+  }
+  .book-meta .cell{padding:22px 24px;border-right:1px solid var(--line)}
+  .book-meta .cell:last-child{border-right:none}
+  .book-meta .k{font-size:12px;letter-spacing:.16em;color:var(--accent);font-weight:600;margin-bottom:8px}
+  .book-meta .v{font-size:17px;font-weight:600;color:var(--ink)}
+  .book-meta .v small{display:block;font-weight:400;font-size:13px;color:var(--ink-soft);margin-top:4px;line-height:1.6}
+
+  .overview{
+    margin-top:26px;background:linear-gradient(135deg,#f7f1e4,#efe5d2);
+    border-left:5px solid var(--bookmark);border-radius:0 12px 12px 0;
+    padding:24px 28px;font-size:18px;line-height:1.95;color:var(--ink);
+    box-shadow:0 8px 24px var(--shadow);
+  }
+  .overview b{color:var(--bookmark-deep)}
+
+  /* 核心张力对比 */
+  .duo{display:grid;grid-template-columns:1fr auto 1fr;gap:20px;align-items:stretch;margin-top:6px}
+  .duo .side{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:26px 24px;box-shadow:0 8px 24px var(--shadow);position:relative;
+  }
+  .duo .side.left{border-top:4px solid var(--accent)}
+  .duo .side.right{border-top:4px solid var(--bookmark)}
+  .duo .side h3{font-size:22px;font-weight:700;margin-bottom:6px}
+  .duo .side .en{font-family:"Playfair Display",serif;font-style:italic;color:var(--gold);font-size:15px;margin-bottom:14px}
+  .duo .side p{font-size:15.5px;color:var(--ink-soft);line-height:1.85}
+  .duo .side ul{margin-top:14px;padding-left:18px}
+  .duo .side li{font-size:14.5px;color:var(--ink-soft);margin-bottom:7px}
+  .duo .vs{align-self:center;display:flex;flex-direction:column;align-items:center;gap:8px}
+  .duo .vs .circle{
+    width:54px;height:54px;border-radius:50%;background:var(--bookmark);
+    color:#fdf8ec;font-family:"Ma Shan Zheng",serif;font-size:24px;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 6px 16px rgba(33,69,107,.4);
+  }
+  .duo .vs small{color:var(--ink-soft);font-size:12px;letter-spacing:.12em}
+  .duo-insight{
+    margin-top:22px;background:var(--paper-2);border-radius:12px;
+    padding:20px 24px;font-size:15.5px;color:var(--ink);
+    border:1px dashed var(--line);
+  }
+  .duo-insight b{color:var(--bookmark-deep)}
+
+  /* 概念卡片 */
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .person{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 20px;box-shadow:0 8px 22px var(--shadow);
+    transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .person:hover{transform:translateY(-5px);box-shadow:0 16px 34px rgba(22,48,79,.2)}
+  .person .avatar{
+    width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-family:"Playfair Display",serif;font-size:20px;color:#fff;margin-bottom:14px;
+    background:linear-gradient(135deg,var(--bookmark),var(--bookmark-deep));font-weight:600;
+  }
+  .person:nth-child(3n) .avatar{background:linear-gradient(135deg,var(--accent),#23547a)}
+  .person:nth-child(4n) .avatar{background:linear-gradient(135deg,var(--gold),#8a6a2c)}
+  .person h4{font-size:18px;font-weight:700;margin-bottom:4px}
+  .person .role{font-size:12px;color:var(--accent);letter-spacing:.08em;margin-bottom:10px;font-weight:600}
+  .person p{font-size:13.5px;color:var(--ink-soft);line-height:1.7}
+  .person .quote{margin-top:12px;padding-top:10px;border-top:1px solid var(--line);font-size:13px;color:var(--bookmark-deep);font-style:italic}
+
+  /* 脉络图 */
+  .flow{display:flex;flex-direction:column;gap:0;margin-top:6px}
+  .flow .step{display:grid;grid-template-columns:auto 1fr;gap:20px;position:relative;padding:0 0 22px 0}
+  .flow .step:last-child{padding-bottom:0}
+  .flow .dot{
+    width:42px;height:42px;border-radius:50%;background:var(--card);border:2px solid var(--bookmark);
+    color:var(--bookmark-deep);font-weight:700;display:flex;align-items:center;justify-content:center;
+    font-size:16px;position:relative;z-index:2;
+  }
+  .flow .step:not(:last-child) .dot::after{content:"";position:absolute;top:42px;left:50%;transform:translateX(-50%);width:2px;height:22px;background:var(--line)}
+  .flow .body{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 22px;box-shadow:0 6px 18px var(--shadow)}
+  .flow .body h4{font-size:17px;font-weight:700;color:var(--ink);margin-bottom:4px}
+  .flow .body .tagline{font-size:13px;color:var(--accent);font-weight:600;margin-bottom:8px;letter-spacing:.06em}
+  .flow .body p{font-size:14px;color:var(--ink-soft);line-height:1.75}
+
+  /* 金句 */
+  .quotes{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .quote-card{
+    background:linear-gradient(135deg,#f7f1e4,#f1e7d4);border-radius:14px;
+    padding:26px 26px 22px;box-shadow:0 8px 24px var(--shadow);
+    border:1px solid var(--line);position:relative;
+  }
+  .quote-card::before{
+    content:"\201C";position:absolute;top:6px;left:16px;font-family:"Playfair Display",serif;
+    font-size:64px;color:var(--bookmark);opacity:.22;line-height:1;
+  }
+  .quote-card .zh{font-size:19px;font-weight:600;color:var(--ink);line-height:1.7;margin-bottom:10px;position:relative;z-index:1}
+  .quote-card .en{font-family:"Playfair Display",serif;font-style:italic;font-size:14px;color:var(--ink-soft);margin-bottom:10px}
+  .quote-card .src{font-size:12px;color:var(--accent);letter-spacing:.08em;font-weight:600}
+
+  /* 行动启发 */
+  .act{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .act .col{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px 24px;box-shadow:0 8px 22px var(--shadow)}
+  .act .col h3{font-size:19px;font-weight:700;color:var(--bookmark-deep);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+  .act .col h3 .ic{width:30px;height:30px;border-radius:8px;background:var(--paper-2);display:flex;align-items:center;justify-content:center;font-size:16px}
+  .act .col li{list-style:none;padding:12px 0;border-bottom:1px dashed var(--line);font-size:14.5px;color:var(--ink-soft);line-height:1.75}
+  .act .col li:last-child{border-bottom:none}
+  .act .col li b{color:var(--ink);font-weight:600}
+
+  /* 适合谁读 */
+  .who{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .who .box{border-radius:14px;padding:24px;box-shadow:0 8px 22px var(--shadow)}
+  .who .good{background:linear-gradient(135deg,#eef3f7,#e1e9f0);border:1px solid #cddce8}
+  .who .no{background:linear-gradient(135deg,#f6efea,#f0e1d8);border:1px solid #e6c9bd}
+  .who h3{font-size:18px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+  .who .good h3{color:var(--accent)}
+  .who .no h3{color:var(--bookmark-deep)}
+  .who li{list-style:none;padding:9px 0 9px 22px;position:relative;font-size:14.5px;color:var(--ink-soft)}
+  .who li::before{content:"\2022";position:absolute;left:4px;font-weight:700}
+  .who .good li::before{color:var(--accent)}
+  .who .no li::before{color:var(--bookmark)}
+
+  /* 页脚书签 */
+  footer{position:relative;margin-top:40px;background:var(--bookmark-deep);color:#dce8f6;padding:46px 22px 40px;text-align:center}
+  footer .pin{
+    position:absolute;top:-26px;left:50%;transform:translateX(-50%);
+    width:52px;height:64px;background:linear-gradient(180deg,var(--bookmark),var(--bookmark-deep));
+    border-radius:0 0 6px 6px;box-shadow:0 6px 14px rgba(0,0,0,.3);
+  }
+  footer .pin::after{content:"時";font-family:"Ma Shan Zheng",serif;color:#f3ede1;font-size:24px;display:block;margin-top:8px}
+  footer h3{font-family:"Ma Shan Zheng",serif;font-size:30px;color:#fdf8ec;font-weight:400;margin-bottom:10px}
+  footer p{font-size:13.5px;line-height:1.8;opacity:.88;max-width:500px;margin:0 auto}
+  footer .meta{margin-top:18px;font-size:12px;letter-spacing:.14em;opacity:.7}
+
+  /* ===== 响应式 ===== */
+  @media(max-width:720px){
+    .book-meta{grid-template-columns:1fr}
+    .book-meta .cell{border-right:none;border-bottom:1px solid var(--line)}
+    .book-meta .cell:last-child{border-bottom:none}
+    .duo{grid-template-columns:1fr;gap:14px}
+    .duo .vs{flex-direction:row;padding:6px 0}
+    .duo .vs .circle{width:46px;height:46px}
+    .grid{grid-template-columns:repeat(2,1fr)}
+    .quotes{grid-template-columns:1fr}
+    .act,.who{grid-template-columns:1fr}
+    section{padding:48px 0}
+  }
+  @media(max-width:420px){
+    .grid{grid-template-columns:1fr}
+    .hero .tag{font-size:12px}
+    .overview{font-size:16px;padding:20px 20px}
+    .wrap{padding:0 16px}
+  }
+</style>
+<style id="local-font-fallback">
+/* 站内离线字体兜底：不改动原版式，用本机同族字体替代 Google Fonts，避免跨境请求拖慢首屏 */
+@font-face{font-family:"Noto Serif SC";src:local("Source Han Serif SC"),local("Source Han Serif CN"),local("Noto Serif CJK SC"),local("Songti SC"),local("STSong"),local("SimSun"),local("宋体");font-display:swap;}
+@font-face{font-family:"Playfair Display";src:local("Playfair Display"),local("Georgia"),local("Times New Roman");font-display:swap;}
+@font-face{font-family:"Ma Shan Zheng";src:local("Ma Shan Zheng"),local("STKaiti"),local("Kaiti SC"),local("KaiTi"),local("楷体"),local("STXingkai");font-display:swap;}
+@font-face{font-family:"Noto Sans SC";src:local("Source Han Sans SC"),local("Noto Sans CJK SC"),local("PingFang SC"),local("Hiragino Sans GB"),local("Microsoft YaHei"),local("微软雅黑");font-display:swap;}
+</style>
+</head>
+<body data-pagefind-ignore>
+
+  <!-- HERO -->
+  <header class="hero">
+    <img src="/reading/shijian-jianshi/assets/cover.jpg"
+         alt="星空银河"
+         onerror="this.style.display='none'">
+    <div class="mask"></div>
+    <div class="bookmark"></div>
+    <div class="hero-inner">
+      <div class="eyebrow">Reading Notes · 科普经典</div>
+      <h1>时间简史</h1>
+      <div class="sub">从大爆炸到黑洞，用一个方程，讲清我们所在宇宙的来龙去脉。</div>
+      <span class="tag">史蒂芬·霍金 · A Brief History of Time</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- 书籍信息 -->
+    <section>
+      <div class="sec-head"><span class="num">01</span><h2>书籍信息</h2></div>
+      <div class="book-meta">
+        <div class="cell">
+          <div class="k">作者 / 成书</div>
+          <div class="v">史蒂芬·霍金<small>Stephen Hawking；1988 年初版，全球畅销逾千万册</small></div>
+        </div>
+        <div class="cell">
+          <div class="k">领域</div>
+          <div class="v">宇宙学 · 科学普及<small>用最少数学，讲清时空、黑洞与宇宙起源</small></div>
+        </div>
+        <div class="cell">
+          <div class="k">核心命题</div>
+          <div class="v">宇宙从何而来 · 时间有无开端<small>广义相对论与量子力学如何共同刻画我们的宇宙</small></div>
+        </div>
+      </div>
+      <div class="overview">
+        <b>一句话总览：</b>霍金用一本几乎不含公式的小书，带普通人走完从亚里士多德到现代宇宙学的思想旅程——回答「时间有没有起点、黑洞是什么、我们为何存在于此」这三个最古老也最宏大的问题。
+      </div>
+    </section>
+
+    <!-- 核心张力 -->
+    <section>
+      <div class="sec-head"><span class="num">02</span><h2>核心张力：决定论 与 不确定性</h2></div>
+      <div class="duo">
+        <div class="side left">
+          <h3>决定论</h3>
+          <div class="en">Determinism · 经典物理</div>
+          <p>牛顿与拉普拉斯的世界图景：只要知道某一刻所有粒子的位置与速度，就能算出过去与未来的一切。宇宙是一台精密钟表。</p>
+          <ul>
+            <li>「拉普拉斯妖」：全知者能预言所有</li>
+            <li>时间对称——过去未来在数学上等价</li>
+            <li>爱因斯坦深信「上帝不掷骰子」</li>
+          </ul>
+        </div>
+        <div class="vs">
+          <div class="circle"> vs </div>
+          <small>张力</small>
+        </div>
+        <div class="side right">
+          <h3>不确定性</h3>
+          <div class="en">Uncertainty · 量子力学</div>
+          <p>20 世纪量子力学的革命：你无法同时精确知道粒子的位置与速度（海森堡测不准）。自然在最底层是概率性的。</p>
+          <ul>
+            <li>观测本身会改变被观测的对象</li>
+            <li>未来只能以概率预言，而非确定</li>
+            <li>黑洞辐射正是两者交汇的产物</li>
+          </ul>
+        </div>
+      </div>
+      <div class="duo-insight">
+        <b>核心洞见：</b>霍金一生的工作，正是试图让这两套「互不兼容」的理论握手——他用<em>量子效应修正黑洞</em>，得出黑洞会缓慢蒸发（霍金辐射），并由此挑战「时间有绝对起点」的旧观念。这本书最迷人处，不在结论，而在「人类如何用不完美的理论，逼近真实的宇宙」。
+      </div>
+    </section>
+
+    <!-- 关键概念卡片 -->
+    <section>
+      <div class="sec-head"><span class="num">03</span><h2>八块基石概念</h2></div>
+      <div class="grid">
+        <div class="person">
+          <div class="avatar">E</div>
+          <h4>狭义相对论</h4>
+          <div class="role">时空观革命</div>
+          <p>光速恒定，时间与空间随速度弯曲。运动的钟变慢，质量与能量等价（E=mc²）。</p>
+          <div class="quote">「时间和空间并非绝对容器。」</div>
+        </div>
+        <div class="person">
+          <div class="avatar">G</div>
+          <h4>广义相对论</h4>
+          <div class="role">引力即弯曲</div>
+          <p>质量弯曲时空，弯曲的时空告诉物质如何运动。这是我们理解宇宙膨胀与黑洞的基石。</p>
+          <div class="quote">「引力，是时空的几何。」</div>
+        </div>
+        <div class="person">
+          <div class="avatar">Q</div>
+          <h4>不确定性原理</h4>
+          <div class="role">量子底线</div>
+          <p>海森堡：位置与动量不可同时精确测定。自然在最微观处是概率性的，不是确定性的。</p>
+          <div class="quote">「无法同时看清一切。」</div>
+        </div>
+        <div class="person">
+          <div class="avatar">B</div>
+          <h4>黑洞</h4>
+          <div class="role">时空之渊</div>
+          <p>密度大到连光也无法逃逸的天体。边界叫事件视界，内部藏着奇点。</p>
+          <div class="quote">「连光都被囚禁的地方。」</div>
+        </div>
+        <div class="person">
+          <div class="avatar">S</div>
+          <h4>奇点</h4>
+          <div class="role">物理的尽头</div>
+          <p>密度与曲率无限大的点。大爆炸的「起点」与黑洞中心都是奇点，现有理论在此失效。</p>
+          <div class="quote">「定律在此停止。」</div>
+        </div>
+        <div class="person">
+          <div class="avatar">H</div>
+          <h4>霍金辐射</h4>
+          <div class="role">黑洞会蒸发</div>
+          <p>结合量子效应，黑洞边缘会辐射粒子，质量缓慢流失，最终可能「蒸发」殆尽。</p>
+          <div class="quote">「黑洞并非全黑。」</div>
+        </div>
+        <div class="person">
+          <div class="avatar">T</div>
+          <h4>时间箭头</h4>
+          <div class="role">为何时间向前</div>
+          <p>热力学箭头（熵增）、心理箭头、宇宙学箭头指向同一方向——这是「过去」与「未来」之分的根源。</p>
+          <div class="quote">「无序，定义了时间的方向。」</div>
+        </div>
+        <div class="person">
+          <div class="avatar">M</div>
+          <h4>统一理论</h4>
+          <div class="role">万有理论</div>
+          <p>弦论 / M 理论试图把引力与量子力学合二为一，给出描述整个宇宙的单一框架。</p>
+          <div class="quote">「一套方程，描述一切。」</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 脉络图 -->
+    <section>
+      <div class="sec-head"><span class="num">04</span><h2>全书脉络 · 我们对宇宙的理解如何演进</h2></div>
+      <div class="flow">
+        <div class="step">
+          <div class="dot">一</div>
+          <div class="body">
+            <h4>我们的宇宙图景 · 从亚里士多德到牛顿</h4>
+            <div class="tagline">静态、有限的旧世界</div>
+            <p>亚里士多德认为地球静止居中；牛顿给出引力定律与绝对时空。人类对宇宙的认识第一次被写成可计算的定律。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="dot">二</div>
+          <div class="body">
+            <h4>相对论重写时空</h4>
+            <div class="tagline">光速恒定 · 时空弯曲</div>
+            <p>狭义与广义相对论推翻绝对时空，揭示质量弯曲时空、时间可被拉伸。这是理解大爆炸与黑洞的语言。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="dot">三</div>
+          <div class="body">
+            <h4>膨胀的宇宙</h4>
+            <div class="tagline">哈勃红移 · 宇宙在变大</div>
+            <p>星系彼此远离，说明宇宙并非静止，而是在膨胀。逆推回去，宇宙有一个密度无穷大的开端。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="dot">四</div>
+          <div class="body">
+            <h4>量子与不确定性</h4>
+            <div class="tagline">微观世界的掷骰</div>
+            <p>量子力学带来概率本质与测不准原理，与决定论对峙。它也是后来理解黑洞蒸发的钥匙。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="dot">五</div>
+          <div class="body">
+            <h4>黑洞与时间箭头</h4>
+            <div class="tagline">视界之内 · 熵增之矢</div>
+            <p>黑洞是广义相对论的极端预言；时间箭头由熵增定义，把「因果」与宇宙演化方向绑在一起。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="dot">六</div>
+          <div class="body">
+            <h4>时间的开端 · 统一理论的追求</h4>
+            <div class="tagline">无边界设想 · 万有理论</div>
+            <p>霍金提出「无边界设想」：宇宙在时间上没有起点，就像地球表面没有边缘。终极目标是统一引力与量子的「万有理论」。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 金句 -->
+    <section>
+      <div class="sec-head"><span class="num">05</span><h2>六句值得抄在扉页的话</h2></div>
+      <div class="quotes">
+        <div class="quote-card">
+          <div class="zh">有人告诉我，每多写一个方程，书的销量就会减半。所以我决定只用这一个：E = mc²。</div>
+          <div class="en">"Each equation halves the readership — so I kept just one."</div>
+          <div class="src">— 作者自述（ famously quoted）</div>
+        </div>
+        <div class="quote-card">
+          <div class="zh">我们可以想象，时空像一个有限而无边界的曲面，就像地球的表面。</div>
+          <div class="en">"Space-time may be finite yet without boundary, like the Earth's surface."</div>
+          <div class="src">— 无边界设想（No-Boundary Proposal）</div>
+        </div>
+        <div class="quote-card">
+          <div class="zh">一个理论若不能被人理解，便称不上完成了它的使命。</div>
+          <div class="en">"A theory is no good if it cannot be explained to everyone."</div>
+          <div class="src">— 科学传播信念</div>
+        </div>
+        <div class="quote-card">
+          <div class="zh">我们不过是宇宙中一颗平凡恒星周围的、一种高级猴子。</div>
+          <div class="en">"We are just an advanced breed of monkeys on a minor planet."</div>
+          <div class="src">— 谦逊的宇宙观</div>
+        </div>
+        <div class="quote-card">
+          <div class="zh">如果宇宙真的是无序的，就不会有可被理解的规律，我们也就不会在这里追问。</div>
+          <div class="en">"If the universe were chaotic, we would not be here to ask why."</div>
+          <div class="src">— 人择原理意味</div>
+        </div>
+        <div class="quote-card">
+          <div class="zh">最美丽的事物，是我们无法理解的——正是宇宙的奥秘，让它值得敬畏。</div>
+          <div class="en">"The most beautiful things are those we cannot understand."</div>
+          <div class="src">— 对未知之敬畏</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 行动启发 -->
+    <section>
+      <div class="sec-head"><span class="num">06</span><h2>对认知与决策的启发</h2></div>
+      <div class="act">
+        <div class="col">
+          <h3><span class="ic">🌌</span>认知与世界观</h3>
+          <ul>
+            <li><b>接受「模型」而非「真相」：</b>霍金的「模型依赖实在论」——我们认识的只是好用的模型。别把脑中地图当成领土本身。</li>
+            <li><b>谦逊是清醒：</b>人类不过是「高级猴子」。在宏大的宇宙尺度下，多数焦虑会缩成尘埃。</li>
+            <li><b>兼容对立理论：</b>相对论与量子力学都「对」却彼此冲突。复杂问题常需多模型并行，而非非此即彼。</li>
+            <li><b>边界处才有真问题：</b>奇点是旧理论失效处，也是新理论诞生处。遇到的「说不通」，往往是认知升级的入口。</li>
+          </ul>
+        </div>
+        <div class="col">
+          <h3><span class="ic">🧭</span>工作与决策</h3>
+          <ul>
+            <li><b>为不确定性留余量：</b>量子世界无法精确预测，商业与人生亦然。做概率化预案，而非单点豪赌。</li>
+            <li><b>找到你的「时间箭头」：</b>熵增不可逆——有些决策窗口一旦错过就不再来，识别并抓住它。</li>
+            <li><b>把复杂讲简单：</b>霍金用一本书换掉方程。能用大白话说清的事，往往才是真懂了。</li>
+            <li><b>长期主义视角：</b>宇宙以亿年计，项目以季度计。拉长时间轴，多数波动都不值得焦虑。</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 适合谁读 -->
+    <section>
+      <div class="sec-head"><span class="num">07</span><h2>适合谁读</h2></div>
+      <div class="who">
+        <div class="box good">
+          <h3>✅ 推荐一读</h3>
+          <ul>
+            <li>对「宇宙从哪来、时间有没有起点」有本能好奇的人</li>
+            <li>想建立基础宇宙观、却怕数学门槛的科普入门读者</li>
+            <li>喜欢「宏大叙事」、在琐碎日常里需要仰望星空的人</li>
+            <li>做产品、管理、战略，想借物理模型训练思维框架的人</li>
+            <li>想读一本「薄而重」、可反复重读的小书的人</li>
+          </ul>
+        </div>
+        <div class="box no">
+          <h3>⚠️ 可能不合口味</h3>
+          <ul>
+            <li>想要严格推导、公式与习题的硬核读者（本书刻意零公式）</li>
+            <li>期待快节奏、强情节的消遣型读者</li>
+            <li>对哲学性发问不耐、只要「标准答案」的人</li>
+            <li>抗拒「我们可能永远无法完全理解宇宙」这种开放式结论的人</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="pin"></div>
+    <h3>时间简史</h3>
+    <p>读它，不是为了记住多少个方程，而是重新获得一种能力——在低头赶路时，偶尔抬头，想起自己正站在一颗名叫地球的尘埃上，追问整片星海。</p>
+    <div class="meta">读书笔记 · 单文件 HTML · 个人阅读札记，非学术考据</div>
+  </footer>
+
+</body>
+</html>

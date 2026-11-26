@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>《你当像鸟飞往你的山》读书笔记 · 教育即羽翼</title>
+<style>
+  :root{
+    --paper:#f4ecdd;
+    --paper-2:#efe5d2;
+    --ink:#2b2722;
+    --ink-soft:#5a5247;
+    --line:#d8cbb2;
+    --accent:#2d5a7a;        /* 黛蓝 · 破晓山色 */
+    --accent-dark:#1d3b52;
+    --accent-soft:#5b8aa8;
+    --gold:#c8923c;          /* 暖金 · 飞鸟与晨曦 */
+    --shadow:rgba(40,55,75,.14);
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:"Noto Serif SC",Georgia,serif;
+    color:var(--ink);
+    background-color:var(--paper);
+    background-image:
+      radial-gradient(rgba(120,90,50,.05) 1px, transparent 1px),
+      radial-gradient(rgba(120,90,50,.04) 1px, transparent 1px);
+    background-size:22px 22px, 22px 22px;
+    background-position:0 0, 11px 11px;
+    line-height:1.85;
+    -webkit-font-smoothing:antialiased;
+  }
+  body::before{
+    content:"";
+    position:fixed;inset:0;
+    pointer-events:none;z-index:0;
+    opacity:.4;
+    mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+  }
+  .wrap{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:0 22px 80px;}
+
+  /* 顶部书签色带 */
+  .ribbon{
+    position:relative;z-index:3;
+    width:max-content;max-width:90%;
+    margin:0 auto;
+    background:linear-gradient(180deg,var(--accent),var(--accent-dark));
+    color:#fbeede;
+    padding:14px 46px 16px;
+    text-align:center;
+    box-shadow:0 6px 18px var(--shadow);
+    border-radius:0 0 6px 6px;
+  }
+  .ribbon .glyph{font-family:"Ma Shan Zheng",cursive;font-size:1.5rem;display:block;line-height:1;margin-bottom:2px;color:#ffdca0;}
+  .ribbon .en{font-family:"Playfair Display",serif;font-style:italic;letter-spacing:.12em;font-size:.72rem;opacity:.92;text-transform:uppercase;}
+  .ribbon .cn{font-weight:600;font-size:1.02rem;letter-spacing:.28em;padding-left:.28em;}
+
+  /* Hero */
+  .hero{
+    position:relative;z-index:2;
+    margin-top:-6px;
+    height:clamp(320px,46vw,520px);
+    border-radius:0 0 var(--radius) var(--radius);
+    overflow:hidden;
+    display:flex;align-items:flex-end;
+    background:linear-gradient(160deg,#16303f,#2d5a7a 60%,#c8923c);
+  }
+  .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .hero::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(20,38,50,0) 22%,rgba(20,38,50,.5) 62%,rgba(18,32,42,.93) 100%);
+  }
+  .hero-text{position:relative;z-index:2;padding:34px 30px 38px;color:#fbeede;}
+  .hero-text .kicker{font-family:"Playfair Display",serif;font-style:italic;letter-spacing:.18em;font-size:.82rem;color:#ffdca0;text-transform:uppercase;}
+  .hero-text h1{font-family:"Noto Serif SC",serif;font-weight:900;font-size:clamp(2rem,5.6vw,3.2rem);margin:.18em 0 .12em;letter-spacing:.03em;text-shadow:0 2px 14px rgba(0,0,0,.4);}
+  .hero-text .sub{font-size:1rem;opacity:.92;max-width:36em;}
+
+  section{margin-top:54px;}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:22px;border-bottom:2px solid var(--line);padding-bottom:10px;}
+  .sec-head .num{font-family:"Playfair Display",serif;font-style:italic;color:var(--accent);font-size:1.5rem;font-weight:700;}
+  .sec-head h2{font-size:1.5rem;font-weight:700;margin:0;letter-spacing:.04em;}
+  .sec-head .en{font-family:"Playfair Display",serif;font-style:italic;color:var(--ink-soft);font-size:.85rem;margin-left:auto;opacity:.7;}
+
+  /* 书籍信息卡 */
+  .book-card{
+    display:grid;grid-template-columns:1.15fr 1fr;gap:24px;
+    background:var(--paper-2);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:26px 28px;
+    box-shadow:0 8px 22px var(--shadow);
+  }
+  .book-card h3{margin:0 0 4px;font-size:1.3rem;}
+  .meta-row{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0;}
+  .chip{background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:5px 13px;font-size:.82rem;color:var(--ink-soft);}
+  .chip b{color:var(--accent-dark);font-weight:600;}
+  .proposition{background:linear-gradient(180deg,#fff8ec,#f6ecd8);border-left:4px solid var(--accent);padding:14px 18px;border-radius:8px;font-size:.96rem;}
+  .proposition .lab{font-family:"Playfair Display",serif;font-style:italic;color:var(--accent);font-size:.8rem;letter-spacing:.08em;}
+  .overview{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fbeede;border-radius:12px;padding:20px 22px;display:flex;flex-direction:column;justify-content:center;}
+  .overview .lbl{font-family:"Playfair Display",serif;font-style:italic;font-size:.78rem;letter-spacing:.1em;opacity:.9;}
+  .overview p{font-size:1.1rem;font-weight:600;margin:.4em 0 0;line-height:1.6;}
+
+  /* 双极对比 */
+  .vs-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:stretch;}
+  .vs-col{background:var(--paper-2);border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:0 6px 16px var(--shadow);}
+  .vs-col h3{margin:0 0 6px;font-size:1.18rem;color:var(--accent-dark);}
+  .vs-col .lead{font-size:.92rem;color:var(--ink-soft);margin-bottom:12px;}
+  .vs-col ul{margin:0;padding-left:1.1em;font-size:.92rem;}
+  .vs-col li{margin:7px 0;}
+  .vs-mid{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:84px;}
+  .vs-mid .vs{font-family:"Playfair Display",serif;font-weight:700;font-size:1.6rem;color:var(--accent);}
+  .vs-mid .mini{font-size:.74rem;color:var(--ink-soft);text-align:center;margin-top:6px;max-width:96px;}
+  .vs-note{margin-top:18px;background:#fff8ec;border:1px dashed var(--accent-soft);border-radius:10px;padding:14px 18px;font-size:.95rem;}
+  .vs-note b{color:var(--accent-dark);}
+
+  /* 概念卡片网格 */
+  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+  .card{background:var(--paper-2);border:1px solid var(--line);border-radius:12px;padding:18px 16px;box-shadow:0 5px 14px var(--shadow);transition:transform .18s ease, box-shadow .18s ease;}
+  .card:hover{transform:translateY(-4px);box-shadow:0 12px 24px var(--shadow);}
+  .card .ic{font-family:"Playfair Display",serif;font-style:italic;color:var(--accent);font-size:1.05rem;}
+  .card h4{margin:6px 0 6px;font-size:1.04rem;}
+  .card p{margin:0;font-size:.86rem;color:var(--ink-soft);line-height:1.65;}
+
+  /* 脉络图 */
+  .timeline{position:relative;margin-top:10px;padding-left:8px;}
+  .timeline::before{content:"";position:absolute;left:14px;top:6px;bottom:6px;width:3px;background:linear-gradient(var(--accent),var(--gold));border-radius:3px;}
+  .tl-item{position:relative;padding:0 0 22px 46px;}
+  .tl-item:last-child{padding-bottom:0;}
+  .tl-item .dot{position:absolute;left:6px;top:4px;width:18px;height:18px;border-radius:50%;background:var(--paper);border:3px solid var(--accent);}
+  .tl-item h4{margin:0 0 3px;font-size:1.04rem;color:var(--accent-dark);}
+  .tl-item .stage{font-family:"Playfair Display",serif;font-style:italic;font-size:.78rem;color:var(--ink-soft);}
+  .tl-item p{margin:4px 0 0;font-size:.9rem;color:var(--ink-soft);}
+
+  /* 金句 */
+  .quotes{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  blockquote{margin:0;background:linear-gradient(180deg,#fff8ec,#f4ead6);border-left:5px solid var(--accent);border-radius:0 12px 12px 0;padding:18px 22px;box-shadow:0 5px 14px var(--shadow);}
+  blockquote .q{font-size:1.02rem;font-weight:600;line-height:1.7;}
+  blockquote .from{display:block;margin-top:10px;font-size:.8rem;color:var(--ink-soft);font-family:"Playfair Display",serif;font-style:italic;}
+
+  /* 行动启发 */
+  .action{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .action .col{background:var(--paper-2);border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;box-shadow:0 6px 16px var(--shadow);}
+  .action h3{margin:0 0 12px;color:var(--accent-dark);font-size:1.12rem;display:flex;align-items:center;gap:8px;}
+  .action h3 .tag{background:var(--accent);color:#fbeede;font-size:.7rem;padding:3px 9px;border-radius:999px;font-family:"Playfair Display",serif;font-style:italic;}
+  .action li{margin:9px 0;font-size:.92rem;}
+  .action b{color:var(--accent-dark);}
+
+  /* 适合谁读 */
+  .who{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .who .box{border-radius:12px;padding:18px 22px;border:1px solid var(--line);}
+  .who .yes{background:linear-gradient(180deg,#eef4f5,#e1ecee);border-left:5px solid #3f7d86;}
+  .who .no{background:linear-gradient(180deg,#f7eeea,#f1e3dc);border-left:5px solid #a8745a;}
+  .who h4{margin:0 0 10px;font-size:1.05rem;}
+  .who .yes h4{color:#2f6068;}
+  .who .no h4{color:#8a4f38;}
+  .who li{font-size:.9rem;margin:7px 0;}
+
+  footer{margin-top:64px;text-align:center;color:var(--ink-soft);font-size:.82rem;border-top:1px solid var(--line);padding-top:24px;}
+  footer .ribbon-mini{display:inline-block;background:linear-gradient(180deg,var(--accent),var(--accent-dark));color:#fbeede;padding:6px 20px;border-radius:0 0 6px 6px;font-family:"Ma Shan Zheng",cursive;font-size:1.1rem;margin-bottom:12px;}
+
+  @media(max-width:720px){
+    .book-card{grid-template-columns:1fr;}
+    .vs-grid{grid-template-columns:1fr;}
+    .vs-mid{flex-direction:row;gap:12px;min-width:0;padding:6px 0;}
+    .vs-mid .mini{max-width:none;}
+    .cards{grid-template-columns:repeat(2,1fr);}
+    .quotes,.action,.who{grid-template-columns:1fr;}
+    .hero-text{padding:26px 20px 30px;}
+  }
+  @media(max-width:420px){
+    .wrap{padding:0 16px 60px;}
+    .cards{grid-template-columns:1fr;}
+    .ribbon{padding:12px 26px 14px;}
+    .ribbon .cn{font-size:.86rem;letter-spacing:.18em;}
+    section{margin-top:42px;}
+  }
+</style>
+<style id="local-font-fallback">
+/* 站内离线字体兜底：不改动原版式，用本机同族字体替代 Google Fonts，避免跨境请求拖慢首屏 */
+@font-face{font-family:"Noto Serif SC";src:local("Source Han Serif SC"),local("Source Han Serif CN"),local("Noto Serif CJK SC"),local("Songti SC"),local("STSong"),local("SimSun"),local("宋体");font-display:swap;}
+@font-face{font-family:"Playfair Display";src:local("Playfair Display"),local("Georgia"),local("Times New Roman");font-display:swap;}
+@font-face{font-family:"Ma Shan Zheng";src:local("Ma Shan Zheng"),local("STKaiti"),local("Kaiti SC"),local("KaiTi"),local("楷体"),local("STXingkai");font-display:swap;}
+@font-face{font-family:"Noto Sans SC";src:local("Source Han Sans SC"),local("Noto Sans CJK SC"),local("PingFang SC"),local("Hiragino Sans GB"),local("Microsoft YaHei"),local("微软雅黑");font-display:swap;}
+</style>
+</head>
+<body data-pagefind-ignore>
+
+  <!-- 书签色带 -->
+  <div class="ribbon">
+    <span class="glyph">飞</span>
+    <span class="cn">你 当 像 鸟 飞 往 你 的 山</span>
+    <span class="en">Educated · A Memoir</span>
+  </div>
+
+  <!-- Hero -->
+  <header class="hero">
+    <img src="/reading/feiwang-nideshan/assets/cover.jpg"
+         alt="晨曦中的山峦"
+         onerror="this.style.display='none'" />
+    <div class="hero-text">
+      <div class="kicker">Educated — Tara Westover</div>
+      <h1>教育，是长出翅膀</h1>
+      <p class="sub">一个在废料场长大、十七岁前没进过教室的女孩，如何靠教育挣脱原生家庭的牢笼，飞往属于自己的山。</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- 1. 书籍信息 -->
+    <section id="book">
+      <div class="sec-head">
+        <span class="num">01</span>
+        <h2>书籍信息</h2>
+        <span class="en">About the Book</span>
+      </div>
+      <div class="book-card">
+        <div>
+          <h3>《你当像鸟飞往你的山》</h3>
+          <div class="meta-row">
+            <span class="chip"><b>作者</b>　塔拉·韦斯特弗</span>
+            <span class="chip"><b>出版</b>　2018（ memoir ）</span>
+            <span class="chip"><b>领域</b>　回忆录 · 教育 · 女性成长</span>
+            <span class="chip"><b>原名</b>　Educated</span>
+          </div>
+          <div class="proposition">
+            <span class="lab">Core Thesis · 核心命题</span>
+            <p>教育不是一张文凭，而是一种<strong>重塑自我的能力</strong>——它让人看见另一种活法，也让人有勇气在「忠于家庭」与「成为自己」之间，选择长出自己的翅膀。</p>
+          </div>
+        </div>
+        <div class="overview">
+          <span class="lbl">One-line Overview</span>
+          <p>「你可以爱家人，也可以成为自己；教育不是背叛，而是让你终于有资格定义『我是谁』。」</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. 核心张力 -->
+    <section id="tension">
+      <div class="sec-head">
+        <span class="num">02</span>
+        <h2>核心张力：家庭的忠诚 vs 自我的觉醒</h2>
+        <span class="en">The Central Tension</span>
+      </div>
+      <div class="vs-grid">
+        <div class="vs-col">
+          <h3>原生家庭的引力</h3>
+          <p class="lead">血脉、信仰与依赖织成的网</p>
+          <ul>
+            <li><b>不就医不信学</b>：父亲的世界里，学校与医院都是政府的陷阱。</li>
+            <li><b>末日信仰</b>：整套生活被「世界终将崩塌」的执念统摄。</li>
+            <li><b>废料场即全部</b>： siblings 在危险劳作中长大，伤痛被当作勋章。</li>
+            <li><b>忠诚即爱</b>：离开家庭、接受外部真理，被视作背叛。</li>
+          </ul>
+        </div>
+        <div class="vs-mid">
+          <span class="vs">VS</span>
+          <span class="mini">你无法选择出身，却可以选择飞往哪座山</span>
+        </div>
+        <div class="vs-col">
+          <h3>教育的翅膀</h3>
+          <p class="lead">另一种视角、另一种人生剧本</p>
+          <ul>
+            <li><b>杨百翰 → 剑桥 → 哈佛</b>：从零基础到博士，靠的是敢开始的勇气。</li>
+            <li><b>看见双重世界</b>：同一件事，家庭叙事与历史真相并存。</li>
+            <li><b>自我怀疑</b>：impostor syndrome——「我真的属于这里吗？」</li>
+            <li><b>重建叙事</b>：不再由家人定义，而是自己书写「我是谁」。</li>
+          </ul>
+        </div>
+      </div>
+      <div class="vs-note">
+        <b>核心洞见：</b>书名的原文只是《Educated》，中文译名取自《圣经·诗篇》「像鸟飞往你的山」——飞，不是逃离，而是归返本真的自我。塔拉没有简单「抛弃」家庭，而是在撕裂中确认：爱一个人，与选择成为自己，可以不是二选一。
+      </div>
+    </section>
+
+    <!-- 3. 概念卡片 -->
+    <section id="concepts">
+      <div class="sec-head">
+        <span class="num">03</span>
+        <h2>八块认知基石</h2>
+        <span class="en">Key Concepts</span>
+      </div>
+      <div class="cards">
+        <div class="card">
+          <span class="ic">i.</span>
+          <h4>封闭的原生家庭</h4>
+          <p>巴克峰下的废料场、不就医不上学，是一个自给自足却与世隔绝的微型世界。</p>
+        </div>
+        <div class="card">
+          <span class="ic">ii.</span>
+          <h4>教育的启蒙</h4>
+          <p>自学考入大学是裂缝里的光，知识第一次提供「另一种可能」。</p>
+        </div>
+        <div class="card">
+          <span class="ic">iii.</span>
+          <h4>认知断层</h4>
+          <p>两个世界同时真实存在：家人的故事与教科书的历史互不相认。</p>
+        </div>
+        <div class="card">
+          <span class="ic">iv.</span>
+          <h4>冒充者综合征</h4>
+          <p>置身精英学府却总觉得自己是「冒牌货」，是对出身的漫长不信任。</p>
+        </div>
+        <div class="card">
+          <span class="ic">v.</span>
+          <h4>家庭的撕裂</h4>
+          <p>当真相威胁到家族叙事，亲情变成要求你「闭嘴」的价码。</p>
+        </div>
+        <div class="card">
+          <span class="ic">vi.</span>
+          <h4>记忆的不可靠</h4>
+          <p>同一段童年，每个人讲出不同版本——故事从来是被需要塑造的。</p>
+        </div>
+        <div class="card">
+          <span class="ic">vii.</span>
+          <h4>蜕变与重生</h4>
+          <p>「转变、蜕变、虚伪、背叛」——塔拉把这一切统称为教育。</p>
+        </div>
+        <div class="card">
+          <span class="ic">viii.</span>
+          <h4>飞往你的山</h4>
+          <p>不再做他人梦境的注脚，而是自己人生的建筑师与目的地。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. 脉络图 -->
+    <section id="map">
+      <div class="sec-head">
+        <span class="num">04</span>
+        <h2>全书脉络：从废料场到剑桥</h2>
+        <span class="en">The Narrative Arc</span>
+      </div>
+      <div class="timeline">
+        <div class="tl-item">
+          <span class="dot"></span>
+          <span class="stage">Chapter 1 · 童年</span>
+          <h4>巴克峰下的废料场</h4>
+          <p>在父亲偏执的末日信仰中长大，不就医、不上学，伤口与劳作是日常。</p>
+        </div>
+        <div class="tl-item">
+          <span class="dot"></span>
+          <span class="stage">Chapter 2 · 破壳</span>
+          <h4>挣脱：自学考入大学</h4>
+          <p>哥哥 Tyler 离开的背影点燃念头，她靠自修考入杨百翰大学，第一次踏进教室。</p>
+        </div>
+        <div class="tl-item">
+          <span class="dot"></span>
+          <span class="stage">Chapter 3 · 攀升</span>
+          <h4>剑桥 → 哈佛博士</h4>
+          <p>从零基础到惊人的学术跃迁，也第一次直面「我真的配吗」的自我怀疑。</p>
+        </div>
+        <div class="tl-item">
+          <span class="dot"></span>
+          <span class="stage">Chapter 4 · 撕裂</span>
+          <h4>两个世界的不可调和</h4>
+          <p>家人拒绝承认她的「真相」，亲情以沉默与决裂为代价向她讨要忠诚。</p>
+        </div>
+        <div class="tl-item">
+          <span class="dot"></span>
+          <span class="stage">Chapter 5 · 重建</span>
+          <h4>成为自己的建筑师</h4>
+          <p>她不再试图让两边和解，而是承认：我可以爱他们，也可以不再是原来的我。</p>
+        </div>
+        <div class="tl-item">
+          <span class="dot"></span>
+          <span class="stage">Epilogue · 归处</span>
+          <h4>飞往你的山</h4>
+          <p>「过去是幽灵，未来才有重量」——她终于把人生的定义权，握回自己手里。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. 金句 -->
+    <section id="quotes">
+      <div class="sec-head">
+        <span class="num">05</span>
+        <h2>六条值得抄下来的句子</h2>
+        <span class="en">Memorable Lines</span>
+      </div>
+      <div class="quotes">
+        <blockquote>
+          <span class="q">「你可以用很多说法来称呼这个自我：转变，蜕变，虚伪，背叛。而我称之为：教育。」</span>
+          <span class="from">— 后记</span>
+        </blockquote>
+        <blockquote>
+          <span class="q">「过去是一个幽灵，虚无缥缈，没什么影响力。只有未来才有分量。」</span>
+          <span class="from">— 论放下旧冤屈</span>
+        </blockquote>
+        <blockquote>
+          <span class="q">「我来自一个极少有人能想象的家庭……我的童年由垃圾场的废铜烂铁铸成。」</span>
+          <span class="from">— 开篇意象</span>
+        </blockquote>
+        <blockquote>
+          <span class="q">「教育意味着获得不同的视角，理解不同的人、经历和历史。接受教育，但不要让你的教育僵化成傲慢。」</span>
+          <span class="from">— 论教育的真义</span>
+        </blockquote>
+        <blockquote>
+          <span class="q">「你可以爱一个人，但仍然选择和他说再见；你可以想念一个人，却仍然庆幸他不在你的生命中。」</span>
+          <span class="from">— 论亲情与边界</span>
+        </blockquote>
+        <blockquote>
+          <span class="q">「当我彻底接受了自己的决定，不再为旧冤屈耿耿于怀，我终于可以飞往我的山了。」</span>
+          <span class="from">— 个人阅读札记（综合）</span>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- 6. 行动启发 -->
+    <section id="action">
+      <div class="sec-head">
+        <span class="num">06</span>
+        <h2>对自我与关系的行动启发</h2>
+        <span class="en">What To Do With It</span>
+      </div>
+      <div class="action">
+        <div class="col">
+          <h3><span class="tag">自我</span>长出翅膀</h3>
+          <ul>
+            <li><b>把「我不配」当成信号而非事实：</b>冒充者综合征人人都有，它提醒你正在突破边界，而非你不行。</li>
+            <li><b>教育 = 换视角：</b>不是拿文凭，而是主动接触另一种活法，让认知有第二条路可走。</li>
+            <li><b>承认自己的无知：</b>塔拉的起点是「我什么都不会」，敢承认，才敢开始。</li>
+            <li><b>做自己人生的建筑师：</b>别满足于做他人梦境的注脚，定期问「这真是我想要的吗」。</li>
+          </ul>
+        </div>
+        <div class="col">
+          <h3><span class="tag">关系</span>守住边界</h3>
+          <ul>
+            <li><b>爱与离开可以并存：</b>你可以想念一个人，仍庆幸他不在你的生活里——边界不是残忍，是清醒。</li>
+            <li><b>别为家族叙事牺牲真相：</b>当「忠诚」要求你闭嘴，那往往是该开口的信号。</li>
+            <li><b>接受记忆的不可靠：</b>家人讲的版本未必是事实，你可以保留自己的叙事权。</li>
+            <li><b>长期主义地重建：</b>蜕变是慢变量，给自己时间，别逼一周内和解或决裂。</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. 适合谁读 -->
+    <section id="who">
+      <div class="sec-head">
+        <span class="num">07</span>
+        <h2>适合谁读</h2>
+        <span class="en">Who Should Read</span>
+      </div>
+      <div class="who">
+        <div class="box yes">
+          <h4>✓ 推荐给</h4>
+          <ul>
+            <li>想挣脱原生家庭束缚、重新定义自我的人</li>
+            <li>相信「教育改变命运」、正在或打算自我充电的读者</li>
+            <li>对女性成长、心理重建题材感兴趣的人</li>
+            <li>在亲密关系里纠结「爱与边界」如何两全的思考者</li>
+          </ul>
+        </div>
+        <div class="box no">
+          <h4>✕ 可能不合适</h4>
+          <ul>
+            <li>只想看轻松爽文、不愿面对沉重家庭议题的读者</li>
+            <li>期待传统「成功学逆袭」爽感、要标准答案的人</li>
+            <li>对回忆录主观叙事不耐、只认客观考据的读者</li>
+            <li>正处家庭剧痛中、暂不想被触发情绪的人（建议择时再读）</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="ribbon-mini">飞</div>
+      <div>《你当像鸟飞往你的山》读书笔记 · 纸感阅读版 · 单文件 HTML</div>
+      <div style="margin-top:6px;opacity:.7;">内容为依据原著的阅读札记与提炼，金句为意译概括，非逐字原文摘抄；书名原文为《Educated》。</div>
+    </footer>
+
+  </main>
+</body>
+</html>

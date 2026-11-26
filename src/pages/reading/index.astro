@@ -5,15 +5,30 @@ import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
 import { SITE } from '../../data/site';
 
-const notes = (await getCollection('reading')).sort(
-  (a, b) => a.data.order - b.data.order || b.data.date.getTime() - a.data.date.getTime()
-);
+const CAT_ORDER = ['古典文学', '哲学思想', '心理认知', '社科历史', '科学自然', 'AI与未来'];
+const BOOKSHELF = ['壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌'];
+
+const notes = await getCollection('reading');
+
+// 按书架分区归组；未在 CAT_ORDER 中的分类兜底排到末尾
+const extras = [...new Set(notes.map((n) => n.data.category))].filter((c) => !CAT_ORDER.includes(c));
+const groups = [...CAT_ORDER, ...extras]
+  .map((cat) => ({
+    cat,
+    items: notes
+      .filter((n) => n.data.category === cat)
+      .sort((a, b) => a.data.order - b.data.order || b.data.date.getTime() - a.data.date.getTime()),
+  }))
+  .filter((g) => g.items.length > 0);
+
+const total = notes.length;
+const catCount = (cat: string) => notes.filter((n) => n.data.category === cat).length;
 ---
 
 <BaseLayout
   title={`读书笔记｜${SITE.name}`}
-  description="用 AI 把一本书拆成可复用的认知框架。古典文学、哲学思想、心理认知与社科历史的精读笔记。"
-  keywords={['读书笔记', 'AI读书', '认知框架', '古典文学', ' philosophical']}
+  description={`用 AI 把一本书拆成可复用的认知框架。已收录 ${total} 本精读笔记，分六个书架：古典文学、哲学思想、心理认知、社科历史、科学自然、AI 与未来。`}
+  keywords={['读书笔记', 'AI读书', '认知框架', '古典文学', '哲学思想', '心理认知', '社科历史']}
 >
   <Nav active="读书笔记" variant="full" />
 
@@ -22,28 +37,55 @@ const notes = (await getCollection('reading')).sort(
       <span class="reading-header__eyebrow">READING NOTES</span>
       <h1 class="reading-header__title">读书笔记</h1>
       <p class="reading-header__sub">用 AI 把一本书拆成可复用的认知框架。</p>
+      <p class="reading-header__meta">
+        {total} 本 · {groups.length} 个书架 · 每本都是一份可点开翻阅的独立笔记
+      </p>
     </div>
   </section>
 
+  <!-- 书架导航 -->
+  <nav class="shelf-nav" aria-label="书架分区">
+    <div class="container shelf-nav__inner">
+      {
+        groups.map((g) => (
+          <a class="shelf-chip" href={`#shelf-${g.cat}`}>
+            {g.cat}
+            <span class="shelf-chip__num">{g.items.length}</span>
+          </a>
+        ))
+      }
+    </div>
+  </nav>
+
   <section class="section section--paper">
     <div class="container">
-      <div class="reading-shelf">
-        {
-          notes.map((n) => (
-            <a class="book-card" href={`/reading/${n.slug}`}>
-              <div class="book-card__spine">
-                <span class="book-card__title">{n.data.title}</span>
-                <span class="book-card__author">{n.data.author}</span>
-              </div>
-              <div class="book-card__body">
-                {n.data.edition && <span class="book-card__edition">{n.data.edition}</span>}
-                <p>{n.data.description}</p>
-              </div>
-            </a>
-          ))
-        }
-      </div>
-      {notes.length === 0 && <p class="reading-empty">书架正在整理中，敬请期待。</p>}
+      {
+        groups.map((g, gi) => (
+          <div class="shelf" id={`shelf-${g.cat}`}>
+            <div class="shelf__head">
+              <span class="shelf__index">{BOOKSHELF[gi] ?? '·'}</span>
+              <h2 class="shelf__title">{g.cat}</h2>
+              <span class="shelf__count">{g.items.length} 本</span>
+              <span class="shelf__rule" />
+            </div>
+            <div class="reading-shelf">
+              {g.items.map((n) => (
+                <a class="book-card" data-cat={g.cat} href={`/reading/${n.slug}`}>
+                  <div class="book-card__spine">
+                    <span class="book-card__title">{n.data.title}</span>
+                    <span class="book-card__author">{n.data.author}</span>
+                  </div>
+                  <div class="book-card__body">
+                    {n.data.edition && <span class="book-card__edition">{n.data.edition}</span>}
+                    <p>{n.data.description}</p>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        ))
+      }
+      {total === 0 && <p class="reading-empty">书架正在整理中，敬请期待。</p>}
     </div>
   </section>
 
@@ -76,6 +118,102 @@ const notes = (await getCollection('reading')).sort(
     line-height: 1.6;
     margin-top: 14px;
   }
+  .reading-header__meta {
+    font-size: 13px;
+    color: var(--gold);
+    margin-top: 12px;
+    letter-spacing: 0.5px;
+  }
+
+  /* 书架导航 */
+  .shelf-nav {
+    position: sticky;
+    top: 64px; /* 让开 64px 的主导航 */
+    z-index: 30;
+    background: rgba(247, 242, 232, 0.94);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+  }
+  .shelf-nav__inner {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 12px 0;
+    scrollbar-width: none;
+  }
+  .shelf-nav__inner::-webkit-scrollbar {
+    display: none;
+  }
+  .shelf-chip {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(120, 100, 70, 0.28);
+    font-size: 13px;
+    color: var(--ink-soft);
+    text-decoration: none;
+    transition: all 0.15s ease;
+  }
+  .shelf-chip:hover {
+    background: #fffdf8;
+    color: var(--ink);
+    border-color: rgba(120, 100, 70, 0.5);
+  }
+  .shelf-chip__num {
+    font-size: 11px;
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  /* 分区 */
+  .shelf {
+    scroll-margin-top: 128px; /* 64 主导航 + 约 52 书架条 */
+  }
+  .shelf + .shelf {
+    margin-top: 54px;
+  }
+  .shelf__head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .shelf__index {
+    font-family: var(--font-serif);
+    font-size: 15px;
+    color: var(--gold);
+    border: 1px solid rgba(154, 123, 46, 0.4);
+    border-radius: 4px;
+    width: 26px;
+    height: 26px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    transform: translateY(-2px);
+  }
+  .shelf__title {
+    font-family: var(--font-serif);
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: 1px;
+    margin: 0;
+  }
+  .shelf__count {
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+  .shelf__rule {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(120, 100, 70, 0.3), transparent);
+  }
+
+  /* 书卡 */
   .reading-shelf {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
@@ -104,6 +242,25 @@ const notes = (await getCollection('reading')).sort(
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+  }
+  /* 六架书脊各取一色传统颜料 */
+  .book-card[data-cat='古典文学'] .book-card__spine {
+    background: linear-gradient(180deg, #9a3324, #6d2015);
+  }
+  .book-card[data-cat='哲学思想'] .book-card__spine {
+    background: linear-gradient(180deg, #33545c, #1e343a);
+  }
+  .book-card[data-cat='心理认知'] .book-card__spine {
+    background: linear-gradient(180deg, #55456e, #362a48);
+  }
+  .book-card[data-cat='社科历史'] .book-card__spine {
+    background: linear-gradient(180deg, #2f5d52, #1c3d38);
+  }
+  .book-card[data-cat='科学自然'] .book-card__spine {
+    background: linear-gradient(180deg, #2f4f73, #1c3149);
+  }
+  .book-card[data-cat='AI与未来'] .book-card__spine {
+    background: linear-gradient(180deg, #8a6a2e, #6d5222);
   }
   .book-card__title {
     font-family: var(--font-serif);
@@ -141,6 +298,21 @@ const notes = (await getCollection('reading')).sort(
   @media (max-width: 640px) {
     .reading-header__title {
       font-size: 36px;
+    }
+    .shelf__title {
+      font-size: 20px;
+    }
+    .reading-shelf {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 14px;
+    }
+    .book-card__title {
+      font-size: 19px;
+      letter-spacing: 1px;
+    }
+    .book-card__spine {
+      padding: 20px 14px;
+      min-height: 120px;
     }
   }
 </style>

@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>《西游记》· 读书笔记</title>
+<style>
+  :root{
+    --paper:#f4ecda;
+    --paper-2:#efe6d2;
+    --card:#fbf6ea;
+    --ink:#2c2620;
+    --ink-soft:#5b5040;
+    --line:#d8cbb0;
+    --brown:#7a5a32;
+    --brown-deep:#5c4222;
+    --ribbon:#9e2b25;        /* 朱红 */
+    --ribbon-deep:#7e231c;
+    --gold:#b08a3e;
+    --teal:#3f6b63;          /* 青 */
+    --shadow:0 18px 40px -20px rgba(60,40,15,.45);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:"Noto Sans SC","Songti SC",Georgia,serif;color:var(--ink);background-color:var(--paper);background-image:radial-gradient(circle at 18% 12%, rgba(176,138,62,.06), transparent 45%),radial-gradient(circle at 85% 78%, rgba(122,90,50,.07), transparent 40%);line-height:1.85;-webkit-font-smoothing:antialiased;}
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+  .serif{font-family:"Noto Serif SC","Songti SC",Georgia,serif;}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 22px;position:relative;z-index:1;}
+
+  .hero{position:relative;min-height:74vh;display:flex;align-items:flex-end;justify-content:center;text-align:center;overflow:hidden;color:#fdf8ec;}
+  .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.85) brightness(.72);}
+  .hero .overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(28,18,8,.32) 0%, rgba(28,18,8,.08) 35%, rgba(28,18,8,.80) 100%);}
+  .hero-inner{position:relative;z-index:2;padding:0 24px 9vh;}
+  .hero .kicker{letter-spacing:.4em;font-size:clamp(.7rem,2.4vw,1rem);text-transform:uppercase;color:#f0dcae;font-weight:500;margin-bottom:18px;}
+  .hero h1{font-family:"Noto Serif SC",Georgia,serif;font-weight:900;font-size:clamp(2.4rem,8vw,5.2rem);line-height:1.05;margin:0 0 14px;text-shadow:0 4px 26px rgba(0,0,0,.55);}
+  .hero .sub{font-size:clamp(1rem,3vw,1.5rem);font-weight:300;letter-spacing:.18em;color:#f7eed7;text-shadow:0 2px 14px rgba(0,0,0,.5);}
+  .hero .by{margin-top:18px;font-size:clamp(.85rem,2.4vw,1.05rem);color:#e9d9b4;letter-spacing:.08em;}
+
+  .top-ribbon{position:absolute;top:0;left:50%;transform:translateX(-50%);z-index:5;background:linear-gradient(180deg,var(--ribbon),var(--ribbon-deep));color:#fbeede;font-family:"Noto Serif SC",serif;font-weight:600;letter-spacing:.3em;padding:10px 26px 16px;border-radius:0 0 6px 6px;box-shadow:0 8px 18px -8px rgba(60,15,10,.6);font-size:clamp(.8rem,2.6vw,1rem);}
+  .top-ribbon::after{content:"";position:absolute;left:0;right:0;bottom:-9px;height:10px;background:linear-gradient(135deg,var(--ribbon-deep) 50%,transparent 51%) left/12px 10px no-repeat,linear-gradient(-135deg,var(--ribbon-deep) 50%,transparent 51%) right/12px 10px no-repeat;}
+
+  section{padding:64px 0 12px;}
+  .sec-tag{display:inline-block;font-family:"Noto Serif SC",serif;color:var(--ribbon);letter-spacing:.2em;font-size:.85rem;font-weight:600;margin-bottom:6px;}
+  h2.sec-title{font-family:"Noto Serif SC",Georgia,serif;font-weight:700;font-size:clamp(1.6rem,5vw,2.4rem);margin:0 0 6px;color:var(--brown-deep);position:relative;padding-left:18px;}
+  h2.sec-title::before{content:"";position:absolute;left:0;top:.28em;bottom:.18em;width:5px;background:linear-gradient(180deg,var(--gold),var(--ribbon));border-radius:3px;}
+  .sec-lead{color:var(--ink-soft);margin:0 0 30px;font-size:1.02rem;}
+
+  .book-card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:30px 30px 26px;position:relative;overflow:hidden;}
+  .book-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:linear-gradient(180deg,var(--gold),var(--ribbon));}
+  .book-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  .book-meta .m-label{font-size:.8rem;letter-spacing:.12em;color:var(--brown);font-weight:600;}
+  .book-meta .m-val{font-family:"Noto Serif SC",serif;font-size:1.05rem;margin-top:4px;color:var(--ink);}
+  .overview{margin-top:26px;padding:20px 24px;background:linear-gradient(180deg,rgba(176,138,62,.10),rgba(176,138,62,.04));border-left:4px solid var(--gold);border-radius:0 10px 10px 0;font-family:"Noto Serif SC",serif;font-size:clamp(1.05rem,3.4vw,1.35rem);line-height:1.7;color:var(--brown-deep);}
+  .overview b{color:var(--ribbon);}
+
+  .sys-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:8px;}
+  .sys{border-radius:14px;padding:26px 24px;border:1px solid var(--line);background:var(--card);box-shadow:var(--shadow);position:relative;}
+  .sys.s1{border-top:5px solid var(--ribbon);}
+  .sys.s2{border-top:5px solid var(--teal);}
+  .sys .sys-no{font-family:"Playfair Display",serif;font-size:2.6rem;font-weight:800;line-height:1;opacity:.25;}
+  .sys.s1 .sys-no{color:var(--ribbon);}
+  .sys.s2 .sys-no{color:var(--teal);}
+  .sys h3{font-family:"Noto Serif SC",serif;margin:6px 0 4px;font-size:1.45rem;color:var(--brown-deep);}
+  .sys .tagline{color:var(--ink-soft);font-size:.95rem;margin-bottom:16px;}
+  .sys ul{margin:0;padding-left:1.1em;}
+  .sys li{margin:7px 0;font-size:.96rem;}
+  .sys li::marker{color:var(--gold);}
+  .vs-badge{display:flex;justify-content:center;margin:-14px 0;position:relative;z-index:3;}
+  .vs-badge span{background:var(--ink);color:var(--paper);width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;font-weight:700;font-size:1.1rem;box-shadow:0 8px 18px -8px rgba(0,0,0,.6);}
+
+  .bias-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:20px;}
+  .bias{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px 22px;box-shadow:var(--shadow);transition:transform .25s ease,box-shadow .25s ease;}
+  .bias:hover{transform:translateY(-5px);box-shadow:0 26px 44px -22px rgba(60,40,15,.55);}
+  .bias .b-no{font-family:"Playfair Display",serif;font-style:italic;color:var(--ribbon);font-size:1.3rem;font-weight:600;}
+  .bias h4{font-family:"Noto Serif SC",serif;margin:6px 0 2px;font-size:1.2rem;color:var(--brown-deep);}
+  .bias .en{font-size:.78rem;letter-spacing:.08em;color:var(--brown);text-transform:uppercase;margin-bottom:12px;}
+  .bias p{margin:0;font-size:.95rem;color:var(--ink-soft);}
+  .bias .ex{margin-top:12px;padding:10px 12px;background:rgba(122,90,50,.07);border-radius:8px;font-size:.88rem;color:var(--ink);}
+  .bias .ex b{color:var(--ribbon);}
+
+  .map{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;}
+  .part{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 20px 18px;box-shadow:var(--shadow);border-left:5px solid var(--gold);}
+  .part .p-no{font-family:"Playfair Display",serif;color:var(--ribbon);font-weight:700;font-size:1.05rem;letter-spacing:.05em;}
+  .part h4{font-family:"Noto Serif SC",serif;margin:4px 0 12px;font-size:1.15rem;color:var(--brown-deep);}
+  .part ul{margin:0;padding-left:1.1em;font-size:.92rem;}
+  .part li{margin:6px 0;color:var(--ink-soft);}
+  .part li::marker{color:var(--gold);}
+
+  .quote{position:relative;background:linear-gradient(180deg,var(--paper-2),var(--card));border:1px solid var(--line);border-radius:14px;padding:34px 30px 30px 58px;margin-bottom:20px;box-shadow:var(--shadow);}
+  .quote::before{content:"\201C";position:absolute;left:16px;top:2px;font-family:"Playfair Display",serif;font-size:5rem;color:var(--ribbon);opacity:.35;line-height:1;}
+  .quote .q-cn{font-family:"Noto Serif SC",serif;font-size:clamp(1.05rem,3.4vw,1.3rem);line-height:1.7;color:var(--ink);}
+  .quote .q-en{margin-top:10px;font-style:italic;color:var(--ink-soft);font-size:.95rem;}
+  .quote .q-from{margin-top:12px;font-size:.8rem;letter-spacing:.1em;color:var(--brown);text-align:right;}
+
+  .act-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+  .act-col{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px 24px;box-shadow:var(--shadow);}
+  .act-col h3{font-family:"Noto Serif SC",serif;color:var(--brown-deep);margin:0 0 14px;font-size:1.3rem;display:flex;align-items:center;gap:10px;}
+  .act-col h3 .dot{width:12px;height:12px;border-radius:50%;background:var(--gold);}
+  .act-col.work h3 .dot{background:var(--ribbon);}
+  .act-col ol{margin:0;padding-left:1.3em;}
+  .act-col li{margin:12px 0;font-size:.97rem;}
+  .act-col li::marker{color:var(--ribbon);font-weight:700;}
+  .act-col li b{color:var(--brown-deep);}
+
+  .who{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+  .who .panel{border-radius:14px;padding:26px 24px;box-shadow:var(--shadow);}
+  .who .good{background:var(--card);border:1px solid var(--line);border-top:5px solid var(--teal);}
+  .who .no{background:var(--card);border:1px solid var(--line);border-top:5px solid var(--ribbon);}
+  .who h3{font-family:"Noto Serif SC",serif;margin:0 0 14px;font-size:1.25rem;}
+  .who .good h3{color:var(--teal);}
+  .who .no h3{color:var(--ribbon);}
+  .who ul{margin:0;padding-left:1.1em;font-size:.97rem;}
+  .who li{margin:9px 0;color:var(--ink-soft);}
+  .who li::marker{color:var(--gold);}
+
+  footer{margin-top:70px;background:linear-gradient(180deg,var(--brown-deep),#3a2a16);color:#e7d8bb;text-align:center;padding:40px 22px 46px;position:relative;z-index:1;}
+  footer .ribbon-foot{display:inline-block;color:#fbeede;background:var(--ribbon);padding:6px 20px;border-radius:0 0 6px 6px;font-family:"Noto Serif SC",serif;letter-spacing:.25em;font-size:.85rem;margin-bottom:18px;}
+  footer p{margin:6px 0;font-size:.9rem;opacity:.85;}
+  footer .book-en{font-family:"Playfair Display",serif;font-style:italic;opacity:.7;font-size:1.05rem;}
+
+  @media (max-width:720px){
+    .book-meta{grid-template-columns:1fr;gap:14px;}
+    .sys-grid{grid-template-columns:1fr;}
+    .vs-badge{margin:6px 0;}
+    .act-grid{grid-template-columns:1fr;}
+    .who{grid-template-columns:1fr;}
+    section{padding:48px 0 8px;}
+    .hero{min-height:66vh;}
+  }
+  @media (max-width:420px){
+    .wrap{padding:0 16px;}
+    .book-card,.quote,.sys,.bias,.part{padding-left:18px;padding-right:18px;}
+  }
+</style>
+<style id="local-font-fallback">
+/* 站内离线字体兜底：不改动原版式，用本机同族字体替代 Google Fonts，避免跨境请求拖慢首屏 */
+@font-face{font-family:"Noto Serif SC";src:local("Source Han Serif SC"),local("Source Han Serif CN"),local("Noto Serif CJK SC"),local("Songti SC"),local("STSong"),local("SimSun"),local("宋体");font-display:swap;}
+@font-face{font-family:"Playfair Display";src:local("Playfair Display"),local("Georgia"),local("Times New Roman");font-display:swap;}
+@font-face{font-family:"Ma Shan Zheng";src:local("Ma Shan Zheng"),local("STKaiti"),local("Kaiti SC"),local("KaiTi"),local("楷体"),local("STXingkai");font-display:swap;}
+@font-face{font-family:"Noto Sans SC";src:local("Source Han Sans SC"),local("Noto Sans CJK SC"),local("PingFang SC"),local("Hiragino Sans GB"),local("Microsoft YaHei"),local("微软雅黑");font-display:swap;}
+</style>
+</head>
+<body data-pagefind-ignore>
+
+  <!-- HERO -->
+  <header class="hero">
+    <img src="/reading/xiyouji/assets/cover.jpg" alt="远山行旅" onerror="this.style.display='none'" />
+    <div class="overlay"></div>
+    <div class="top-ribbon">读 书 笔 记</div>
+    <div class="hero-inner">
+      <div class="kicker">中国古典文学 · 神魔小说 · 四大名著</div>
+      <h1 class="serif">西游记</h1>
+      <div class="sub">灵山只在心头</div>
+      <div class="by">吴承恩（明）著 · 一部写满妖魔的修心寓言</div>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- BOOK INFO -->
+    <section id="info">
+      <span class="sec-tag">书籍信息</span>
+      <h2 class="sec-title serif">关于这本书</h2>
+      <div class="book-card">
+        <div class="book-meta">
+          <div>
+            <div class="m-label">作者</div>
+            <div class="m-val">吴承恩<br/>明代 · 神魔小说集大成</div>
+          </div>
+          <div>
+            <div class="m-label">领域</div>
+            <div class="m-val">古典文学 · 章回小说 · 四大名著</div>
+          </div>
+          <div>
+            <div class="m-label">核心命题</div>
+            <div class="m-val">取经即修心 · 降妖即降己</div>
+          </div>
+        </div>
+        <div class="overview">
+          一句话总览：表面是唐僧师徒西天取经的<b>神魔冒险</b>，内核却是一场「把放纵的心收回来」的修行——九九八十一难，难的从来不是妖，是<b>心</b>。
+        </div>
+      </div>
+    </section>
+
+    <!-- 力 / 志 -->
+    <section id="systems">
+      <span class="sec-tag">核心张力</span>
+      <h2 class="sec-title serif">力 与 志：取经团队的两极</h2>
+      <p class="sec-lead">读懂《西游记》，先看取经队伍里这对始终互掐又互相成全的关系——一个有力无向，一个有向无力。</p>
+      <div class="sys-grid">
+        <div class="sys s1">
+          <div class="sys-no">力</div>
+          <h3 class="serif">孙悟空 · 神通与野性</h3>
+          <div class="tagline">一个跟头十万八千里，却翻不出掌心</div>
+          <ul>
+            <li>代表「能」：七十二变、火眼金睛、金箍棒</li>
+            <li>也代表「躁」：大闹天宫、不服管教、急躁逞强</li>
+            <li>隐喻「心猿」：放纵的心，最有本事也最易闯祸</li>
+            <li>靠紧箍咒被「收」：能力须有边界才成事</li>
+            <li>成长线：从齐天大圣到斗战胜佛</li>
+          </ul>
+        </div>
+        <div class="sys s2">
+          <div class="sys-no">志</div>
+          <h3 class="serif">唐僧 · 初心与戒律</h3>
+          <div class="tagline">肉眼凡胎步步惊心，却始终向西</div>
+          <ul>
+            <li>代表「向」：认准灵山，九死不悔</li>
+            <li>也代表「弱」：常分不清人妖、易被表象惑</li>
+            <li>隐喻「本心」：方向对，力量才用对地方</li>
+            <li>靠信念撑全程：团队动摇时他是定盘星</li>
+            <li>成长线：从凡僧江流儿到旃檀功德佛</li>
+          </ul>
+        </div>
+      </div>
+      <div class="vs-badge"><span>VS</span></div>
+      <p class="sec-lead" style="margin-top:18px;text-align:center;">
+        关键隐喻：<b style="color:var(--ribbon)">有力者需被「志」收束，有志者需借「力」前行</b>——灵山不在西天万里外，而在「心」被收住的那一刻。
+      </p>
+    </section>
+
+    <!-- 群英谱 -->
+    <section id="biases">
+      <span class="sec-tag">取经谱</span>
+      <h2 class="sec-title serif">八位绕不开的角色</h2>
+      <p class="sec-lead">师徒四人加一匹马，再算上「助缘」与「试炼」，这部书的灵魂就活了。</p>
+      <div class="bias-grid">
+        <div class="bias">
+          <div class="b-no">01</div>
+          <h4 class="serif">孙悟空</h4>
+          <div class="en">齐天大圣 · 行者</div>
+          <p>全书灵魂人物：从大闹天宫到护送取经，是「能力 + 野性 + 修行」的合体。</p>
+          <div class="ex"><b>隐喻</b>：心猿——最猛的心，也最需紧箍。</div>
+        </div>
+        <div class="bias">
+          <div class="b-no">02</div>
+          <h4 class="serif">唐僧</h4>
+          <div class="en">唐三藏 · 金蝉子</div>
+          <p>取经发起人，肉眼凡胎却意志如铁；常被妖惑，却是队伍不散的「方向」。</p>
+          <div class="ex"><b>隐喻</b>：本心——弱，却是一切意义的来处。</div>
+        </div>
+        <div class="bias">
+          <div class="b-no">03</div>
+          <h4 class="serif">猪八戒</h4>
+          <div class="en">天蓬元帅 · 悟能</div>
+          <p>贪吃好色、爱偷懒、动辄散伙，却是人间烟火气；常做「泄气阀」与笑料。</p>
+          <div class="ex"><b>隐喻</b>：欲望——真实可厌，却也让团队像个「人」。</div>
+        </div>
+        <div class="bias">
+          <div class="b-no">04</div>
+          <h4 class="serif">沙僧</h4>
+          <div class="en">卷帘大将 · 悟净</div>
+          <p>挑担牵马、少言寡语、从不争功；队伍里最稳的那块「压舱石」。</p>
+          <div class="ex"><b>隐喻</b>：踏实——不出彩，却缺他不行。</div>
+        </div>
+        <div class="bias">
+          <div class="b-no">05</div>
+          <h4 class="serif">白龙马</h4>
+          <div class="en">西海龙王三太子</div>
+          <p>化身坐骑驮唐僧万里，危难时亦现原形挺身；沉默的「陪伴者」。</p>
+          <div class="ex"><b>隐喻</b>：本分——把位置坐好，就是大修行。</div>
+        </div>
+        <div class="bias">
+          <div class="b-no">06</div>
+          <h4 class="serif">观音菩萨</h4>
+          <div class="en">大慈大悲 · 助缘</div>
+          <p>取经总策划与救火队长：收徒、赐紧箍、每逢死局必来点化。</p>
+          <div class="ex"><b>隐喻</b>：贵人/机制——高手指对路、扶一把。</div>
+        </div>
+        <div class="bias">
+          <div class="b-no">07</div>
+          <h4 class="serif">如来佛祖</h4>
+          <div class="en">灵山至尊 · 规则</div>
+          <p>翻掌压悟空于五行山，定下取经大棋局；是「终极秩序」的象征。</p>
+          <div class="ex"><b>隐喻</b>：因果与边界——再能也跳不出规律。</div>
+        </div>
+        <div class="bias">
+          <div class="b-no">08</div>
+          <h4 class="serif">牛魔王</h4>
+          <div class="en">平天大圣 · 劲敌</div>
+          <p>悟空昔日结拜兄长，火焰山一役成最强对手；妖亦有情、有家。</p>
+          <div class="ex"><b>隐喻</b>：心魔——最难降的，常是「另一个自己」。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 章节脉络 -->
+    <section id="map">
+      <span class="sec-tag">全书脉络</span>
+      <h2 class="sec-title serif">从「大闹天宫」到「灵山受经」</h2>
+      <p class="sec-lead">百回本可清晰拆成「出世—缘起—历难—功成」四幕，九九八十一难是主体。</p>
+      <div class="map">
+        <div class="part">
+          <div class="p-no">第一幕</div>
+          <h4 class="serif">大闹天宫</h4>
+          <ul>
+            <li>石猴出世、灵台方寸山学艺</li>
+            <li>闹龙宫、闹地府、封「齐天大圣」</li>
+            <li>搅乱蟠桃会，被压五行山下</li>
+          </ul>
+        </div>
+        <div class="part">
+          <div class="p-no">第二幕</div>
+          <h4 class="serif">取经缘起</h4>
+          <ul>
+            <li>观音奉旨寻取经人</li>
+            <li>唐僧身世（江流儿）、太宗游地府</li>
+            <li>奉唐王之命，西行启程</li>
+          </ul>
+        </div>
+        <div class="part">
+          <div class="p-no">第三幕</div>
+          <h4 class="serif">收徒组队</h4>
+          <ul>
+            <li>五行山揭符，收孙悟空</li>
+            <li>收白龙马、高老庄收八戒</li>
+            <li>流沙河收沙僧，师徒成行</li>
+          </ul>
+        </div>
+        <div class="part">
+          <div class="p-no">第四幕</div>
+          <h4 class="serif">八十一难</h4>
+          <ul>
+            <li>三打白骨精、黄袍怪、平顶山</li>
+            <li>火云洞、车迟国、女儿国</li>
+            <li>火焰山、小雷音、盘丝洞……</li>
+          </ul>
+        </div>
+        <div class="part">
+          <div class="p-no">第五幕</div>
+          <h4 class="serif">灵山受经</h4>
+          <ul>
+            <li>凌云渡脱胎、见佛祖</li>
+            <li>取真经、经有残页（无字经）</li>
+            <li>返东土，经卷传世</li>
+          </ul>
+        </div>
+        <div class="part">
+          <div class="p-no">尾声</div>
+          <h4 class="serif">功成封佛</h4>
+          <ul>
+            <li>师徒各证果位</li>
+            <li>悟空成「斗战胜佛」</li>
+            <li>紧箍自落——心已收，箍何用</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 金句 -->
+    <section id="quotes">
+      <span class="sec-tag">金句摘录</span>
+      <h2 class="sec-title serif">读来心头一震的句子</h2>
+      <p class="sec-lead">有的写尽野性，有的道破修心，有的把「远路」说成「归途」。</p>
+
+      <div class="quote">
+        <div class="q-cn">心生，种种魔生；心灭，种种魔灭。</div>
+        <div class="q-en">—— 全书的文眼：妖魔皆为心造，降妖即是降己。</div>
+        <div class="q-from">出自 · 修心主旨（点评常引）</div>
+      </div>
+
+      <div class="quote">
+        <div class="q-cn">皇帝轮流做，明年到我家。</div>
+        <div class="q-en">—— 孙悟空大闹天宫的豪言，也是「野性不服秩序」的宣言。</div>
+        <div class="q-from">出自 · 第六回 悟空反天</div>
+      </div>
+
+      <div class="quote">
+        <div class="q-cn">宁恋本乡一捻土，莫爱他乡万两金。</div>
+        <div class="q-en">—— 唐僧思恋故土，亦是对「根」与「初心」的执守。</div>
+        <div class="q-from">出自 · 第十二回 玄奘启程</div>
+      </div>
+
+      <div class="quote">
+        <div class="q-cn">佛在灵山莫远求，灵山只在汝心头。</div>
+        <div class="q-en">—— 把万里取经收归一寸方寸：向外求，不如向内修。</div>
+        <div class="q-from">民间评点常引 · 全书点题</div>
+      </div>
+
+      <div class="quote">
+        <div class="q-cn">世上无难事，只怕有心人。</div>
+        <div class="q-en">—— 最简白的道理，却是八十一难能走完的底气。</div>
+        <div class="q-from">出自 · 第二回 悟空学艺</div>
+      </div>
+    </section>
+
+    <!-- 行动启发 -->
+    <section id="action">
+      <span class="sec-tag">行动启发</span>
+      <h2 class="sec-title serif">对做事与处世的启发</h2>
+      <p class="sec-lead">它写的是神佛妖魔，照见的却是团队、目标与「如何与自己相处」。</p>
+      <div class="act-grid">
+        <div class="act-col work">
+          <h3 class="serif"><span class="dot"></span>团队与领导</h3>
+          <ol>
+            <li><b>没有完美的个人，只有完整的团队</b>：悟空（能）、唐僧（向）、八戒（真）、沙僧（稳）——四个缺点拼出一个能打的组合。</li>
+            <li><b>给「野性」一道紧箍</b>：最有才华的人最需边界与约束，规则不是才华的敌人。</li>
+            <li><b>领导者要当「唐僧」</b>：不必样样最强，但要认准方向、在动摇时稳住军心。</li>
+            <li><b>别忽视「沙僧型」成员</b>：不抢镜的压舱石，往往是团队能走远的关键。</li>
+            <li><b>善用「观音式」外援</b>：关键节点借对的人、对的机制，比硬扛高效得多。</li>
+          </ol>
+        </div>
+        <div class="act-col">
+          <h3 class="serif"><span class="dot"></span>修行与为人</h3>
+          <ol>
+            <li><b>难是「必须」的</b>：八十一难不是拦路，而是取经本身——成长没有捷径可抄。</li>
+            <li><b>降服「心猿」</b>：真正的对手常是自己的急躁、贪念与逞强（牛魔王=另一个我）。</li>
+            <li><b>别做「唐僧式误判」</b>：只看表象、冤枉真心人——信息不够时先别急下结论。</li>
+            <li><b>接纳「八戒式」欲望</b>：欲望不必消灭，承认它、安放它，反而走得轻松。</li>
+            <li><b>灵山在心头</b>：向外追逐前，先问自己——要的，是不是早就在手里。</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- 适合谁读 -->
+    <section id="who">
+      <span class="sec-tag">适合谁读</span>
+      <h2 class="sec-title serif">这本书适合谁</h2>
+      <div class="who">
+        <div class="panel good">
+          <h3 class="serif">推荐阅读</h3>
+          <ul>
+            <li>爱神话、冒险与奇诡想象的人</li>
+            <li>管理者 / 团队leader：看一支「互补型队伍」如何走完远路</li>
+            <li>对「修心、自律、降伏心魔」有共鸣的人</li>
+            <li>想读「热闹底下有深意」的寓言式作品的人</li>
+            <li>亲子共读：故事性强，宜作古典入门</li>
+          </ul>
+        </div>
+        <div class="panel no">
+          <h3 class="serif">可能不合适</h3>
+          <ul>
+            <li>只要严肃写实、不耐神怪志怪的人</li>
+            <li>对半文半白、宗教隐喻过敏者（原著非白话）</li>
+            <li>期待「纯爽文无说教」的读者（书中处处点化）</li>
+            <li>只想看历史正剧、不碰虚构演绎者</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="ribbon-foot">读 书 笔 记</div>
+    <p class="book-en">西游记 · Journey to the West</p>
+    <p>吴承恩（明）著 · 中国古典四大名著之一</p>
+    <p>本页为个人阅读笔记，非原著摘抄；引文仅供学习交流。</p>
+  </footer>
+
+</body>
+</html>

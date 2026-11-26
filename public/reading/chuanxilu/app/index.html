@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>王阳明《传习录》研读笔记 · 对象中心分格</title>
+<style>
+  :root{
+    --paper:#f7f2e8;
+    --paper-2:#efe7d6;
+    --ink:#2b2b2b;
+    --ink-soft:#5a5347;
+    --line:#ddd2bd;
+    --accent:#34506b;        /* 良知靛·书院蓝 */
+    --accent-dark:#21394f;
+    --accent-light:#7fa0bd;
+    --seal:#b04a3f;
+    --gold:#b89a5e;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:"Noto Serif SC",serif;
+    color:var(--ink);
+    background-color:var(--paper);
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/></svg>");
+    line-height:1.85;
+    font-size:17px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:0 22px 80px;}
+
+  /* ===== Hero ===== */
+  .hero{
+    position:relative;
+    height:60vh;min-height:380px;
+    margin:0 -22px 0;
+    display:flex;align-items:flex-end;justify-content:center;
+    overflow:hidden;
+    background:linear-gradient(135deg,var(--accent-dark),#4a6e8e 60%,var(--accent-light));
+  }
+  .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .hero::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(to top,rgba(20,38,52,.92) 0%,rgba(20,38,52,.45) 42%,rgba(20,38,52,.12) 100%);
+  }
+  .hero-inner{position:relative;z-index:2;text-align:center;color:#f6f1e7;padding:0 24px 56px;max-width:760px;}
+  .hero-kicker{
+    font-family:"Playfair Display",serif;font-style:italic;
+    letter-spacing:.18em;font-size:14px;opacity:.85;margin-bottom:10px;
+  }
+  .hero h1{
+    font-family:"Noto Serif SC",serif;font-weight:900;
+    font-size:clamp(32px,5.6vw,54px);line-height:1.15;letter-spacing:.02em;
+    text-shadow:0 2px 18px rgba(0,0,0,.45);
+  }
+  .hero-sub{
+    margin-top:14px;font-size:15px;opacity:.9;letter-spacing:.04em;
+  }
+
+  /* ===== 书签色带 ===== */
+  .bookmark{
+    position:relative;width:120px;margin:-34px auto 0;z-index:5;
+    background:linear-gradient(180deg,var(--accent),var(--accent-dark));
+    color:#f6f1e7;text-align:center;padding:16px 0 22px;
+    border-radius:6px 6px 0 0;
+    box-shadow:0 8px 22px rgba(33,57,79,.35);
+  }
+  .bookmark::after{
+    content:"";position:absolute;bottom:-18px;left:0;right:0;height:18px;
+    background:linear-gradient(135deg,var(--accent-dark) 50%,transparent 50%),
+               linear-gradient(225deg,var(--accent-dark) 50%,transparent 50%);
+    background-size:50% 100%;background-repeat:no-repeat;background-position:0 0,100% 0;
+  }
+  .bookmark .glyph{font-family:"Ma Shan Zheng",cursive;font-size:46px;line-height:1;display:block;}
+  .bookmark .tag{font-size:11px;letter-spacing:.3em;opacity:.85;margin-top:6px;}
+
+  /* ===== 区块标题 ===== */
+  .sec{margin-top:58px;}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:22px;}
+  .sec-head .num{
+    font-family:"Playfair Display",serif;font-weight:800;font-size:34px;
+    color:var(--accent);opacity:.55;
+  }
+  .sec-head h2{
+    font-family:"Noto Serif SC",serif;font-weight:700;font-size:26px;letter-spacing:.04em;
+    color:var(--ink);
+  }
+  .sec-head .en{font-family:"Playfair Display",serif;font-style:italic;color:var(--ink-soft);font-size:14px;letter-spacing:.05em;}
+  .rule{height:1px;background:linear-gradient(to right,var(--accent),transparent);margin-top:10px;}
+
+  /* ===== 书籍信息卡 ===== */
+  .infocard{
+    background:var(--paper-2);border:1px solid var(--line);border-left:5px solid var(--accent);
+    border-radius:10px;padding:24px 26px;
+    box-shadow:0 4px 16px rgba(0,0,0,.05);
+  }
+  .infocard .title-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:14px;margin-bottom:8px;}
+  .infocard h3{font-size:24px;font-weight:700;}
+  .infocard .meta{color:var(--ink-soft);font-size:14px;letter-spacing:.03em;}
+  .infocard .meta b{color:var(--accent-dark);font-weight:700;}
+  .infogrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px;}
+  .infogrid .cell{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:14px 16px;}
+  .infogrid .cell .k{font-size:12px;letter-spacing:.16em;color:var(--accent);margin-bottom:6px;}
+  .infogrid .cell .v{font-size:15px;line-height:1.7;color:var(--ink);}
+  .infogrid .cell .v small{display:block;color:var(--ink-soft);font-size:12.5px;margin-top:4px;}
+
+  /* ===== 一句话总览 ===== */
+  .overview{
+    margin-top:18px;background:linear-gradient(135deg,rgba(127,160,189,.20),rgba(52,80,107,.10));
+    border:1px dashed var(--accent-light);border-radius:10px;padding:22px 26px;
+    font-size:19px;line-height:1.9;color:var(--accent-dark);font-weight:500;
+  }
+  .overview b{color:var(--seal);font-weight:700;}
+
+  /* ===== OCD legend ===== */
+  .ocd-legend{
+    margin-top:18px;background:var(--paper-2);border:1px solid var(--line);border-radius:10px;
+    padding:18px 22px;font-size:14.5px;color:var(--ink-soft);line-height:1.85;
+  }
+  .ocd-legend b{color:var(--accent-dark);}
+  .ocd-legend .badge{
+    display:inline-block;font-family:"Playfair Display",serif;font-weight:800;font-size:12px;
+    letter-spacing:.12em;color:#fff;background:var(--accent);padding:3px 10px;border-radius:20px;margin-right:8px;
+  }
+
+  /* ===== 对象卡网格 ===== */
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:24px;}
+  .obj{
+    background:var(--paper-2);border:1px solid var(--line);border-radius:10px;
+    padding:18px 20px;box-shadow:0 3px 12px rgba(0,0,0,.04);
+    display:flex;flex-direction:column;
+  }
+  .obj .ohead{display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-bottom:12px;border-bottom:1px dotted var(--line);}
+  .obj .odot{width:9px;height:9px;border-radius:50%;background:var(--accent);flex:none;}
+  .obj .oname{font-size:19px;font-weight:700;color:var(--ink);}
+  .obj .osrc{
+    margin-left:auto;font-size:11.5px;letter-spacing:.08em;color:var(--accent-dark);
+    background:rgba(127,160,189,.35);padding:2px 9px;border-radius:12px;white-space:nowrap;
+  }
+  .obj .field{margin-bottom:10px;}
+  .obj .field:last-child{margin-bottom:0;}
+  .obj .flabel{
+    font-size:11.5px;letter-spacing:.14em;color:var(--accent);font-weight:700;
+    display:inline-block;margin-bottom:2px;
+  }
+  .obj .fval{font-size:15px;line-height:1.78;color:var(--ink-soft);}
+  .obj .fval strong{color:var(--ink);font-weight:700;}
+
+  /* ===== 脉络图 ===== */
+  .flow{display:flex;flex-direction:column;gap:0;margin-top:24px;}
+  .stage{
+    display:grid;grid-template-columns:54px 1fr;gap:16px;align-items:stretch;
+  }
+  .stage .sn{
+    font-family:"Playfair Display",serif;font-weight:800;font-size:22px;color:#fff;
+    background:var(--accent);border-radius:50%;width:46px;height:46px;
+    display:flex;align-items:center;justify-content:center;align-self:center;flex:none;
+    box-shadow:0 3px 10px rgba(52,80,107,.3);
+  }
+  .stage .body{
+    background:var(--paper-2);border:1px solid var(--line);border-left:4px solid var(--accent-light);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:8px 0;
+  }
+  .stage .body h4{font-size:17px;font-weight:700;margin-bottom:3px;}
+  .stage .body p{font-size:14.5px;color:var(--ink-soft);line-height:1.7;}
+
+  /* ===== 金句 ===== */
+  .quotes{margin-top:24px;display:flex;flex-direction:column;gap:16px;}
+  .quote{
+    position:relative;background:var(--paper-2);border:1px solid var(--line);
+    border-radius:10px;padding:20px 24px 18px 56px;
+  }
+  .quote::before{
+    content:"\201C";position:absolute;left:18px;top:6px;
+    font-family:"Playfair Display",serif;font-size:54px;color:var(--accent);opacity:.45;
+  }
+  .quote p{font-size:17px;line-height:1.85;color:var(--ink);font-style:italic;}
+  .quote .src{display:block;margin-top:8px;font-size:12.5px;color:var(--accent-dark);letter-spacing:.04em;font-style:normal;}
+
+  /* ===== 双栏行动启发 ===== */
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:24px;}
+  .pane{background:var(--paper-2);border:1px solid var(--line);border-radius:10px;padding:20px 22px;}
+  .pane h4{font-size:18px;font-weight:700;color:var(--accent-dark);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--line);}
+  .pane ul{list-style:none;}
+  .pane li{position:relative;padding-left:20px;margin-bottom:11px;font-size:15px;line-height:1.78;color:var(--ink-soft);}
+  .pane li::before{content:"▍";position:absolute;left:0;color:var(--accent);font-size:13px;top:2px;}
+
+  /* ===== 适合谁读 ===== */
+  .who{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:24px;}
+  .who .col{background:var(--paper-2);border:1px solid var(--line);border-radius:10px;padding:20px 22px;}
+  .who .col.rec{border-left:5px solid var(--accent);}
+  .who .col.skip{border-left:5px solid var(--seal);}
+  .who h4{font-size:17px;font-weight:700;margin-bottom:12px;}
+  .who .col.rec h4{color:var(--accent-dark);}
+  .who .col.skip h4{color:var(--seal);}
+  .who .col ul{list-style:none;}
+  .who .col li{position:relative;padding-left:22px;margin-bottom:10px;font-size:15px;line-height:1.7;color:var(--ink-soft);}
+  .who .col.rec li::before{content:"✓";position:absolute;left:0;color:var(--accent);font-weight:700;}
+  .who .col.skip li::before{content:"✕";position:absolute;left:0;color:var(--seal);font-weight:700;}
+
+  .note{margin-top:22px;font-size:13px;color:var(--ink-soft);line-height:1.7;font-style:italic;
+    border-left:3px solid var(--accent-light);padding-left:14px;}
+
+  footer{margin-top:70px;text-align:center;color:var(--ink-soft);font-size:13px;letter-spacing:.06em;}
+  footer .ribbon{display:inline-block;background:var(--accent);color:#fff;padding:5px 16px;border-radius:4px;margin-bottom:12px;font-family:"Ma Shan Zheng",cursive;font-size:18px;}
+
+  /* ===== 响应式 ===== */
+  @media (max-width:720px){
+    .infogrid{grid-template-columns:1fr;}
+    .grid{grid-template-columns:1fr;}
+    .two{grid-template-columns:1fr;}
+    .who{grid-template-columns:1fr;}
+    body{font-size:16px;}
+  }
+  @media (max-width:420px){
+    .wrap{padding:0 16px 60px;}
+    .hero{margin:0 -16px;}
+    .sec-head h2{font-size:22px;}
+    .infocard{padding:18px 18px;}
+    .obj .osrc{display:none;}
+  }
+</style>
+<style id="local-font-fallback">
+/* 站内离线字体兜底：不改动原版式，用本机同族字体替代 Google Fonts，避免跨境请求拖慢首屏 */
+@font-face{font-family:"Noto Serif SC";src:local("Source Han Serif SC"),local("Source Han Serif CN"),local("Noto Serif CJK SC"),local("Songti SC"),local("STSong"),local("SimSun"),local("宋体");font-display:swap;}
+@font-face{font-family:"Playfair Display";src:local("Playfair Display"),local("Georgia"),local("Times New Roman");font-display:swap;}
+@font-face{font-family:"Ma Shan Zheng";src:local("Ma Shan Zheng"),local("STKaiti"),local("Kaiti SC"),local("KaiTi"),local("楷体"),local("STXingkai");font-display:swap;}
+@font-face{font-family:"Noto Sans SC";src:local("Source Han Sans SC"),local("Noto Sans CJK SC"),local("PingFang SC"),local("Hiragino Sans GB"),local("Microsoft YaHei"),local("微软雅黑");font-display:swap;}
+</style>
+</head>
+<body data-pagefind-ignore>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <img src="/reading/chuanxilu/assets/cover.jpg"
+         alt="图书馆书架"
+         onerror="this.style.display='none'" />
+    <div class="hero-inner">
+      <div class="hero-kicker">Wang Yangming · Chuan Xi Lu</div>
+      <h1>传习录 · 研读</h1>
+      <div class="hero-sub">王守仁（王阳明）述 ｜ 弟子徐爱、薛侃、钱德洪等编录 ｜ 心即理 · 知行合一 · 致良知</div>
+    </div>
+  </header>
+
+  <div class="wrap">
+
+    <!-- 书签色带 -->
+    <div class="bookmark">
+      <span class="glyph">习</span>
+      <span class="tag">WANG · YANGMING</span>
+    </div>
+
+    <!-- ===== 书籍信息卡 ===== -->
+    <section class="sec">
+      <div class="infocard">
+        <div class="title-row">
+          <h3>《传习录》</h3>
+          <span class="meta">王守仁（王阳明）述 · 门人编录 · 明代心学语录体经典</span>
+        </div>
+        <div class="meta">
+          作者：<b>王守仁</b>（1472–1529，字伯安，号阳明，浙江余姚人，后迁山阴/绍兴）　|　性质：<b>语录体哲学经典</b>（上中下三卷，弟子记师说）
+        </div>
+        <div class="infogrid">
+          <div class="cell">
+            <div class="k">领 域</div>
+            <div class="v">儒家心学 · 宋明理学<small>良知本体论 · 致良知方法论 · 知行合一实践论</small></div>
+          </div>
+          <div class="cell">
+            <div class="k">核心命题</div>
+            <div class="v">心即理 · 知行合一 · 致良知<small>三大命题构成「阳明学」四位一体骨架</small></div>
+          </div>
+          <div class="cell">
+            <div class="k">版本落点</div>
+            <div class="v">1518 赣州初刻<small>1572 谢廷杰《王文成公全书》三卷通行本</small></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="overview">
+        一句话总览：<b>《传习录》把王阳明一辈子的讲学，凝成一本可对话的语录</b>——它不教你「记住道理」，而逼你「活出道理」：心外无物、知行合一、致良知，三句话把你从「知道」一路推到「做到」。
+      </div>
+    </section>
+
+    <!-- ===== OCD 说明 ===== -->
+    <section class="sec">
+      <div class="ocd-legend">
+        <span class="badge">OCD</span>
+        <b>对象中心文档（Object-Centered Documentation）结构说明</b>：本页内容以<strong>「对象卡」</strong>为单位呈现，每张卡含<strong>统一字段</strong>（如 释义 / 书中定位 / 今用映射），可脱离上下文单独取用、在网格中整齐排布。有趣的是——这部书本身就是 OCD 的范本：它把王阳明的「一生讲学」按<strong>语录对象</strong>逐条拆成自包含单元（答徐爱问、与顾东桥书、四句教……），读者按需取用、拼回整座心学。下面我们把「核心概念、核心论断、读法脉络」做成三组对象卡，形成研读结构。
+      </div>
+    </section>
+
+    <!-- ===== 对象网格一：核心概念 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">01</span>
+        <h2>核心概念</h2>
+        <span class="en">Key Concepts</span>
+      </div>
+      <div class="rule"></div>
+      <div class="grid">
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">心即理</span><span class="osrc">上卷 · 答徐爱问</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">「心外无理，心外无事」——天理不在外物、不在朱子所格的物里，而内在于本心。见父自然知孝，不假外求。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">全书的<strong>本体论基石</strong>，开宗明义破朱熹「即物穷理」。</div></div>
+          <div class="field"><span class="flabel">今用映射</span><div class="fval">别总向外找标准答案，你心里那杆秤本就在；判断先问本心。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">知行合一</span><span class="osrc">上卷</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">「知者行之始，行者知之成」，知与行是一事两面；「一念发动处便即是行了」，发动不善之念就要当下克倒。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">实践论核心，<strong>针对「知而不行」</strong>的伪学而发。</div></div>
+          <div class="field"><span class="flabel">今用映射</span><div class="fval">懂了不落地等于没懂；把"改天再做"的念头，当场化成一个小动作。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">致良知</span><span class="osrc">中卷 · 答顾东桥书</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">「良知即天理」；致吾心良知之天理于事事物物，则事事物物皆得其理。良知是是非之心，不学而能。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">晚年定论，<strong>阳明自谓「吾平生讲学只是致良知三字」</strong>。</div></div>
+          <div class="field"><span class="flabel">今用映射</span><div class="fval">复杂决策时用本心的"是非感"当标尺，别被利益算计带偏。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">事上磨练</span><span class="osrc">全卷一贯</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">不离日用常行去致良知，在事事物物上实地用功，而非枯坐空谈或只读死书。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">把"知行合一"落地的<strong>修行场所</strong>——工夫全在事里。</div></div>
+          <div class="field"><span class="flabel">今用映射</span><div class="fval">能力是干出来的：接真任务、碰真问题，比听十节课长得快。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">格物即正心</span><span class="osrc">上卷 · 解《大学》</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">把《大学》"格物"解为"正其不正以归于正"——格的是心中之物、不正之念，非外物。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">对朱子"格物穷理"的<strong>创造性重释</strong>，立心学修身体系。</div></div>
+          <div class="field"><span class="flabel">今用映射</span><div class="fval">纠错先纠心：行差往往源于念歪，正念先于正事。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">四句教</span><span class="osrc">下卷 · 晚年定论</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">「无善无恶心之体，有善有恶意之动，知善知恶是良知，为善去恶是格物。」</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">心学成熟形态的<strong>总纲</strong>，亦惹数百年聚讼（天泉证道）。</div></div>
+          <div class="field"><span class="flabel">今用映射</span><div class="fval">善恶在念头不在外物；管住起念，胜过事后补救。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">拔本塞源</span><span class="osrc">中卷 · 答顾东桥书</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">长篇痛陈后世舍本逐末：记诵词章、功利是趋，而失"大本"（良知）与"源头"（明德亲民）。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">对教育功利化、学问工具化的<strong>系统性批判</strong>。</div></div>
+          <div class="field"><span class="flabel">今用映射</span><div class="fval">治标先治本：团队/个人乱，先找回"为什么"，再谈方法。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">万物一体之仁</span><span class="osrc">中卷 · 答顾东桥书</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">「大人者，以天地万物为一体者也」——仁者视天下犹一家，中国犹一人，良知通于万物。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">心学的<strong>境界归宿</strong>，由"成己"扩到"成物"。</div></div>
+          <div class="field"><span class="flabel">今用映射</span><div class="fval">别把自己当孤岛：把事连到"对人有没用"，意义感自然来。</div></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 对象网格二：核心论断 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">02</span>
+        <h2>核心论断</h2>
+        <span class="en">Key Theses</span>
+      </div>
+      <div class="rule"></div>
+      <div class="grid">
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">心外无物（岩中花树）</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">「你未看此花时，此花与汝心同归于寂；你来看此花时，则此花颜色一时明白起来。」</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">批判<strong>向外求理</strong>的朱学：物之意义不离你心之观照。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">你不在场、不用心，事就不在你世界里——专注当下，事才"明白起来"。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">知而不行只是未知</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">「知是行之始，行者知之成」，圣学只一个工夫，知行不可分作两事。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">痛批<strong>"闻道即悟道"的伪知</strong>：没落地的知不算真知。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">别用"我懂了"自我安慰；真懂的标记是行为变了。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">破心中贼难</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">「破山中贼易，破心中贼难」——外部的寇可剿，心里的私欲杂念最难克。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">反对<strong>只重事功不重心性</strong>：平天下先平内心。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">自我管理是最高难度的管理；管住一个念头，胜过赢一场外战。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">满街都是圣人</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">「个个人心有仲尼」——人人本具良知，皆可成圣，不假外求。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">反对<strong>把圣人供上神坛</strong>：圣凡之分在"致"不在"有没有"。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">别妄自菲薄，也别神化他人；潜能本有，缺的是"致"的工夫。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">志不立无可成</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">「志不立，天下无可成之事」——立志是学问与事功的第一工夫。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">针砭<strong>无定向的忙乱</strong>：终日驰逐而无所归。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">动手前先"立志"：一个清楚的"为什么"，省下无数无效努力。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">良知是是非之心</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">「知善知恶是良知」——良知是本体自带的是非判断，不待学、不依权威。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">反对<strong>外依教条权威</strong>：良知才是终审法官。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">遇到"规则说可以但心里不安"，相信那点不安——它往往更准。</div></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 论证脉络 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">03</span>
+        <h2>读法脉络</h2>
+        <span class="en">The Reading Path</span>
+      </div>
+      <div class="rule"></div>
+      <div class="flow">
+
+        <div class="stage">
+          <div class="sn">1</div>
+          <div class="body"><h4>徐爱私录 → 萌芽（1512）</h4><p>正德七年，徐爱与王阳明白舟论学，未经许可"私录"师语成一卷，未刊；这是《传习录》最早的胚胎。</p></div>
+        </div>
+
+        <div class="stage">
+          <div class="sn">2</div>
+          <div class="body"><h4>薛侃赣州刻 → 语录成书（1518）</h4><p>正德十三年，薛侃合徐爱残稿、陆澄所录、自录共 129 条，刻于江西赣州，定名《传习录》——上卷（心即理、知行合一）由此定型。</p></div>
+        </div>
+
+        <div class="stage">
+          <div class="sn">3</div>
+          <div class="body"><h4>南大吉续刻 → 书信入册（1524）</h4><p>嘉靖三年，南大吉以薛刻为上、增阳明论学书信八篇（《答顾东桥书》等）及《训蒙大意》，成续刻——中卷系统展开"致良知"。</p></div>
+        </div>
+
+        <div class="stage">
+          <div class="sn">4</div>
+          <div class="body"><h4>钱德洪编定 → 晚年定论（下卷）</h4><p>嘉靖中后期，钱德洪删削《传续录》、与王畿所录合编；下卷载陈九川、黄直等语，含"四句教"与天泉证道，是心学成熟形态。</p></div>
+        </div>
+
+        <div class="stage">
+          <div class="sn">5</div>
+          <div class="body"><h4>谢廷杰全书 → 三卷通行（1572）</h4><p>隆庆六年，御史谢廷杰汇刊《王文成公全书》，以上中下三卷定《传习录》体例——此即后世《王阳明全集》所收通行本。</p></div>
+        </div>
+
+        <div class="stage">
+          <div class="sn">6</div>
+          <div class="body"><h4>后世流传 → 心学东传</h4><p>门人广建书院讲习，明亡后仍绵延；东渡日本助明治维新，陈荣捷、钱穆皆列其为国人必读——一部语录，活成东亚的精神泉源。</p></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 金句 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">04</span>
+        <h2>金句摘录</h2>
+        <span class="en">Quotable Lines</span>
+      </div>
+      <div class="rule"></div>
+      <div class="quotes">
+
+        <div class="quote">
+          <p>你未看此花时，此花与汝心同归于寂；你来看此花时，则此花颜色一时明白起来。</p>
+          <span class="src">— 岩中花树 ·《传习录下》</span>
+        </div>
+
+        <div class="quote">
+          <p>知是行之始，行是知之成。圣学只一个工夫，知行不可分作两事。</p>
+          <span class="src">—《传习录上》</span>
+        </div>
+
+        <div class="quote">
+          <p>破山中贼易，破心中贼难。</p>
+          <span class="src">— 与杨仕德薛尚谦书（后世广为传诵，收入传习录相关语录传统）</span>
+        </div>
+
+        <div class="quote">
+          <p>无善无恶心之体，有善有恶意之动，知善知恶是良知，为善去恶是格物。</p>
+          <span class="src">— 四句教 ·《传习录下》</span>
+        </div>
+
+        <div class="quote">
+          <p>个个人心有仲尼，自将闻见苦遮迷。</p>
+          <span class="src">— 咏良知诗（良知说之诗化，与传习录论断互证）</span>
+        </div>
+
+      </div>
+      <p class="note">注：以上金句依《传习录》通行本（以《王文成公全书》/ 上海古籍《王阳明全集》所收三卷为据）整理，个别为诗文化用、非逐字考据；具体行文请以原书为准。"破山中贼易，破心中贼难"出自阳明书信，虽非《传习录》三卷正文，但历来与传习录心学一并传诵，故并列于此。</p>
+    </section>
+
+    <!-- ===== 行动启发 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">05</span>
+        <h2>行动启发</h2>
+        <span class="en">So What</span>
+      </div>
+      <div class="rule"></div>
+      <div class="two">
+
+        <div class="pane">
+          <h4>治学 · 工作</h4>
+          <ul>
+            <li><strong>志立先行：</strong>动手前先写清"为什么"，一个清楚的志向省下无数无效努力。</li>
+            <li><strong>知行合一：</strong>懂了就当场落地，把"改天再做"化成一个小动作——行为变了才算真懂。</li>
+            <li><strong>事上磨练：</strong>接真任务、碰真问题，在事里致良知，比囤课、囤书长得快。</li>
+            <li><strong>良知做标尺：</strong>复杂决策用本心"是非感"量一量，别被利益算计带偏。</li>
+            <li><strong>拔本塞源：</strong>团队/项目乱，先找回"大本"与"为什么"，再谈流程方法。</li>
+          </ul>
+        </div>
+
+        <div class="pane">
+          <h4>做人 · 修心</h4>
+          <ul>
+            <li><strong>心外无物：</strong>专注当下，你不用心在场，事就不在你世界里——少分心即多明白。</li>
+            <li><strong>破心中贼：</strong>管住一个不善的起念，胜过赢一场外部争执；自我管理最难也最值。</li>
+            <li><strong>满街圣人：</strong>人人本有良知，别妄自菲薄也别神化他人，缺的只是"致"的工夫。</li>
+            <li><strong>格物正心：</strong>行差先看念歪，正念先于正事，纠错从心开始。</li>
+            <li><strong>万物一体：</strong>把事连到"对人有没用"，孤岛感消失，意义感自来。</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 适合谁读 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">06</span>
+        <h2>适合谁读</h2>
+        <span class="en">Who Should Read</span>
+      </div>
+      <div class="rule"></div>
+      <div class="who">
+        <div class="col rec">
+          <h4>推荐读</h4>
+          <ul>
+            <li>总在"知道很多却做不到"的人——本书专治知行脱节</li>
+            <li>管理者 / 自驱者：把"破心中贼"当自我管理的最高功课</li>
+            <li>已被内耗、空转困住的人：良知说给"回归本心"一条路</li>
+            <li>已读《论语》《孟子》想进阶到宋明心学者</li>
+            <li>教育者 / 带团队者：借"立志""事上磨练"设计成长路径</li>
+          </ul>
+        </div>
+        <div class="col skip">
+          <h4>暂不合适</h4>
+          <ul>
+            <li>只想要"一步步操作清单"者——这是心性之学不是术</li>
+            <li>排斥儒学中"心性/良知"话语者——核心全在心上</li>
+            <li>急需逐字考据注本者——本页为研读笔记非校注本</li>
+            <li>坚持纯西方理论框架、拒"东方心学"视角者</li>
+            <li>只想读跌宕故事者——语录体平实，无情节张力</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="note">
+        说明：王守仁（1472–1529），字伯安，号阳明，浙江余姚人，明代思想家、军事家、教育家，倡"立德、立功、立言"真三不朽，梁启超谓中国"两个半圣人"之一，钱穆列《传习录》为国人必读。《传习录》书名取自《论语》"传不习乎"，由弟子徐爱首录（1512）、薛侃 1518 初刻于赣州、南大吉 1524 续刻、钱德洪编定下卷，至 1572 年谢廷杰《王文成公全集》定为上中下三卷通行本。上卷为徐爱、陆澄、薛侃所录论学语，中卷为答顾东桥等书信八篇及《训蒙大意》，下卷为陈九川、黄直、黄以方等所录并含"四句教"。本页为研读笔记，作者与版本信息依公开资料整理；深读请参上海古籍出版社《王阳明全集》所收《传习录》及陈荣捷《传习录详注集评》。
+      </p>
+    </section>
+
+    <footer>
+      <div class="ribbon">习</div>
+      <div>王阳明《传习录》研读笔记 · 对象中心分格（OCD）· 龙山大佛工作台</div>
+      <div style="margin-top:6px;opacity:.7;">配色 良知靛·书院蓝 ｜ 米色纸感 ｜ 衬线标题 ｜ 响应式不裁切</div>
+    </footer>
+
+  </div>
+</body>
+</html>

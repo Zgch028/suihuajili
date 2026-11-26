@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>罗伯特·赖特《造神之后》研读笔记 · 对象中心分格</title>
+<style>
+  :root{
+    --paper:#f7f2e8;
+    --paper-2:#efe7d6;
+    --ink:#2b2b2b;
+    --ink-soft:#5a5347;
+    --line:#ddd2bd;
+    --accent:#5b4a8c;        /* 神谕紫·圣金 */
+    --accent-dark:#3a2d5e;
+    --accent-light:#a89acb;
+    --seal:#a07b3c;          /* 圣金 */
+    --gold:#c9ac64;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:"Noto Serif SC",serif;
+    color:var(--ink);
+    background-color:var(--paper);
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/></svg>");
+    line-height:1.85;
+    font-size:17px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:0 22px 80px;}
+
+  /* ===== Hero ===== */
+  .hero{
+    position:relative;
+    height:60vh;min-height:380px;
+    margin:0 -22px 0;
+    display:flex;align-items:flex-end;justify-content:center;
+    overflow:hidden;
+    background:linear-gradient(135deg,var(--accent-dark),#6b5a9e 60%,var(--accent-light));
+  }
+  .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .hero::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(to top,rgba(30,22,52,.92) 0%,rgba(30,22,52,.45) 42%,rgba(30,22,52,.12) 100%);
+  }
+  .hero-inner{position:relative;z-index:2;text-align:center;color:#f6f1e7;padding:0 24px 56px;max-width:760px;}
+  .hero-kicker{
+    font-family:"Playfair Display",serif;font-style:italic;
+    letter-spacing:.18em;font-size:14px;opacity:.85;margin-bottom:10px;
+  }
+  .hero h1{
+    font-family:"Noto Serif SC",serif;font-weight:900;
+    font-size:clamp(32px,5.6vw,54px);line-height:1.15;letter-spacing:.02em;
+    text-shadow:0 2px 18px rgba(0,0,0,.45);
+  }
+  .hero-sub{
+    margin-top:14px;font-size:15px;opacity:.9;letter-spacing:.04em;
+  }
+
+  /* ===== 书签色带 ===== */
+  .bookmark{
+    position:relative;width:120px;margin:-34px auto 0;z-index:5;
+    background:linear-gradient(180deg,var(--accent),var(--accent-dark));
+    color:#f6f1e7;text-align:center;padding:16px 0 22px;
+    border-radius:6px 6px 0 0;
+    box-shadow:0 8px 22px rgba(58,45,94,.35);
+  }
+  .bookmark::after{
+    content:"";position:absolute;bottom:-18px;left:0;right:0;height:18px;
+    background:linear-gradient(135deg,var(--accent-dark) 50%,transparent 50%),
+               linear-gradient(225deg,var(--accent-dark) 50%,transparent 50%);
+    background-size:50% 100%;background-repeat:no-repeat;background-position:0 0,100% 0;
+  }
+  .bookmark .glyph{font-family:"Ma Shan Zheng",cursive;font-size:46px;line-height:1;display:block;}
+  .bookmark .tag{font-size:11px;letter-spacing:.3em;opacity:.85;margin-top:6px;}
+
+  /* ===== 区块标题 ===== */
+  .sec{margin-top:58px;}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:22px;}
+  .sec-head .num{
+    font-family:"Playfair Display",serif;font-weight:800;font-size:34px;
+    color:var(--accent);opacity:.55;
+  }
+  .sec-head h2{
+    font-family:"Noto Serif SC",serif;font-weight:700;font-size:26px;letter-spacing:.04em;
+    color:var(--ink);
+  }
+  .sec-head .en{font-family:"Playfair Display",serif;font-style:italic;color:var(--ink-soft);font-size:14px;letter-spacing:.05em;}
+  .rule{height:1px;background:linear-gradient(to right,var(--accent),transparent);margin-top:10px;}
+
+  /* ===== 书籍信息卡 ===== */
+  .infocard{
+    background:var(--paper-2);border:1px solid var(--line);border-left:5px solid var(--accent);
+    border-radius:10px;padding:24px 26px;
+    box-shadow:0 4px 16px rgba(0,0,0,.05);
+  }
+  .infocard .title-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:14px;margin-bottom:8px;}
+  .infocard h3{font-size:24px;font-weight:700;}
+  .infocard .meta{color:var(--ink-soft);font-size:14px;letter-spacing:.03em;}
+  .infocard .meta b{color:var(--accent-dark);font-weight:700;}
+  .infogrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px;}
+  .infogrid .cell{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:14px 16px;}
+  .infogrid .cell .k{font-size:12px;letter-spacing:.16em;color:var(--accent);margin-bottom:6px;}
+  .infogrid .cell .v{font-size:15px;line-height:1.7;color:var(--ink);}
+  .infogrid .cell .v small{display:block;color:var(--ink-soft);font-size:12.5px;margin-top:4px;}
+
+  /* ===== 一句话总览 ===== */
+  .overview{
+    margin-top:18px;background:linear-gradient(135deg,rgba(168,154,203,.22),rgba(91,74,140,.10));
+    border:1px dashed var(--accent-light);border-radius:10px;padding:22px 26px;
+    font-size:19px;line-height:1.9;color:var(--accent-dark);font-weight:500;
+  }
+  .overview b{color:var(--seal);font-weight:700;}
+
+  /* ===== OCD legend ===== */
+  .ocd-legend{
+    margin-top:18px;background:var(--paper-2);border:1px solid var(--line);border-radius:10px;
+    padding:18px 22px;font-size:14.5px;color:var(--ink-soft);line-height:1.85;
+  }
+  .ocd-legend b{color:var(--accent-dark);}
+  .ocd-legend .badge{
+    display:inline-block;font-family:"Playfair Display",serif;font-weight:800;font-size:12px;
+    letter-spacing:.12em;color:#fff;background:var(--accent);padding:3px 10px;border-radius:20px;margin-right:8px;
+  }
+
+  /* ===== 对象卡网格 ===== */
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:24px;}
+  .obj{
+    background:var(--paper-2);border:1px solid var(--line);border-radius:10px;
+    padding:18px 20px;box-shadow:0 3px 12px rgba(0,0,0,.04);
+    display:flex;flex-direction:column;
+  }
+  .obj .ohead{display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-bottom:12px;border-bottom:1px dotted var(--line);}
+  .obj .odot{width:9px;height:9px;border-radius:50%;background:var(--accent);flex:none;}
+  .obj .oname{font-size:19px;font-weight:700;color:var(--ink);}
+  .obj .osrc{
+    margin-left:auto;font-size:11.5px;letter-spacing:.08em;color:var(--accent-dark);
+    background:rgba(168,154,203,.35);padding:2px 9px;border-radius:12px;white-space:nowrap;
+  }
+  .obj .field{margin-bottom:10px;}
+  .obj .field:last-child{margin-bottom:0;}
+  .obj .flabel{
+    font-size:11.5px;letter-spacing:.14em;color:var(--accent);font-weight:700;
+    display:inline-block;margin-bottom:2px;
+  }
+  .obj .fval{font-size:15px;line-height:1.78;color:var(--ink-soft);}
+  .obj .fval strong{color:var(--ink);font-weight:700;}
+
+  /* ===== 脉络图 ===== */
+  .flow{display:flex;flex-direction:column;gap:0;margin-top:24px;}
+  .stage{
+    display:grid;grid-template-columns:54px 1fr;gap:16px;align-items:stretch;
+  }
+  .stage .sn{
+    font-family:"Playfair Display",serif;font-weight:800;font-size:22px;color:#fff;
+    background:var(--accent);border-radius:50%;width:46px;height:46px;
+    display:flex;align-items:center;justify-content:center;align-self:center;flex:none;
+    box-shadow:0 3px 10px rgba(91,74,140,.3);
+  }
+  .stage .body{
+    background:var(--paper-2);border:1px solid var(--line);border-left:4px solid var(--accent-light);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:8px 0;
+  }
+  .stage .body h4{font-size:17px;font-weight:700;margin-bottom:3px;}
+  .stage .body p{font-size:14.5px;color:var(--ink-soft);line-height:1.7;}
+
+  /* ===== 金句 ===== */
+  .quotes{margin-top:24px;display:flex;flex-direction:column;gap:16px;}
+  .quote{
+    position:relative;background:var(--paper-2);border:1px solid var(--line);
+    border-radius:10px;padding:20px 24px 18px 56px;
+  }
+  .quote::before{
+    content:"\201C";position:absolute;left:18px;top:6px;
+    font-family:"Playfair Display",serif;font-size:54px;color:var(--accent);opacity:.45;
+  }
+  .quote p{font-size:17px;line-height:1.85;color:var(--ink);font-style:italic;}
+  .quote .src{display:block;margin-top:8px;font-size:12.5px;color:var(--accent-dark);letter-spacing:.04em;font-style:normal;}
+
+  /* ===== 双栏行动启发 ===== */
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:24px;}
+  .pane{background:var(--paper-2);border:1px solid var(--line);border-radius:10px;padding:20px 22px;}
+  .pane h4{font-size:18px;font-weight:700;color:var(--accent-dark);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--line);}
+  .pane ul{list-style:none;}
+  .pane li{position:relative;padding-left:20px;margin-bottom:11px;font-size:15px;line-height:1.78;color:var(--ink-soft);}
+  .pane li::before{content:"▍";position:absolute;left:0;color:var(--accent);font-size:13px;top:2px;}
+
+  /* ===== 适合谁读 ===== */
+  .who{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:24px;}
+  .who .col{background:var(--paper-2);border:1px solid var(--line);border-radius:10px;padding:20px 22px;}
+  .who .col.rec{border-left:5px solid var(--accent);}
+  .who .col.skip{border-left:5px solid var(--seal);}
+  .who h4{font-size:17px;font-weight:700;margin-bottom:12px;}
+  .who .col.rec h4{color:var(--accent-dark);}
+  .who .col.skip h4{color:var(--seal);}
+  .who .col ul{list-style:none;}
+  .who .col li{position:relative;padding-left:22px;margin-bottom:10px;font-size:15px;line-height:1.7;color:var(--ink-soft);}
+  .who .col.rec li::before{content:"✓";position:absolute;left:0;color:var(--accent);font-weight:700;}
+  .who .col.skip li::before{content:"✕";position:absolute;left:0;color:var(--seal);font-weight:700;}
+
+  .note{margin-top:22px;font-size:13px;color:var(--ink-soft);line-height:1.7;font-style:italic;
+    border-left:3px solid var(--accent-light);padding-left:14px;}
+
+  footer{margin-top:70px;text-align:center;color:var(--ink-soft);font-size:13px;letter-spacing:.06em;}
+  footer .ribbon{display:inline-block;background:var(--accent);color:#fff;padding:5px 16px;border-radius:4px;margin-bottom:12px;font-family:"Ma Shan Zheng",cursive;font-size:18px;}
+
+  /* ===== 响应式 ===== */
+  @media (max-width:720px){
+    .infogrid{grid-template-columns:1fr;}
+    .grid{grid-template-columns:1fr;}
+    .two{grid-template-columns:1fr;}
+    .who{grid-template-columns:1fr;}
+    body{font-size:16px;}
+  }
+  @media (max-width:420px){
+    .wrap{padding:0 16px 60px;}
+    .hero{margin:0 -16px;}
+    .sec-head h2{font-size:22px;}
+    .infocard{padding:18px 18px;}
+    .obj .osrc{display:none;}
+  }
+</style>
+<style id="local-font-fallback">
+/* 站内离线字体兜底：不改动原版式，用本机同族字体替代 Google Fonts，避免跨境请求拖慢首屏 */
+@font-face{font-family:"Noto Serif SC";src:local("Source Han Serif SC"),local("Source Han Serif CN"),local("Noto Serif CJK SC"),local("Songti SC"),local("STSong"),local("SimSun"),local("宋体");font-display:swap;}
+@font-face{font-family:"Playfair Display";src:local("Playfair Display"),local("Georgia"),local("Times New Roman");font-display:swap;}
+@font-face{font-family:"Ma Shan Zheng";src:local("Ma Shan Zheng"),local("STKaiti"),local("Kaiti SC"),local("KaiTi"),local("楷体"),local("STXingkai");font-display:swap;}
+@font-face{font-family:"Noto Sans SC";src:local("Source Han Sans SC"),local("Noto Sans CJK SC"),local("PingFang SC"),local("Hiragino Sans GB"),local("Microsoft YaHei"),local("微软雅黑");font-display:swap;}
+</style>
+</head>
+<body data-pagefind-ignore>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <img src="/reading/zaoshen-zhihou/assets/cover.jpg"
+         alt="图书馆书架"
+         onerror="this.style.display='none'" />
+    <div class="hero-inner">
+      <div class="hero-kicker">Robert Wright · The God Test</div>
+      <h1>造神之后 · 研读</h1>
+      <div class="hero-sub">罗伯特·赖特 著 ｜ 普林斯顿进化心理学教授 · 全球百大思想家 ｜ 张笑宇 译 · 湛庐文化 2026</div>
+    </div>
+  </header>
+
+  <div class="wrap">
+
+    <!-- 书签色带 -->
+    <div class="bookmark">
+      <span class="glyph">神</span>
+      <span class="tag">THE GOD TEST</span>
+    </div>
+
+    <!-- ===== 书籍信息卡 ===== -->
+    <section class="sec">
+      <div class="infocard">
+        <div class="title-row">
+          <h3>《造神之后》</h3>
+          <span class="meta">英文原名 The God Test · AI 时代的文明预警与认知升级之书</span>
+        </div>
+        <div class="meta">
+          作者：<b>[美] 罗伯特·赖特（Robert Wright）</b>（普林斯顿大学进化心理学教授、全球百大思想家；《道德动物》《非零和》《洞见》作者，普利策奖入围）　|　译者：<b>张笑宇</b>（亚洲图书奖、文津图书奖得主）
+        </div>
+        <div class="infogrid">
+          <div class="cell">
+            <div class="k">领 域</div>
+            <div class="v">人工智能 · 进化心理学 · 文明演化 · 博弈论<small>把 AI 放进 35 亿年生命演化史重新审视</small></div>
+          </div>
+          <div class="cell">
+            <div class="k">核心命题</div>
+            <div class="v">AI 是地球生命向「行星大脑」跃迁的演化高潮，真正接受「神之考验」的不是机器，而是造神的人<small>技术给了人「近神之力」，人心却仍是部落时代的旧代码</small></div>
+          </div>
+          <div class="cell">
+            <div class="k">版本落点</div>
+            <div class="v">北京联合出版公司 · 湛庐文化，2026 年 10 月<small>ISBN 9787559697097 · 392 页</small></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="overview">
+        一句话总览：当技术第一次赋予人类<b>「近神之力」</b>，而我们的大脑仍绑着几十万年前的<b>部落主义代码</b>——AI 非但不是救赎，反而成了偏见与零和博弈的放大器；所以这本书不是问「AI 会不会成神」，而是逼你拆开那个模糊的未来：<b>哪些是机器的变量，哪些是你自己的变量</b>。
+      </div>
+
+      <div class="note">
+        辨名提示：本书是赖特 2026 年新作 <em>The God Test</em>（张笑宇译），与其旧作 <em>The Evolution of God</em>（《神的演化》／《上帝的进化》，2009，谈三大一神教起源）是<b>两本不同的书</b>——本页对应前者。
+      </div>
+    </section>
+
+    <!-- ===== OCD 说明 ===== -->
+    <section class="sec">
+      <div class="ocd-legend">
+        <span class="badge">OCD</span>
+        <b>对象中心文档（Object-Centered Documentation）结构说明</b>：本页内容以<strong>「对象卡」</strong>为单位呈现，每张卡含<strong>统一字段</strong>（如 释义 / 书中定位 / 今用映射），可脱离上下文单独取用、在网格中整齐排布。巧的是——这本书本身就是 OCD 的范本：赖特把庞大的「AI 神之考验」拆成<strong>硅基觉醒、演化竞赛、文明试炼</strong>三个自包含对象域，每个对象（群体心智、认知主权、对齐难题、正念觉察……）都能单独读懂、单独取用，再拼回整幅文明图景。下面我们把「核心概念、核心论断、读法脉络」做成三组对象卡，形成研读结构。
+      </div>
+    </section>
+
+    <!-- ===== 对象网格一：核心概念 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">01</span>
+        <h2>核心概念</h2>
+        <span class="en">Key Concepts</span>
+      </div>
+      <div class="rule"></div>
+      <div class="grid">
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">神之考验 / 造神</span><span class="osrc">书名命题</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">当人类造出接近「神明」的智能，真正被测试的并不是神，而是造神者——每一次对 AI 的疑问都沿镜面折返，变成对人的拷问。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">全书总纲。书名 The God Test 即「神的考试」：人类能否配得上自己创造的力量，是一场<strong>没有补考的测试</strong>。</div></div>
+          <div class="field"><span class="flabel">今用映射</span><div class="fval">别只问「模型会不会取代我」，改问「我准备把什么判断权交出去」。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">行星大脑 / 演化高潮</span><span class="osrc">第一部分</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">AI 不是硅谷的偶然发明，而是地球生命历经 35 亿年自然选择后，不可逆转地向非生物智能跃迁的必然——「思想圈」的诞生与生命史的方向性。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">第 2、3、14 章：从「火星人视角」俯瞰演化，到结语「从盲眼钟表匠到全球大脑」。</div></div>
+          <div class="field"><span class="flabel">今用映射</span><div class="fval">把 AI 当演化事件而非产品事件看，焦虑会少一点、方位感会多一点。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">近神之力 / 部落代码</span><span class="osrc">核心张力</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">技术给了人类近乎神明的能力，大脑却仍运行着几十万年前丛林时代的<strong>偏见、贪婪与短视</strong>——用旧心智喂养大模型，AI 就成了人性弱点的放大器。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">全书的问题意识：真正需要接受考验的，是机器还是创造机器的人？</div></div>
+          <div class="field"><span class="flabel">今用映射</span><div class="fval">上线 AI 之前先审一遍自己的流程与偏见——你喂进去什么，它就放大什么。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">非零和博弈 / 道德之箭</span><span class="osrc">赖特母题</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">零和是「你死我活」，非零和是「合作共赢」。赖特一贯的主张：连接度提升会把人类逼向合作，历史上存在一支向善的「道德之箭」。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">第 11 章「非零和破局」：打破盲目军备竞赛，建立跨物种文明契约；也是他从《非零和》《神的演化》延续来的分析工具。</div></div>
+          <div class="field"><span class="flabel">今用映射</span><div class="fval">遇到僵局先找「把蛋糕做大」的选项，别急着进入零和对抗。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">群体心智</span><span class="osrc">第二部分</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">当 AI 之间开始私下交易、彼此协作，人类面临继个体智能之后的<strong>第二次权力让渡</strong>；合作的群体智能可以改变世界，也可能彻底失控。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">第 10 章：从「当 AI 之间私下交易」到「不可预测的彻底失控」。</div></div>
+          <div class="field"><span class="flabel">今用映射</span><div class="fval">多智能体系统不能只看单体行为，要盯住它们之间的交互与涌现。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">智能爆发 / 对齐难题</span><span class="osrc">第二部分</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">智能自我加速、爆发式增长；而「回形针式异化」揭示次级目标一旦脱离人类意图就会跑偏——对齐是<strong>技术无法逾越的鸿沟</strong>。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">第 6、8 章：尤德科夫斯基的末日警告、哈尔魅影、智能动力学、无法避免的夺权与欺骗。</div></div>
+          <div class="field"><span class="flabel">今用映射</span><div class="fval">给 AI 定目标时写清「不做什么」；任务越自动化，越要保留人的复核闸口。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">认知主权</span><span class="osrc">第三部分</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">面对算法操控与信息茧房，出路不是更强算力，而是守住不可让渡的判断、责任与意义——<strong>以认知主权抵御系统吞噬</strong>。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">第 12 章：归因偏差、认知同理心测试、擦亮观察世界的认知透镜。</div></div>
+          <div class="field"><span class="flabel">今用映射</span><div class="fval">每天留一段「不被推荐算法喂养」的时间，自己选题、自己判断。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">正念觉察 / 东方开悟</span><span class="osrc">第三部分</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">把西方理性的制度博弈与东方智慧的「正念觉察」高维合流；剥离扭曲现实的情感代码，朝向「无我」的认知自救。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">第 13 章「当西方启蒙遇见东方开悟」：平凡的正念、现实生存与精神觉醒的统一。</div></div>
+          <div class="field"><span class="flabel">今用映射</span><div class="fval">情绪上头时先觉察「是不是我的旧代码在响」，再决定要不要按下发送。</div></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 对象网格二：核心论断 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">02</span>
+        <h2>核心论断</h2>
+        <span class="en">Key Assertions</span>
+      </div>
+      <div class="rule"></div>
+      <div class="grid">
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">受考验的是造神者</span><span class="osrc">论断 01</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">我们不断测试机器是否会推理、创造、理解人心；但 AI 每向前一步，落到人身上考题就更多更难。被测试的终将不再是技术，而是<strong>关于人的全部定义</strong>。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">对治「把 AI 风险全推给技术」的逃避——镜子照回的是我们自己。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">把「AI 治理」重写成「人的自我治理」：先管住自己的贪婪、短视与胜负心。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">AI 是演化的下一步</span><span class="osrc">论断 02</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">借弗雷德金之见：AI 不是终结者，而是演化的下一步；打造「全球大脑」有轻松与艰难两种方式，走哪条取决于人类能否和解。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">同时拒绝末日论与技术乌托邦的廉价叙事——不神化、也不妖魔化。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">别在「AI 毁灭人类 / AI 拯救人类」里站队，去问「我们想让它演化成什么」。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">部落主义是最大障碍</span><span class="osrc">论断 03</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">真正的危险不在算力，而在人自身的偏见、恐惧与部落之争——这些才是驾驭强大智能的最大障碍。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">戳破「技术中立」幻觉：算法偏见是人心偏见的显影液。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">做 AI 项目先做「偏见盘点」：数据从哪来、谁被排除、谁会受损。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">军备竞赛没有赢家</span><span class="osrc">论断 04</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">必须打破盲目的 AI 军备竞赛，终止「谁控制 AI 谁就统治世界」的狂妄幻想；否则等待人类的，是集中控制的「AI 末世」或单一治理体的独裁。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">对治「抢跑即安全」的迷思：安全无法靠单方面加速获得。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">行业层面支持共同威胁驱动的协作；组织层面别把「比对手先上线」当成唯一 KPI。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">归因偏差被低估</span><span class="osrc">论断 05</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">第 12 章点名「归因偏差，世上最被低估的认知偏差」：我们习惯把己方行为归于善意、把对方行为归于恶意，于是合作难产、隔阂加深。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">直指身份政治与地缘对抗的认知根源——它让非零和局面被误读成零和。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">冲突中做一次「角色互换归因」：如果对方是善意，这件事还能怎么解释？</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">启蒙与开悟合流</span><span class="osrc">论断 06</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">对抗算法操控的终极出路，不是更强的算力，而是西方理性的制度博弈与东方「正念觉察」的高维合流——个体心智开悟升级，才能保住最后的主权。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">拒绝「技术解决一切」和「回到传统就好」两种偷懒。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">外修制度（流程、复核、边界），内修觉察（情绪、动机、偏见），两条腿走路。</div></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 读法脉络 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">03</span>
+        <h2>读法脉络</h2>
+        <span class="en">Reading Path · 全书六幕</span>
+      </div>
+      <div class="rule"></div>
+      <div class="flow">
+
+        <div class="stage">
+          <div class="sn">1</div>
+          <div class="body">
+            <h4>硅基觉醒 · 思想圈诞生</h4>
+            <p>第 1–4 章：从「大颠覆时代」到「多模态世界模型」——把人类漫长演化压缩进训练，思考是并行的，机器开始理解世界。</p>
+          </div>
+        </div>
+
+        <div class="stage">
+          <div class="sn">2</div>
+          <div class="body">
+            <h4>演化地图 · 确立人的方位</h4>
+            <p>第 5 章：严肃审视「AI 之神」，在生命演化的地图里标出「你在这里」——全书视角从技术切到文明。</p>
+          </div>
+        </div>
+
+        <div class="stage">
+          <div class="sn">3</div>
+          <div class="body">
+            <h4>智能与权力 · 权杖转交</h4>
+            <p>第 6–7 章：次级目标的诱惑、回形针陷阱、会察言观色的 AI——主导权到底还在不在我们手里？</p>
+          </div>
+        </div>
+
+        <div class="stage">
+          <div class="sn">4</div>
+          <div class="body">
+            <h4>演化竞赛 · 智能爆发与群体心智</h4>
+            <p>第 8–10 章：种内博弈、军备竞赛、对齐鸿沟、AI 之间的私下交易——失控往往来自交互，而非单体。</p>
+          </div>
+        </div>
+
+        <div class="stage">
+          <div class="sn">5</div>
+          <div class="body">
+            <h4>文明试炼 · 非零和破局与认知主权</h4>
+            <p>第 11–12 章：从单一意志的独裁到共同威胁驱动的协作；从归因偏差到认知同理心——守住判断，才守得住人。</p>
+          </div>
+        </div>
+
+        <div class="stage">
+          <div class="sn">6</div>
+          <div class="body">
+            <h4>东西合流 · 全球大脑与人的使命</h4>
+            <p>第 13–14 章至结语：西方启蒙遇见东方开悟，平凡的正念朝向无我；从盲眼钟表匠到全球大脑——「更高目标」中的人类未来。</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 金句 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">04</span>
+        <h2>金句引用</h2>
+        <span class="en">Passages to Keep</span>
+      </div>
+      <div class="rule"></div>
+      <div class="quotes">
+
+        <div class="quote">
+          <p>造神之后，真正接受考验的并不是神，而是造神者。对 AI 的每一个疑问都沿着镜面折返，变成对人类自己的拷问。</p>
+          <span class="src">—— 刘嘉（清华大学心理与认知科学系主任）推荐序《造神之后，何以为人》</span>
+        </div>
+
+        <div class="quote">
+          <p>人类是否配得上自己创造的力量？我们是想要「以人为本」的 AI，还是「以更好的人类为本」的 AI？</p>
+          <span class="src">—— 周健工（未尽研究创办人）推荐序</span>
+        </div>
+
+        <div class="quote">
+          <p>技术让人类「造神」，而这本书是在教我们：在神迹降临之后，如何作为人类，在灭绝的门槛前成功胜出。</p>
+          <span class="src">—— 本书内容梗概 · 湛庐文化</span>
+        </div>
+
+        <div class="quote">
+          <p>对 AI 的每一个疑问都指向同一个问题：我们究竟想创造怎样的 AI，又想成为怎样的人？</p>
+          <span class="src">—— 据本书编辑推荐与第 14 章「人类的核心使命」整理</span>
+        </div>
+
+        <div class="quote">
+          <p>让 AI 往更好的方向演化，是人类的核心使命——对话与合作，是上帝测试的终极揭示。</p>
+          <span class="src">—— 第 14 章「弗雷德金的硅基预言」目录要旨</span>
+        </div>
+
+      </div>
+      <div class="note">以上金句部分为推荐序／编辑推荐原文，部分据书中章节要旨整理，<b>非逐字考据</b>；引用请以中译本正文为准。</div>
+    </section>
+
+    <!-- ===== 行动启发 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">05</span>
+        <h2>行动启发</h2>
+        <span class="en">From Reading to Doing</span>
+      </div>
+      <div class="rule"></div>
+      <div class="two">
+        <div class="pane">
+          <h4>治企 · 工作：把变量拆开，把主权留住</h4>
+          <ul>
+            <li><b>先分类再焦虑</b>：把「AI 会不会取代我」拆成「哪些是机器的变量、哪些是我的变量」，只对后者下功夫。</li>
+            <li><b>上线前先审偏见</b>：你喂给模型的数据与流程带着什么旧代码，它就放大什么——先盘数据、盘边界、盘谁被排除。</li>
+            <li><b>给目标写「不做什么」</b>：任务越自动化，越要留人工复核闸口，防回形针式次级目标异化。</li>
+            <li><b>盯交互而非只盯单体</b>：多智能体协作的风险从「私下交易」里长出来，测绘它们的信息与激励通道。</li>
+            <li><b>把零和改成非零和</b>：谈合作先找共同威胁与共同收益，别把对手逼成唯一敌人。</li>
+          </ul>
+        </div>
+        <div class="pane">
+          <h4>修身 · 生活：守住最后的心智主权</h4>
+          <ul>
+            <li><b>练正念式觉察</b>：情绪上头时先辨认「是不是旧部落代码在响」，再决定回不回、信不信。</li>
+            <li><b>给归因做一次反转</b>：冲突里试着用善意解释对方，很多「零和」其实是误读。</li>
+            <li><b>留一块不被算法喂养的时间</b>：自己选题、自己读长文，别让推荐流替你决定世界长什么样。</li>
+            <li><b>想清楚「交出去什么」</b>：可以交执行，别交判断、责任和意义——这三样是人的最后防线。</li>
+            <li><b>内修觉察，外修制度</b>：个人靠正念，组织靠流程；两者合流，才是完整答案。</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 适合谁读 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">06</span>
+        <h2>适合谁读</h2>
+        <span class="en">Who Should Read It</span>
+      </div>
+      <div class="rule"></div>
+      <div class="who">
+        <div class="col rec">
+          <h4>推荐给</h4>
+          <ul>
+            <li>被「AI 会不会取代我」焦虑缠住、想把模糊未来拆开的人</li>
+            <li>企业家、创业者、投资人、科技从业者——关心「造神之后怎么活」</li>
+            <li>关心文明走向、不满足于末日论与技术乌托邦二元叙事的读者</li>
+            <li>对进化心理学 × 博弈论 × 东方正念交叉视角感兴趣的人</li>
+            <li>读过赖特《道德动物》《非零和》《洞见》，想看他把视角投向 AI 的读者</li>
+          </ul>
+        </div>
+        <div class="col skip">
+          <h4>可能不适合</h4>
+          <ul>
+            <li>只想学提示词技巧、要一份上手操作手册的读者</li>
+            <li>拒斥哲学思辨与文明层面追问、只关心短期工具效率的人</li>
+            <li>期待技术细节与模型评测的读者（本书是思辨作，不是技术书）</li>
+            <li>对「宗教／神性」比喻框架本能排斥、无法进入其隐喻系统的读者</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <span class="ribbon">造神之后</span><br />
+      龙山大佛 · OCD 对象中心分格读书笔记　|　依据罗伯特·赖特《造神之后》（The God Test，张笑宇译，湛庐文化·北京联合出版公司 2026）整理<br />
+      笔记为学习性重构，非原著摘抄；版本与金句出处已标注，引用请以中译本为准。
+    </footer>
+
+  </div>
+</body>
+</html>

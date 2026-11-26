@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>《瓦尔登湖》读书笔记 · 在湖畔校准生活的重心</title>
+<style>
+  :root{
+    --paper:#f4ecdc;
+    --ink:#2c2a22;
+    --ink-soft:#6b6353;
+    --seal:#2f6e63;        /* 湖青绿 */
+    --seal-deep:#1f4a42;
+    --gold:#bf9b46;
+    --line:#cfc7ab;
+    --card:#fbf6ea;
+    --shadow:rgba(30,50,45,.14);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:"Noto Serif SC",serif;
+    color:var(--ink);
+    background-color:var(--paper);
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+    line-height:1.85;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:0 22px 80px;}
+
+  /* ===== Hero ===== */
+  .hero{
+    position:relative;
+    min-height:62vh;
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    background:#14201d;
+    overflow:hidden;
+  }
+  .hero img{
+    position:absolute;inset:0;width:100%;height:100%;
+    object-fit:cover;object-position:center 42%;
+    filter:saturate(.95) contrast(1.02);
+  }
+  .hero::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(to bottom,
+      rgba(20,32,29,0) 18%,
+      rgba(20,32,29,.42) 55%,
+      rgba(20,32,29,.92) 100%);
+  }
+  .hero-inner{
+    position:relative;z-index:2;
+    text-align:center;padding:0 20px 56px;width:100%;
+  }
+  .hero .seal{
+    display:inline-block;
+    font-family:"Ma Shan Zheng",cursive;
+    font-size:clamp(2.6rem,9vw,4.4rem);
+    color:#fdf6ea;
+    background:var(--seal);
+    border:2px solid rgba(255,240,220,.55);
+    padding:.12em .28em;
+    border-radius:8px;
+    transform:rotate(-3deg);
+    box-shadow:0 10px 30px rgba(0,0,0,.4);
+    margin-bottom:18px;
+  }
+  .hero h1{
+    font-family:"Noto Serif SC",serif;
+    font-weight:900;
+    color:#fcf4e6;
+    font-size:clamp(2rem,7vw,3.4rem);
+    letter-spacing:.06em;
+    margin:.1em 0 .25em;
+    text-shadow:0 2px 16px rgba(0,0,0,.6);
+  }
+  .hero .sub{
+    color:#ecdcc4;
+    font-size:clamp(.95rem,2.6vw,1.15rem);
+    letter-spacing:.16em;
+    text-shadow:0 1px 10px rgba(0,0,0,.55);
+  }
+
+  /* ===== 书签色带 ===== */
+  .ribbon{
+    position:relative;
+    margin:-26px auto 40px;
+    width:max-content;
+    max-width:90%;
+    background:var(--seal);
+    color:#fdf6ea;
+    padding:10px 30px;
+    border-radius:4px;
+    font-size:1rem;
+    letter-spacing:.22em;
+    box-shadow:0 8px 22px var(--shadow);
+  }
+  .ribbon::before,.ribbon::after{
+    content:"";position:absolute;top:0;width:0;height:0;
+    border:16px solid var(--seal-deep);
+  }
+  .ribbon::before{left:-18px;border-left-color:transparent;}
+  .ribbon::after{right:-18px;border-right-color:transparent;}
+
+  /* ===== 通用区块 ===== */
+  section{margin:54px 0;}
+  .sec-title{
+    font-size:1.5rem;font-weight:700;color:var(--seal-deep);
+    display:flex;align-items:center;gap:12px;margin:0 0 6px;
+  }
+  .sec-title .num{
+    font-family:"Playfair Display",serif;font-style:italic;
+    color:var(--gold);font-size:1.6rem;
+  }
+  .sec-sub{color:var(--ink-soft);margin:0 0 22px;font-size:.95rem;letter-spacing:.04em;}
+
+  /* 书籍信息卡 */
+  .book-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-left:6px solid var(--seal);
+    border-radius:10px;
+    padding:24px 26px;
+    box-shadow:0 6px 18px var(--shadow);
+  }
+  .book-meta{display:flex;flex-wrap:wrap;gap:10px 26px;margin-bottom:16px;}
+  .book-meta div{font-size:.95rem;}
+  .book-meta b{color:var(--seal-deep);font-weight:700;margin-right:6px;}
+  .overview{
+    background:linear-gradient(180deg,#fbf3e2,#f4ecd2);
+    border:1px dashed var(--gold);
+    border-radius:10px;
+    padding:18px 22px;
+    margin-top:6px;
+    font-size:1.06rem;
+  }
+  .overview b{color:var(--seal-deep);}
+
+  /* 双系统对比 */
+  .vs-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:stretch;}
+  .vs-col{
+    background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:22px;box-shadow:0 6px 16px var(--shadow);
+  }
+  .vs-col h3{margin:.2em 0 .4em;font-size:1.2rem;color:var(--seal-deep);}
+  .vs-col .tag{font-size:.8rem;letter-spacing:.14em;color:var(--ink-soft);}
+  .vs-col ul{margin:.6em 0 0;padding-left:1.1em;font-size:.96rem;}
+  .vs-col li{margin:.35em 0;}
+  .vs-mid{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    min-width:64px;
+  }
+  .vs-mid .vs{font-family:"Playfair Display",serif;font-weight:700;font-size:2rem;color:var(--gold);}
+  .vs-mid .dot{width:10px;height:10px;border-radius:50%;background:var(--seal);margin:8px 0;}
+  .insight{
+    margin-top:18px;background:#eef3f0;border-radius:10px;padding:16px 20px;
+    border:1px solid var(--line);font-size:1rem;
+  }
+  .insight b{color:var(--seal-deep);}
+
+  /* 概念卡片 */
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  .bias{
+    background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:20px;box-shadow:0 6px 16px var(--shadow);
+    position:relative;overflow:hidden;
+  }
+  .bias::before{
+    content:"";position:absolute;top:0;left:0;width:100%;height:4px;background:var(--seal);
+  }
+  .bias .en{font-family:"Playfair Display",serif;font-style:italic;color:var(--gold);font-size:.9rem;}
+  .bias h4{margin:.2em 0 .5em;font-size:1.16rem;color:var(--seal-deep);}
+  .bias p{margin:.3em 0;font-size:.95rem;color:var(--ink-soft);}
+
+  /* 脉络图 */
+  .flow{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .act{
+    background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:18px 16px;box-shadow:0 5px 14px var(--shadow);
+    border-top:4px solid var(--gold);
+  }
+  .act .step{font-family:"Playfair Display",serif;color:var(--seal);font-weight:700;font-size:1.1rem;}
+  .act h4{margin:.3em 0 .4em;font-size:1.08rem;color:var(--seal-deep);}
+  .act p{margin:0;font-size:.92rem;color:var(--ink-soft);}
+
+  /* 金句 */
+  .quote{
+    background:linear-gradient(180deg,#fbf3e2,#f4ecd2);
+    border-left:6px solid var(--seal);
+    border-radius:10px;padding:20px 24px;margin:18px 0;
+    box-shadow:0 5px 14px var(--shadow);
+  }
+  .quote .text{font-size:1.16rem;line-height:1.7;color:var(--ink);}
+  .quote .from{display:block;margin-top:8px;color:var(--ink-soft);font-size:.9rem;letter-spacing:.05em;}
+
+  /* 行动启发 */
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .act-card{
+    background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:22px;box-shadow:0 6px 16px var(--shadow);
+  }
+  .act-card h4{margin:.1em 0 .6em;color:var(--seal-deep);font-size:1.15rem;}
+  .act-card li{margin:.5em 0;font-size:.96rem;}
+  .act-card b{color:var(--seal);}
+
+  /* 适合谁读 */
+  .who{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .who-box{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px;box-shadow:0 5px 14px var(--shadow);}
+  .who-box h4{margin:.1em 0 .6em;font-size:1.1rem;}
+  .who-box.good h4{color:var(--seal-deep);}
+  .who-box.bad h4{color:var(--ink-soft);}
+  .who-box li{font-size:.95rem;margin:.4em 0;}
+
+  footer{
+    text-align:center;color:var(--ink-soft);font-size:.85rem;
+    margin-top:60px;padding-top:26px;border-top:1px solid var(--line);letter-spacing:.06em;
+  }
+  footer .seal-sm{
+    display:inline-block;font-family:"Ma Shan Zheng",cursive;
+    color:var(--seal);border:1.5px solid var(--seal);border-radius:6px;
+    padding:2px 12px;transform:rotate(-2deg);margin-bottom:10px;
+  }
+
+  /* ===== 响应式 ===== */
+  @media (max-width:720px){
+    .vs-grid{grid-template-columns:1fr;}
+    .vs-mid{flex-direction:row;min-width:0;gap:10px;padding:6px 0;}
+    .vs-mid .vs{font-size:1.5rem;}
+    .cards{grid-template-columns:repeat(2,1fr);}
+    .flow{grid-template-columns:repeat(2,1fr);}
+    .two-col,.who{grid-template-columns:1fr;}
+  }
+  @media (max-width:420px){
+    .wrap{padding:0 16px 60px;}
+    .cards{grid-template-columns:1fr;}
+    .flow{grid-template-columns:1fr;}
+    .book-meta{gap:8px 18px;}
+  }
+</style>
+<style id="local-font-fallback">
+/* 站内离线字体兜底：不改动原版式，用本机同族字体替代 Google Fonts，避免跨境请求拖慢首屏 */
+@font-face{font-family:"Noto Serif SC";src:local("Source Han Serif SC"),local("Source Han Serif CN"),local("Noto Serif CJK SC"),local("Songti SC"),local("STSong"),local("SimSun"),local("宋体");font-display:swap;}
+@font-face{font-family:"Playfair Display";src:local("Playfair Display"),local("Georgia"),local("Times New Roman");font-display:swap;}
+@font-face{font-family:"Ma Shan Zheng";src:local("Ma Shan Zheng"),local("STKaiti"),local("Kaiti SC"),local("KaiTi"),local("楷体"),local("STXingkai");font-display:swap;}
+@font-face{font-family:"Noto Sans SC";src:local("Source Han Sans SC"),local("Noto Sans CJK SC"),local("PingFang SC"),local("Hiragino Sans GB"),local("Microsoft YaHei"),local("微软雅黑");font-display:swap;}
+</style>
+</head>
+<body data-pagefind-ignore>
+
+  <!-- ===== HERO ===== -->
+  <header class="hero">
+    <img src="/reading/waerdeng-hu/assets/cover.jpg"
+         alt="湖光林色"
+         onerror="this.style.display='none'" />
+    <div class="hero-inner">
+      <div class="seal">湖</div>
+      <h1>瓦尔登湖</h1>
+      <div class="sub">在湖畔，重新校准生活的重心</div>
+    </div>
+  </header>
+
+  <div class="ribbon">亨利·戴维·梭罗 · 自然文学 · 超验主义</div>
+
+  <main class="wrap">
+
+    <!-- 书籍信息 -->
+    <section>
+      <h2 class="sec-title"><span class="num">Ⅰ</span>书籍信息</h2>
+      <div class="book-card">
+        <div class="book-meta">
+          <div><b>作者</b>亨利·戴维·梭罗（美 / 1854）</div>
+          <div><b>领域</b>散文 · 自然文学 · 超验主义</div>
+          <div><b>核心命题</b>简朴生活、亲近自然、独立思考——活出生命的本真</div>
+        </div>
+        <div class="overview">
+          <b>一句话总览：</b>梭罗独自在瓦尔登湖畔住了两年零两个月，亲手建屋、种豆、观四季，
+          写下的不是隐居日记，而是一份<b>「如何好好生活」</b>的实验报告——
+          把多余的东西拿掉，剩下的，才是真正活过的部分。
+        </div>
+      </div>
+    </section>
+
+    <!-- 双极对比 -->
+    <section>
+      <h2 class="sec-title"><span class="num">Ⅱ</span>简朴 vs 物欲：两种生活的重心</h2>
+      <p class="sec-sub">全书最深的张力，不在自然与文明之间，而在「要得少」与「要得多」之间。</p>
+      <div class="vs-grid">
+        <div class="vs-col">
+          <div class="tag">SIMPLICITY · 简朴</div>
+          <h3>把生活缩减到必要</h3>
+          <ul>
+            <li><b>少即多</b>：房子只需遮风，食物只需果腹</li>
+            <li><b>时间为己</b>：不被生计拴死，留给思考与天地</li>
+            <li><b>精神丰盈</b>：富不在外物，在心灵的清明</li>
+            <li>代表：湖畔的梭罗、清晨的豆田、静夜的湖面</li>
+          </ul>
+        </div>
+        <div class="vs-mid">
+          <div class="vs">VS</div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+        <div class="vs-col">
+          <div class="tag">POSSESSION · 物欲</div>
+          <h3>被「更多」推着跑</h3>
+          <ul>
+            <li><b>多即累</b>：财富只买到多余，房子拴住人</li>
+            <li><b>时间为奴</b>：为还账单埋头，错过生活本身</li>
+            <li><b>随波逐流</b>：在别人的剧本里「平静的绝望」</li>
+            <li>代表：镇上忙禄的人、被房贷捆绑的邻人</li>
+          </ul>
+        </div>
+      </div>
+      <div class="insight">
+        <b>核心洞见：</b>梭罗不是教人逃离文明，而是教人<b>校准重心</b>——
+        「我步入丛林，因为我希望生活得有意义。」少一些占有，才能多一些存在；
+        把生活的「必要」留下，把「多余」放下，你就腾出了活着的空间。
+      </div>
+    </section>
+
+    <!-- 八块基石概念 -->
+    <section>
+      <h2 class="sec-title"><span class="num">Ⅲ</span>八块基石概念</h2>
+      <p class="sec-sub">读懂这八块，就读懂了瓦尔登湖的生活哲学。</p>
+      <div class="cards">
+        <div class="bias">
+          <div class="en">Simplify</div>
+          <h4>简朴</h4>
+          <p>「简单，简单，再简单！」把生活缩减到必要，少即多，是全书的总纲。</p>
+        </div>
+        <div class="bias">
+          <div class="en">Solitude</div>
+          <h4>独处与自省</h4>
+          <p>独处不是孤独，是终于与自己相遇；沉默里，才听得见内心的声音。</p>
+        </div>
+        <div class="bias">
+          <div class="en">Nature</div>
+          <h4>亲近自然</h4>
+          <p>自然是精神的解药与课堂，四季流转里藏着最诚实的节律。</p>
+        </div>
+        <div class="bias">
+          <div class="en">Self-reliance</div>
+          <h4>自给自足</h4>
+          <p>亲手建屋、种豆、谋生，用行动证明：人所需极少，便能立住。</p>
+        </div>
+        <div class="bias">
+          <div class="en">The Present</div>
+          <h4>当下与时间</h4>
+          <p>「一天可是一年的缩影」——认真活好此刻，便活过了全部时间。</p>
+        </div>
+        <div class="bias">
+          <div class="en">Nonconformity</div>
+          <h4>不从众</h4>
+          <p>大多数人过着平静的绝望；清醒，意味着不随波，走自己的路。</p>
+        </div>
+        <div class="bias">
+          <div class="en">Reading</div>
+          <h4>经典阅读</h4>
+          <p>读最好的书，与最伟大的心灵对话；宁读一页经典，不翻十卷废话。</p>
+        </div>
+        <div class="bias">
+          <div class="en">Inner Wealth</div>
+          <h4>精神丰盈</h4>
+          <p>多余的财富只买多余的东西；真正的富，是心灵的清明与自由。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 脉络图 -->
+    <section>
+      <h2 class="sec-title"><span class="num">Ⅳ</span>全书脉络</h2>
+      <p class="sec-sub">从告别文明到觉醒归返，六幕读尽两年湖畔时光。</p>
+      <div class="flow">
+        <div class="act"><div class="step">01</div><h4>告别文明</h4><p>厌弃镇上的忙禄与盲从，决心去湖畔做一次生活实验。</p></div>
+        <div class="act"><div class="step">02</div><h4>湖畔筑屋</h4><p>亲手砍木盖屋，极简栖身，把「必要」缩减到极致。</p></div>
+        <div class="act"><div class="step">03</div><h4>简朴实践</h4><p>种豆谋生、记账度日，用最低成本证明生活可以自立。</p></div>
+        <div class="act"><div class="step">04</div><h4>独处与沉思</h4><p>访客、寂寞、更高的法则——在静夜里与自我深度对话。</p></div>
+        <div class="act"><div class="step">05</div><h4>观湖四季</h4><p>湖、冬日的动物、冰封的湖面、春天的苏醒，自然即经文。</p></div>
+        <div class="act"><div class="step">06</div><h4>觉醒归返</h4><p>experiment 结束，带着校准过的生活重心，回到人间。</p></div>
+      </div>
+    </section>
+
+    <!-- 金句 -->
+    <section>
+      <h2 class="sec-title"><span class="num">Ⅴ</span>金句摘录</h2>
+      <p class="sec-sub">以下为徐迟等通行中译或大意，非逐字考据本。</p>
+      <div class="quote">
+        <span class="text">「我步入丛林，因为我希望生活得有意义；我只愿面对生活的基本事实。」</span>
+        <span class="from">—— I went to the woods because I wished to live deliberately…</span>
+      </div>
+      <div class="quote">
+        <span class="text">「简单，简单，再简单！」</span>
+        <span class="from">—— Simplify, simplify, simplify!</span>
+      </div>
+      <div class="quote">
+        <span class="text">「大多数人过着平静的绝望生活。」</span>
+        <span class="from">—— The mass of men lead lives of quiet desperation.</span>
+      </div>
+      <div class="quote">
+        <span class="text">「时间只是我垂钓的溪流。」</span>
+        <span class="from">—— Time is but the stream I go a-fishing in.</span>
+      </div>
+      <div class="quote">
+        <span class="text">「多余的财富只能买到多余的东西。」</span>
+        <span class="from">—— 财富若超出所需，换来的也只是累赘</span>
+      </div>
+    </section>
+
+    <!-- 行动启发 -->
+    <section>
+      <h2 class="sec-title"><span class="num">Ⅵ</span>对生活与工作的启发</h2>
+      <p class="sec-sub">把湖畔的清醒，搬回城市与职场。</p>
+      <div class="two-col">
+        <div class="act-card">
+          <h4>生活：做减法</h4>
+          <ul>
+            <li><b>定期断舍离：</b>问自己「这真必要吗」，把多余之物请出家门。</li>
+            <li><b>留白独处：</b>每天留一段不被手机占满的时间，与自己相处。</li>
+            <li><b>亲近自然：</b>周末去水边林下走一走，把节律调回自然。</li>
+            <li><b>分清需要与想要：</b>购物前等一夜，多数「想要」会自己退去。</li>
+          </ul>
+        </div>
+        <div class="act-card">
+          <h4>工作：守专注</h4>
+          <ul>
+            <li><b>少而精：</b>同段时间只攻一两件要事，胜过十件半途而废。</li>
+            <li><b>保护注意力：</b>把「必要」留下，把无谓会议与群消息推走。</li>
+            <li><b>不从众：</b>别人抢风口时，先问这是不是自己要走的路。</li>
+            <li><b>活在此刻：</b>把每天当完整的一天来过，不只为遥远的「以后」。</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 适合谁读 -->
+    <section>
+      <h2 class="sec-title"><span class="num">Ⅶ</span>适合谁读</h2>
+      <div class="who">
+        <div class="who-box good">
+          <h4>推荐给</h4>
+          <ul>
+            <li>被物欲与忙碌裹挟、想「慢下来」的人</li>
+            <li>向往极简生活、断舍离、数字排毒的实践者</li>
+            <li>自然爱好者、喜欢安静散文与四季描写的读者</li>
+            <li>想独立思考、不愿随波逐流的人</li>
+          </ul>
+        </div>
+        <div class="who-box bad">
+          <h4>可能不合适</h4>
+          <ul>
+            <li>期待强情节、冲突与故事的读者（本书近乎哲思随笔）</li>
+            <li>没有耐心读慢节奏描写的人</li>
+            <li>认为「隐居」不切实际、只想看实用干货者</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="seal-sm">湖</div>
+      <div>米色纸感读书笔记 · 在瓦尔登湖畔，重新校准生活的重心</div>
+      <div>阅读札记，金句为通行中译或大意，非逐字考据本。</div>
+    </footer>
+
+  </main>
+</body>
+</html>

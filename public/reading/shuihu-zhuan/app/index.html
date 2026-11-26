@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>《水浒传》· 读书笔记</title>
+<style>
+  :root{
+    --paper:#f4ecda;
+    --paper-2:#efe6d2;
+    --card:#fbf6ea;
+    --ink:#2c2620;
+    --ink-soft:#5b5040;
+    --line:#d8cbb0;
+    --brown:#7a5a32;
+    --brown-deep:#5c4222;
+    --ribbon:#9e2b25;        /* 朱红 */
+    --ribbon-deep:#7e231c;
+    --gold:#b08a3e;
+    --teal:#3f6b63;          /* 青 */
+    --shadow:0 18px 40px -20px rgba(60,40,15,.45);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:"Noto Sans SC","Songti SC",Georgia,serif;
+    color:var(--ink);
+    background-color:var(--paper);
+    background-image:
+      radial-gradient(circle at 18% 12%, rgba(176,138,62,.06), transparent 45%),
+      radial-gradient(circle at 85% 78%, rgba(122,90,50,.07), transparent 40%);
+    line-height:1.85;
+    -webkit-font-smoothing:antialiased;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .serif{font-family:"Noto Serif SC","Songti SC",Georgia,serif;}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 22px;position:relative;z-index:1;}
+
+  /* HERO */
+  .hero{position:relative;min-height:74vh;display:flex;align-items:flex-end;justify-content:center;text-align:center;overflow:hidden;color:#fdf8ec;}
+  .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.85) brightness(.72);}
+  .hero .overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(28,18,8,.32) 0%, rgba(28,18,8,.08) 35%, rgba(28,18,8,.80) 100%);}
+  .hero-inner{position:relative;z-index:2;padding:0 24px 9vh;}
+  .hero .kicker{letter-spacing:.4em;font-size:clamp(.7rem,2.4vw,1rem);text-transform:uppercase;color:#f0dcae;font-weight:500;margin-bottom:18px;}
+  .hero h1{font-family:"Noto Serif SC",Georgia,serif;font-weight:900;font-size:clamp(2.4rem,8vw,5.2rem);line-height:1.05;margin:0 0 14px;text-shadow:0 4px 26px rgba(0,0,0,.55);}
+  .hero .sub{font-size:clamp(1rem,3vw,1.5rem);font-weight:300;letter-spacing:.18em;color:#f7eed7;text-shadow:0 2px 14px rgba(0,0,0,.5);}
+  .hero .by{margin-top:18px;font-size:clamp(.85rem,2.4vw,1.05rem);color:#e9d9b4;letter-spacing:.08em;}
+
+  .top-ribbon{position:absolute;top:0;left:50%;transform:translateX(-50%);z-index:5;background:linear-gradient(180deg,var(--ribbon),var(--ribbon-deep));color:#fbeede;font-family:"Noto Serif SC",serif;font-weight:600;letter-spacing:.3em;padding:10px 26px 16px;border-radius:0 0 6px 6px;box-shadow:0 8px 18px -8px rgba(60,15,10,.6);font-size:clamp(.8rem,2.6vw,1rem);}
+  .top-ribbon::after{content:"";position:absolute;left:0;right:0;bottom:-9px;height:10px;background:linear-gradient(135deg,var(--ribbon-deep) 50%,transparent 51%) left/12px 10px no-repeat,linear-gradient(-135deg,var(--ribbon-deep) 50%,transparent 51%) right/12px 10px no-repeat;}
+
+  /* SECTION */
+  section{padding:64px 0 12px;}
+  .sec-tag{display:inline-block;font-family:"Noto Serif SC",serif;color:var(--ribbon);letter-spacing:.2em;font-size:.85rem;font-weight:600;margin-bottom:6px;}
+  h2.sec-title{font-family:"Noto Serif SC",Georgia,serif;font-weight:700;font-size:clamp(1.6rem,5vw,2.4rem);margin:0 0 6px;color:var(--brown-deep);position:relative;padding-left:18px;}
+  h2.sec-title::before{content:"";position:absolute;left:0;top:.28em;bottom:.18em;width:5px;background:linear-gradient(180deg,var(--gold),var(--ribbon));border-radius:3px;}
+  .sec-lead{color:var(--ink-soft);margin:0 0 30px;font-size:1.02rem;}
+
+  /* BOOK INFO */
+  .book-card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:30px 30px 26px;position:relative;overflow:hidden;}
+  .book-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:linear-gradient(180deg,var(--gold),var(--ribbon));}
+  .book-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  .book-meta .m-label{font-size:.8rem;letter-spacing:.12em;color:var(--brown);font-weight:600;}
+  .book-meta .m-val{font-family:"Noto Serif SC",serif;font-size:1.05rem;margin-top:4px;color:var(--ink);}
+  .overview{margin-top:26px;padding:20px 24px;background:linear-gradient(180deg,rgba(176,138,62,.10),rgba(176,138,62,.04));border-left:4px solid var(--gold);border-radius:0 10px 10px 0;font-family:"Noto Serif SC",serif;font-size:clamp(1.05rem,3.4vw,1.35rem);line-height:1.7;color:var(--brown-deep);}
+  .overview b{color:var(--ribbon);}
+
+  /* SYSTEMS -> 忠 / 义 */
+  .sys-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:8px;}
+  .sys{border-radius:14px;padding:26px 24px;border:1px solid var(--line);background:var(--card);box-shadow:var(--shadow);position:relative;}
+  .sys.s1{border-top:5px solid var(--ribbon);}
+  .sys.s2{border-top:5px solid var(--teal);}
+  .sys .sys-no{font-family:"Playfair Display",serif;font-size:2.6rem;font-weight:800;line-height:1;opacity:.25;}
+  .sys.s1 .sys-no{color:var(--ribbon);}
+  .sys.s2 .sys-no{color:var(--teal);}
+  .sys h3{font-family:"Noto Serif SC",serif;margin:6px 0 4px;font-size:1.45rem;color:var(--brown-deep);}
+  .sys .tagline{color:var(--ink-soft);font-size:.95rem;margin-bottom:16px;}
+  .sys ul{margin:0;padding-left:1.1em;}
+  .sys li{margin:7px 0;font-size:.96rem;}
+  .sys li::marker{color:var(--gold);}
+  .vs-badge{display:flex;justify-content:center;margin:-14px 0;position:relative;z-index:3;}
+  .vs-badge span{background:var(--ink);color:var(--paper);width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;font-weight:700;font-size:1.1rem;box-shadow:0 8px 18px -8px rgba(0,0,0,.6);}
+
+  /* HERO CARDS (群英谱) */
+  .bias-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:20px;}
+  .bias{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px 22px;box-shadow:var(--shadow);transition:transform .25s ease,box-shadow .25s ease;}
+  .bias:hover{transform:translateY(-5px);box-shadow:0 26px 44px -22px rgba(60,40,15,.55);}
+  .bias .b-no{font-family:"Playfair Display",serif;font-style:italic;color:var(--ribbon);font-size:1.3rem;font-weight:600;}
+  .bias h4{font-family:"Noto Serif SC",serif;margin:6px 0 2px;font-size:1.2rem;color:var(--brown-deep);}
+  .bias .en{font-size:.78rem;letter-spacing:.08em;color:var(--brown);text-transform:uppercase;margin-bottom:12px;}
+  .bias p{margin:0;font-size:.95rem;color:var(--ink-soft);}
+  .bias .ex{margin-top:12px;padding:10px 12px;background:rgba(122,90,50,.07);border-radius:8px;font-size:.88rem;color:var(--ink);}
+  .bias .ex b{color:var(--ribbon);}
+
+  /* CHAPTER MAP */
+  .map{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;}
+  .part{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 20px 18px;box-shadow:var(--shadow);border-left:5px solid var(--gold);}
+  .part .p-no{font-family:"Playfair Display",serif;color:var(--ribbon);font-weight:700;font-size:1.05rem;letter-spacing:.05em;}
+  .part h4{font-family:"Noto Serif SC",serif;margin:4px 0 12px;font-size:1.15rem;color:var(--brown-deep);}
+  .part ul{margin:0;padding-left:1.1em;font-size:.92rem;}
+  .part li{margin:6px 0;color:var(--ink-soft);}
+  .part li::marker{color:var(--gold);}
+
+  /* QUOTES */
+  .quote{position:relative;background:linear-gradient(180deg,var(--paper-2),var(--card));border:1px solid var(--line);border-radius:14px;padding:34px 30px 30px 58px;margin-bottom:20px;box-shadow:var(--shadow);}
+  .quote::before{content:"\201C";position:absolute;left:16px;top:2px;font-family:"Playfair Display",serif;font-size:5rem;color:var(--ribbon);opacity:.35;line-height:1;}
+  .quote .q-cn{font-family:"Noto Serif SC",serif;font-size:clamp(1.05rem,3.4vw,1.3rem);line-height:1.7;color:var(--ink);}
+  .quote .q-en{margin-top:10px;font-style:italic;color:var(--ink-soft);font-size:.95rem;}
+  .quote .q-from{margin-top:12px;font-size:.8rem;letter-spacing:.1em;color:var(--brown);text-align:right;}
+
+  /* ACTION */
+  .act-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+  .act-col{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px 24px;box-shadow:var(--shadow);}
+  .act-col h3{font-family:"Noto Serif SC",serif;color:var(--brown-deep);margin:0 0 14px;font-size:1.3rem;display:flex;align-items:center;gap:10px;}
+  .act-col h3 .dot{width:12px;height:12px;border-radius:50%;background:var(--gold);}
+  .act-col.work h3 .dot{background:var(--ribbon);}
+  .act-col ol{margin:0;padding-left:1.3em;}
+  .act-col li{margin:12px 0;font-size:.97rem;}
+  .act-col li::marker{color:var(--ribbon);font-weight:700;}
+  .act-col li b{color:var(--brown-deep);}
+
+  /* WHO */
+  .who{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+  .who .panel{border-radius:14px;padding:26px 24px;box-shadow:var(--shadow);}
+  .who .good{background:var(--card);border:1px solid var(--line);border-top:5px solid var(--teal);}
+  .who .no{background:var(--card);border:1px solid var(--line);border-top:5px solid var(--ribbon);}
+  .who h3{font-family:"Noto Serif SC",serif;margin:0 0 14px;font-size:1.25rem;}
+  .who .good h3{color:var(--teal);}
+  .who .no h3{color:var(--ribbon);}
+  .who ul{margin:0;padding-left:1.1em;font-size:.97rem;}
+  .who li{margin:9px 0;color:var(--ink-soft);}
+  .who li::marker{color:var(--gold);}
+
+  /* FOOTER */
+  footer{margin-top:70px;background:linear-gradient(180deg,var(--brown-deep),#3a2a16);color:#e7d8bb;text-align:center;padding:40px 22px 46px;position:relative;z-index:1;}
+  footer .ribbon-foot{display:inline-block;color:#fbeede;background:var(--ribbon);padding:6px 20px;border-radius:0 0 6px 6px;font-family:"Noto Serif SC",serif;letter-spacing:.25em;font-size:.85rem;margin-bottom:18px;}
+  footer p{margin:6px 0;font-size:.9rem;opacity:.85;}
+  footer .book-en{font-family:"Playfair Display",serif;font-style:italic;opacity:.7;font-size:1.05rem;}
+
+  @media (max-width:720px){
+    .book-meta{grid-template-columns:1fr;gap:14px;}
+    .sys-grid{grid-template-columns:1fr;}
+    .vs-badge{margin:6px 0;}
+    .act-grid{grid-template-columns:1fr;}
+    .who{grid-template-columns:1fr;}
+    section{padding:48px 0 8px;}
+    .hero{min-height:66vh;}
+  }
+  @media (max-width:420px){
+    .wrap{padding:0 16px;}
+    .book-card,.quote,.sys,.bias,.part{padding-left:18px;padding-right:18px;}
+  }
+</style>
+<style id="local-font-fallback">
+/* 站内离线字体兜底：不改动原版式，用本机同族字体替代 Google Fonts，避免跨境请求拖慢首屏 */
+@font-face{font-family:"Noto Serif SC";src:local("Source Han Serif SC"),local("Source Han Serif CN"),local("Noto Serif CJK SC"),local("Songti SC"),local("STSong"),local("SimSun"),local("宋体");font-display:swap;}
+@font-face{font-family:"Playfair Display";src:local("Playfair Display"),local("Georgia"),local("Times New Roman");font-display:swap;}
+@font-face{font-family:"Ma Shan Zheng";src:local("Ma Shan Zheng"),local("STKaiti"),local("Kaiti SC"),local("KaiTi"),local("楷体"),local("STXingkai");font-display:swap;}
+@font-face{font-family:"Noto Sans SC";src:local("Source Han Sans SC"),local("Noto Sans CJK SC"),local("PingFang SC"),local("Hiragino Sans GB"),local("Microsoft YaHei"),local("微软雅黑");font-display:swap;}
+</style>
+</head>
+<body data-pagefind-ignore>
+
+  <!-- HERO -->
+  <header class="hero">
+    <img src="/reading/shuihu-zhuan/assets/cover.jpg" alt="水墨群山" onerror="this.style.display='none'" />
+    <div class="overlay"></div>
+    <div class="top-ribbon">读 书 笔 记</div>
+    <div class="hero-inner">
+      <div class="kicker">中国古典文学 · 章回体小说 · 四大名著</div>
+      <h1 class="serif">水浒传</h1>
+      <div class="sub">忠义堂前英雄谱</div>
+      <div class="by">施耐庵（元末明初）著 · 罗贯中或参订</div>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- BOOK INFO -->
+    <section id="info">
+      <span class="sec-tag">书籍信息</span>
+      <h2 class="sec-title serif">关于这本书</h2>
+      <div class="book-card">
+        <div class="book-meta">
+          <div>
+            <div class="m-label">作者</div>
+            <div class="m-val">施耐庵<br/>元末明初 · 罗贯中参订</div>
+          </div>
+          <div>
+            <div class="m-label">领域</div>
+            <div class="m-val">古典文学 · 章回小说 · 四大名著</div>
+          </div>
+          <div>
+            <div class="m-label">核心命题</div>
+            <div class="m-val">官逼民反 · 替天行道 · 忠义难两全</div>
+          </div>
+        </div>
+        <div class="overview">
+          一句话总览：一部写「<b>好人被逼上山</b>」的史诗——108 位好汉因不公与义气聚义梁山，却在「忠」与「义」的撕裂中走向不可避免的悲剧散场。
+        </div>
+      </div>
+    </section>
+
+    <!-- 忠 / 义 -->
+    <section id="systems">
+      <span class="sec-tag">核心张力</span>
+      <h2 class="sec-title serif">忠 与 义：梁山的两种逻辑</h2>
+      <p class="sec-lead">读懂《水浒传》，先读懂始终拉扯它的两股力量。它们像两套「操作系统」，决定了每个人与整个梁山的最终命运。</p>
+      <div class="sys-grid">
+        <div class="sys s1">
+          <div class="sys-no">义</div>
+          <h3 class="serif">江湖逻辑 · 兄弟义气</h3>
+          <div class="tagline">路见不平、有福同享、有难同当</div>
+          <ul>
+            <li>以「情分」为最高准则，重然诺、轻生死</li>
+            <li>不问出身，只看是否对得起兄弟</li>
+            <li>代表性人物：鲁智深、武松、李逵</li>
+            <li>驱动「聚义」：上山的向心力</li>
+            <li>代价：易冲动、常以私刑代替公道</li>
+          </ul>
+        </div>
+        <div class="sys s2">
+          <div class="sys-no">忠</div>
+          <h3 class="serif">庙堂逻辑 · 忠君报国</h3>
+          <div class="tagline">盼招安、洗「贼名」、报效朝廷</div>
+          <ul>
+            <li>以「正统」为归处，渴望被体制重新接纳</li>
+            <li>把「替天行道」最终理解为「顺天护国」</li>
+            <li>代表性人物：宋江、卢俊义、多数降将</li>
+            <li>驱动「招安」：走向解散的转折点</li>
+            <li>代价：忠义不可兼得，理想被现实吞噬</li>
+          </ul>
+        </div>
+      </div>
+      <div class="vs-badge"><span>VS</span></div>
+      <p class="sec-lead" style="margin-top:18px;text-align:center;">
+        关键悲剧：<b style="color:var(--ribbon)">义把人聚上山，忠把人送进死局</b>——当「替天行道」的旗换成「顺天」「护国」，梁山的灵魂已经先一步散了。
+      </p>
+    </section>
+
+    <!-- 群英谱 -->
+    <section id="biases">
+      <span class="sec-tag">群英谱</span>
+      <h2 class="sec-title serif">八位绕不开的好汉</h2>
+      <p class="sec-lead">108 将各有来路。这八位，几乎撑起了全书的血肉与转折。</p>
+      <div class="bias-grid">
+        <div class="bias">
+          <div class="b-no">01</div>
+          <h4 class="serif">宋江</h4>
+          <div class="en">及时雨 · 呼保义</div>
+          <p>梁山领袖，仗义疏财、善拢人心，却执念招安，把兄弟送上不归路。</p>
+          <div class="ex"><b>关键词</b>：忠义矛盾体——最能聚人，也最误大事。</div>
+        </div>
+        <div class="bias">
+          <div class="b-no">02</div>
+          <h4 class="serif">林冲</h4>
+          <div class="en">豹子头 · 八十万禁军教头</div>
+          <p>典型「逼上梁山」：一忍再忍，直至风雪山神庙才彻底爆发。</p>
+          <div class="ex"><b>名句</b>：「丈夫有泪不轻弹，只因未到伤心处。」</div>
+        </div>
+        <div class="bias">
+          <div class="b-no">03</div>
+          <h4 class="serif">武松</h4>
+          <div class="en">行者 · 打虎英雄</div>
+          <p>快意恩仇的极致：景阳冈打虎、斗杀西门庆、血溅鸳鸯楼，恩怨分明。</p>
+          <div class="ex"><b>关键词</b>：有恩必报、有仇必复的「刚烈」样板。</div>
+        </div>
+        <div class="bias">
+          <div class="b-no">04</div>
+          <h4 class="serif">鲁智深</h4>
+          <div class="en">花和尚 · 提辖</div>
+          <p>粗中有细、路见不平：拳打镇关西、大闹野猪林，全书最有「侠」味的人。</p>
+          <div class="ex"><b>关键词</b>：不守清规却最见佛性，终点「听潮圆寂」。</div>
+        </div>
+        <div class="bias">
+          <div class="b-no">05</div>
+          <h4 class="serif">李逵</h4>
+          <div class="en">黑旋风</div>
+          <p>底层野性的忠诚：莽撞、嗜杀却对宋江死心塌地，最终陪兄赴死。</p>
+          <div class="ex"><b>关键词</b>：义气的「纯粹」与「危险」并存的双刃。</div>
+        </div>
+        <div class="bias">
+          <div class="b-no">06</div>
+          <h4 class="serif">吴用</h4>
+          <div class="en">智多星</div>
+          <p>梁山军师，智取生辰纲、排兵布阵皆出其手，是「脑」不是「拳」。</p>
+          <div class="ex"><b>关键词</b>：谋略型角色，宋江死后自缢蓼儿洼。</div>
+        </div>
+        <div class="bias">
+          <div class="b-no">07</div>
+          <h4 class="serif">晁盖</h4>
+          <div class="en">托塔天王</div>
+          <p>梁山早期寨主，聚义奠基人；曾头市中箭身亡，留下权力真空。</p>
+          <div class="ex"><b>关键词</b>：上山的「义」字旗，早逝埋下招安伏笔。</div>
+        </div>
+        <div class="bias">
+          <div class="b-no">08</div>
+          <h4 class="serif">卢俊义</h4>
+          <div class="en">玉麒麟</div>
+          <p>武力巅峰、家世显赫，被设计赚上梁山，排座次第二，终亦被毒害。</p>
+          <div class="ex"><b>关键词</b>：被「逼」的另一种形式——名望反成枷锁。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 章节脉络 -->
+    <section id="map">
+      <span class="sec-tag">全书脉络</span>
+      <h2 class="sec-title serif">从「乱自上作」到「悲剧散场」</h2>
+      <p class="sec-lead">以百回/百二十回本为骨架，可把这部大书分成清晰的八段起承转合。</p>
+      <div class="map">
+        <div class="part">
+          <div class="p-no">开篇</div>
+          <h4 class="serif">乱自上作</h4>
+          <ul>
+            <li>楔子：洪太尉误走妖魔</li>
+            <li>高俅发迹，「乱」自朝堂起</li>
+            <li>定下「官逼民反」基调</li>
+          </ul>
+        </div>
+        <div class="part">
+          <div class="p-no">第一折</div>
+          <h4 class="serif">逼上梁山</h4>
+          <ul>
+            <li>鲁智深拳打镇关西、大闹野猪林</li>
+            <li>林冲风雪山神庙</li>
+            <li>杨志卖刀、失生辰纲</li>
+          </ul>
+        </div>
+        <div class="part">
+          <div class="p-no">聚义</div>
+          <h4 class="serif">智取生辰纲</h4>
+          <ul>
+            <li>晁盖、吴用等七星聚义</li>
+            <li>梁山泊早期格局成形</li>
+            <li>宋江私放晁盖，种下缘分</li>
+          </ul>
+        </div>
+        <div class="part">
+          <div class="p-no">主线</div>
+          <h4 class="serif">宋江故事</h4>
+          <ul>
+            <li>杀阎婆惜、亡命江湖</li>
+            <li>浔阳楼题反诗</li>
+            <li>江州劫法场，正式上山</li>
+          </ul>
+        </div>
+        <div class="part">
+          <div class="p-no">全盛</div>
+          <h4 class="serif">英雄排座次</h4>
+          <ul>
+            <li>三打祝家庄、招降朝廷将领</li>
+            <li>第七十一回石碣受天文</li>
+            <li>108 将齐聚忠义堂</li>
+          </ul>
+        </div>
+        <div class="part">
+          <div class="p-no">转折</div>
+          <h4 class="serif">接受招安</h4>
+          <ul>
+            <li>「替天行道」旗易「顺天」「护国」</li>
+            <li>内部争议（李逵、鲁智深反对）</li>
+            <li>从「反」到「顺」的质变</li>
+          </ul>
+        </div>
+        <div class="part">
+          <div class="p-no">征讨</div>
+          <h4 class="serif">奉诏出战</h4>
+          <ul>
+            <li>破大辽、平田虎王庆</li>
+            <li>征方腊惨烈折损</li>
+            <li>十去七八，元气大伤</li>
+          </ul>
+        </div>
+        <div class="part">
+          <div class="p-no">结局</div>
+          <h4 class="serif">悲剧散场</h4>
+          <ul>
+            <li>宋江被赐药酒，恐李逵造反先鸩之</li>
+            <li>李逵、吴用、花荣相继赴死</li>
+            <li>一场聚义，归于沉寂</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 金句 -->
+    <section id="quotes">
+      <span class="sec-tag">金句摘录</span>
+      <h2 class="sec-title serif">读来心头一震的句子</h2>
+      <p class="sec-lead">有的写尽阶级冷暖，有的道破英雄孤注，有的正是全书的精神密码。</p>
+
+      <div class="quote">
+        <div class="q-cn">赤日炎炎似火烧，野田禾稻半枯焦。农夫心内如汤煮，公子王孙把扇摇。</div>
+        <div class="q-en">—— 白胜卖酒谣，一字写尽旱年里的阶级温差。</div>
+        <div class="q-from">出自 · 第十六回 智取生辰纲</div>
+      </div>
+
+      <div class="quote">
+        <div class="q-cn">他时若遂凌云志，敢笑黄巢不丈夫！</div>
+        <div class="q-en">—— 宋江题于浔阳楼，压抑的抱负与一丝反骨，尽在此句。</div>
+        <div class="q-from">出自 · 第三十九回 浔阳楼吟反诗</div>
+      </div>
+
+      <div class="quote">
+        <div class="q-cn">禅杖打开危险路，戒刀杀尽不平人。</div>
+        <div class="q-en">—— 鲁智深的自况，也是全书「侠」字最干净的注脚。</div>
+        <div class="q-from">出自 · 鲁智深故事线</div>
+      </div>
+
+      <div class="quote">
+        <div class="q-cn">八方共域，异姓一家。</div>
+        <div class="q-en">—— 梁山最动人的理想：不分出身，只认兄弟情分。</div>
+        <div class="q-from">出自 · 第七十一回 英雄排座次</div>
+      </div>
+
+      <div class="quote">
+        <div class="q-cn">自古白云苍狗，沧海桑田；人生如寄，何苦执迷。</div>
+        <div class="q-en">—— 繁华聚散终成空，正是这部热血书的底色悲凉。</div>
+        <div class="q-from">评点者常引 · 收束之叹</div>
+      </div>
+    </section>
+
+    <!-- 行动启发 -->
+    <section id="action">
+      <span class="sec-tag">行动启发</span>
+      <h2 class="sec-title serif">对做事与处世的启发</h2>
+      <p class="sec-lead">它不是历史教科书，却把「人怎么聚、怎么散、怎么选错路」讲得透。</p>
+      <div class="act-grid">
+        <div class="act-col work">
+          <h3 class="serif"><span class="dot"></span>团队与领导</h3>
+          <ol>
+            <li><b>宋江的「聚人术」</b>：及时雨式的雪中送炭、广结善缘，是真实的领导力资产。</li>
+            <li><b>但缺「终局规划」</b>：只会把人拢起来，却没想清要去哪、怎么退——这是领导者大忌。</li>
+            <li><b>用其所长</b>：108 将降将、江湖、地主各异，靠「排座次」给每个人位置与尊严。</li>
+            <li><b>警惕「核心一个人」</b>：权力过度集中于宋江，导致招安无人能拦，组织失去纠错力。</li>
+            <li><b>共同叙事的力量</b>：「替天行道」一面旗，比粮草更能凝聚人心。</li>
+          </ol>
+        </div>
+        <div class="act-col">
+          <h3 class="serif"><span class="dot"></span>决策与为人</h3>
+          <ol>
+            <li><b>别做「林冲式隐忍」</b>：一退再退，等退无可退才爆发，代价往往已是家破人亡。</li>
+            <li><b>学鲁智深「粗中有细」</b>：行动派也要有分寸与后手，义气不等于鲁莽。</li>
+            <li><b>看清「招安式诱惑」</b>：被体制招安听着光鲜，要先问清——换了旗，还是当初的自己吗？</li>
+            <li><b>忠义不可兼得时</b>：早想清楚自己的「底线」在哪，免得被大势推着走。</li>
+            <li><b>识人看「关键时刻」</b>：李逵的忠、吴用的智、卢俊义的被裹挟，都是压力下的真面目。</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- 适合谁读 -->
+    <section id="who">
+      <span class="sec-tag">适合谁读</span>
+      <h2 class="sec-title serif">这本书适合谁</h2>
+      <div class="who">
+        <div class="panel good">
+          <h3 class="serif">推荐阅读</h3>
+          <ul>
+            <li>喜欢古典文学、英雄叙事与江湖气的人</li>
+            <li>管理者 / 创业者：看团队如何聚、如何散、领导如何失效</li>
+            <li>对「原则与现实妥协」有思考欲的人</li>
+            <li>想读懂中国文化原型：侠、义、官与民</li>
+            <li>愿在热血故事里读出一丝悲凉的人</li>
+          </ul>
+        </div>
+        <div class="panel no">
+          <h3 class="serif">可能不合适</h3>
+          <ul>
+            <li>只想要轻松爽文、不耐繁冗章回的人</li>
+            <li>对古代暴力、私刑描写敏感者</li>
+            <li>期待「大团圆」结局、受不了英雄凋零的人</li>
+            <li>想要严谨正史、而非小说演绎的读者（这是小说，非《宋史》）</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="ribbon-foot">读 书 笔 记</div>
+    <p class="book-en">水浒传 · Shui Hu Zhuan</p>
+    <p>施耐庵（元末明初）著 · 中国古典四大名著之一</p>
+    <p>本页为个人阅读笔记，非原著摘抄；引文仅供学习交流。</p>
+  </footer>
+
+</body>
+</html>

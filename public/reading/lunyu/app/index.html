@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>《论语》读书笔记 · OCD 对象中心分格</title>
+<style>
+:root{--paper:#f4ecdc;--ink:#33271d;--ink-soft:#6b5b49;--seal:#9c4a2f;--seal-deep:#7c3522;--gold:#c79a3e;--vermil:#a8392c;--line:#d8c7a8;--card:#fbf6ea;--shadow:rgba(60,40,20,.14);}
+*{box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{margin:0;font-family:"Noto Serif SC",serif;color:var(--ink);background-color:var(--paper);
+ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+ line-height:1.85;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:1000px;margin:0 auto;padding:0 22px 80px;}
+/* Hero */
+.hero{position:relative;min-height:62vh;display:flex;align-items:flex-end;justify-content:center;background:#2a1a10;overflow:hidden;}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 38%;}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(42,26,16,0) 18%,rgba(42,26,16,.42) 55%,rgba(42,26,16,.92) 100%);}
+.hero-inner{position:relative;z-index:2;text-align:center;padding:0 20px 56px;width:100%;}
+.hero .seal{display:inline-block;font-family:"Ma Shan Zheng",cursive;font-size:clamp(2.6rem,9vw,4.4rem);color:#fdf6ea;background:var(--seal);border:2px solid rgba(255,240,220,.55);padding:.12em .28em;border-radius:8px;transform:rotate(-3deg);box-shadow:0 10px 30px rgba(0,0,0,.4);margin-bottom:18px;}
+.hero h1{font-weight:900;color:#fcf4e6;font-size:clamp(2rem,7vw,3.4rem);letter-spacing:.06em;margin:.1em 0 .25em;text-shadow:0 2px 16px rgba(0,0,0,.6);}
+.hero .sub{color:#f0dcc4;font-size:clamp(.95rem,2.6vw,1.15rem);letter-spacing:.18em;text-shadow:0 1px 10px rgba(0,0,0,.55);}
+/* 书签色带 */
+.ribbon{position:relative;margin:-26px auto 40px;width:max-content;max-width:90%;background:var(--seal);color:#fdf6ea;padding:10px 30px;border-radius:4px;font-size:1rem;letter-spacing:.22em;box-shadow:0 8px 22px var(--shadow);}
+.ribbon::before,.ribbon::after{content:"";position:absolute;top:0;width:0;height:0;border:16px solid var(--seal-deep);}
+.ribbon::before{left:-18px;border-left-color:transparent;}.ribbon::after{right:-18px;border-right-color:transparent;}
+/* 区块 */
+section{margin:54px 0;}
+.sec-title{font-size:1.5rem;font-weight:700;color:var(--seal-deep);display:flex;align-items:center;gap:12px;margin:0 0 6px;}
+.sec-title .num{font-family:"Playfair Display",serif;font-style:italic;color:var(--gold);font-size:1.6rem;}
+.sec-sub{color:var(--ink-soft);margin:0 0 22px;font-size:.95rem;}
+/* 书籍信息卡 */
+.book-card{background:var(--card);border:1px solid var(--line);border-left:6px solid var(--seal);border-radius:10px;padding:24px 26px;box-shadow:0 6px 18px var(--shadow);}
+.book-meta{display:flex;flex-wrap:wrap;gap:10px 26px;margin-bottom:16px;} .book-meta b{color:var(--seal-deep);margin-right:6px;}
+.overview{background:linear-gradient(180deg,#fbf3e2,#f6ead2);border:1px dashed var(--gold);border-radius:10px;padding:18px 22px;margin-top:6px;}
+/* OCD 说明 legend */
+.legend{background:#f6ecd6;border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin-bottom:22px;font-size:.9rem;color:var(--ink-soft);display:flex;gap:12px;align-items:flex-start;}
+.legend .tag{font-family:"Playfair Display",serif;font-style:italic;color:var(--vermil);font-weight:700;font-size:1.05rem;white-space:nowrap;flex-shrink:0;}
+/* OCD 对象卡网格 */
+.ocd-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.ocd{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:0;box-shadow:0 6px 16px var(--shadow);overflow:hidden;display:flex;flex-direction:column;}
+.ocd .ocd-head{background:var(--seal);color:#fdf6ea;text-align:center;padding:13px 14px;}
+.ocd .ocd-head .name{font-weight:700;font-size:1.1rem;letter-spacing:.04em;display:block;}
+.ocd .ocd-head .tag{display:inline-block;font-size:.72rem;letter-spacing:.1em;background:rgba(255,255,255,.18);padding:2px 11px;border-radius:20px;margin-top:7px;}
+.ocd .ocd-body{padding:16px 18px;flex:1;}
+.ocd .field{margin-bottom:11px;}
+.ocd .field:last-child{margin-bottom:0;}
+.ocd .field .lab{font-size:.72rem;letter-spacing:.1em;color:var(--seal);font-weight:700;display:flex;align-items:center;gap:6px;}
+.ocd .field .lab::before{content:"";width:6px;height:6px;background:var(--gold);border-radius:50%;display:inline-block;flex-shrink:0;}
+.ocd .field .val{font-size:.92rem;color:var(--ink);line-height:1.7;margin-top:2px;}
+.ocd .field .val.orig{font-weight:600;color:var(--seal-deep);}
+/* 脉络图 */
+.flow{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.act{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 16px;box-shadow:0 5px 14px var(--shadow);border-top:4px solid var(--gold);}
+.act .step{font-family:"Playfair Display",serif;color:var(--seal);font-weight:700;}
+.act h4{color:var(--seal-deep);margin:.3em 0 .4em;font-size:1.02rem;}
+.act p{font-size:.88rem;color:var(--ink-soft);margin:0;}
+/* 金句 */
+.quote{background:linear-gradient(180deg,#fbf3e2,#f5e9d0);border-left:6px solid var(--seal);border-radius:10px;padding:20px 24px;margin:18px 0;box-shadow:0 5px 14px var(--shadow);}
+.quote .from{display:block;margin-top:8px;color:var(--ink-soft);font-size:.9rem;}
+/* 双栏 */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.act-card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 6px 16px var(--shadow);} .act-card h4{color:var(--seal-deep);margin-top:0;}
+.act-card ul{margin:.4em 0 0;padding-left:1.2em;} .act-card li{margin:8px 0;}
+/* 适合谁读 */
+.who{display:grid;grid-template-columns:1fr 1fr;gap:18px;} .who-box{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px;box-shadow:0 5px 14px var(--shadow);}
+.who-box h4{margin-top:0;color:var(--seal-deep);} .who-box ul{margin:.4em 0 0;padding-left:1.2em;} .who-box li{margin:7px 0;}
+footer{text-align:center;color:var(--ink-soft);font-size:.85rem;margin-top:60px;padding-top:26px;border-top:1px solid var(--line);}
+footer .seal-sm{display:inline-block;font-family:"Ma Shan Zheng",cursive;color:var(--seal);border:1.5px solid var(--seal);border-radius:6px;padding:2px 12px;transform:rotate(-2deg);margin-bottom:10px;}
+@media (max-width:720px){.ocd-grid{grid-template-columns:repeat(2,1fr);}.flow{grid-template-columns:repeat(2,1fr);}.two-col,.who{grid-template-columns:1fr;}}
+@media (max-width:420px){.wrap{padding:0 16px 60px;}.ocd-grid{grid-template-columns:1fr;}.flow{grid-template-columns:1fr;}}
+</style>
+<style id="local-font-fallback">
+/* 站内离线字体兜底：不改动原版式，用本机同族字体替代 Google Fonts，避免跨境请求拖慢首屏 */
+@font-face{font-family:"Noto Serif SC";src:local("Source Han Serif SC"),local("Source Han Serif CN"),local("Noto Serif CJK SC"),local("Songti SC"),local("STSong"),local("SimSun"),local("宋体");font-display:swap;}
+@font-face{font-family:"Playfair Display";src:local("Playfair Display"),local("Georgia"),local("Times New Roman");font-display:swap;}
+@font-face{font-family:"Ma Shan Zheng";src:local("Ma Shan Zheng"),local("STKaiti"),local("Kaiti SC"),local("KaiTi"),local("楷体"),local("STXingkai");font-display:swap;}
+@font-face{font-family:"Noto Sans SC";src:local("Source Han Sans SC"),local("Noto Sans CJK SC"),local("PingFang SC"),local("Hiragino Sans GB"),local("Microsoft YaHei"),local("微软雅黑");font-display:swap;}
+</style>
+</head>
+<body data-pagefind-ignore>
+
+<header class="hero">
+  <img src="/reading/lunyu/assets/cover.jpg" alt="图书馆书架" onerror="this.style.display='none'"/>
+  <div class="hero-inner">
+    <span class="seal">論</span>
+    <h1>《论语》读书笔记</h1>
+    <div class="sub">OCD · OBJECT-CENTERED DOCUMENTATION</div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="ribbon">孔门语录 · 修身治学的日用功课</div>
+
+  <!-- 1. 书籍信息卡 -->
+  <section>
+    <h2 class="sec-title"><span class="num">i</span>书籍信息</h2>
+    <p class="sec-sub">对象：这部书本身——它是什么、讲什么、为什么值得读。</p>
+    <div class="book-card">
+      <div class="book-meta">
+        <div><b>作者</b>孔子（前551—前479）述，弟子及再传弟子编纂</div>
+        <div><b>领域</b>儒家经典 · 语录体散文 · 四书之首</div>
+        <div><b>成书</b>约战国初期，传世二十篇</div>
+        <div><b>核心命题</b>以「仁」为内核，讲修身、为学、处世、为政的成人之道</div>
+      </div>
+      <div class="overview">
+        <b>一句话总览：</b>二十篇、五百余章的师生对话录，把「如何成为一个好人、好师长、好治理者、好朋友」，讲成了人人可以日日用功的功课——不是一套理论，而是一套活法。
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. OCD 章句对象卡 -->
+  <section>
+    <h2 class="sec-title"><span class="num">ii</span>核心章句 · 对象卡</h2>
+    <p class="sec-sub">每一章都是独立「对象」：固定字段（篇目 / 原文 / 白话 / 今日之用），可单独取用。</p>
+    <div class="legend">
+      <span class="tag">OCD 分格</span>
+      <span>本页采用 <b>Object-Centered Documentation（对象中心文档）</b>：所有核心内容拆为自包含的「对象卡」，每张含统一字段、在网格中整齐排布。读任意一张都不依赖其他张卡片——这正是《论语》本来的样子：章句离散，却句句独立可践行。</span>
+    </div>
+    <div class="ocd-grid">
+      <div class="ocd">
+        <div class="ocd-head"><span class="name">学而时习之</span><span class="tag">学而 · 第一</span></div>
+        <div class="ocd-body">
+          <div class="field"><span class="lab">原文</span><div class="val orig">学而时习之，不亦说乎？有朋自远方来，不亦乐乎？人不知而不愠，不亦君子乎？</div></div>
+          <div class="field"><span class="lab">白话</span><div class="val">学了又按时温习，不也欢喜？有志同道合者远来，不也快乐？不被理解也不恼，不也是君子？</div></div>
+          <div class="field"><span class="lab">今日之用</span><div class="val">把「学」落到「习」——知识变成习惯才算真学到；独学不如共学。</div></div>
+        </div>
+      </div>
+      <div class="ocd">
+        <div class="ocd-head"><span class="name">吾日三省吾身</span><span class="tag">学而 · 曾子</span></div>
+        <div class="ocd-body">
+          <div class="field"><span class="lab">原文</span><div class="val orig">吾日三省吾身：为人谋而不忠乎？与朋友交而不信乎？传不习乎？</div></div>
+          <div class="field"><span class="lab">白话</span><div class="val">每天多次自问：办事尽心和没？交友守信用没？学到的温习没？</div></div>
+          <div class="field"><span class="lab">今日之用</span><div class="val">用一份固定清单做自我复盘，比写万字反思更管用。</div></div>
+        </div>
+      </div>
+      <div class="ocd">
+        <div class="ocd-head"><span class="name">温故而知新</span><span class="tag">为政 · 第二</span></div>
+        <div class="ocd-body">
+          <div class="field"><span class="lab">原文</span><div class="val orig">温故而知新，可以为师矣。</div></div>
+          <div class="field"><span class="lab">白话</span><div class="val">在旧经验里长出新洞察，才配教人。</div></div>
+          <div class="field"><span class="lab">今日之用</span><div class="val">复盘不是怀旧——是从已发生的事里提炼可复用的方法。</div></div>
+        </div>
+      </div>
+      <div class="ocd">
+        <div class="ocd-head"><span class="name">学思不可偏废</span><span class="tag">为政 · 第二</span></div>
+        <div class="ocd-body">
+          <div class="field"><span class="lab">原文</span><div class="val orig">学而不思则罔，思而不学则殆。</div></div>
+          <div class="field"><span class="lab">白话</span><div class="val">只学不想会迷惘，只想不学会危殆。</div></div>
+          <div class="field"><span class="lab">今日之用</span><div class="val">输入与思考必须配对：偏读会乱，偏想会空。</div></div>
+        </div>
+      </div>
+      <div class="ocd">
+        <div class="ocd-head"><span class="name">知之为知之</span><span class="tag">为政 · 第二</span></div>
+        <div class="ocd-body">
+          <div class="field"><span class="lab">原文</span><div class="val orig">知之为知之，不知为不知，是知也。</div></div>
+          <div class="field"><span class="lab">白话</span><div class="val">知道就是知道，不知道就是不知道，这才是真知。</div></div>
+          <div class="field"><span class="lab">今日之用</span><div class="val">承认无知是专业的第一课——它保住你的判断不被装懂拖垮。</div></div>
+        </div>
+      </div>
+      <div class="ocd">
+        <div class="ocd-head"><span class="name">己所不欲</span><span class="tag">卫灵公 · 十五</span></div>
+        <div class="ocd-body">
+          <div class="field"><span class="lab">原文</span><div class="val orig">己所不欲，勿施于人。</div></div>
+          <div class="field"><span class="lab">白话</span><div class="val">自己不想要的，别加给别人。夫子之道，忠恕而已。</div></div>
+          <div class="field"><span class="lab">今日之用</span><div class="val">协作的最小共识：推己及人，是最低成本的信任机制。</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. OCD 概念对象卡 -->
+  <section>
+    <h2 class="sec-title"><span class="num">iii</span>核心概念 · 对象卡</h2>
+    <p class="sec-sub">八个关键词，每个都是可检索的「概念对象」：释义 / 经典出处 / 现代意义。</p>
+    <div class="ocd-grid">
+      <div class="ocd">
+        <div class="ocd-head"><span class="name">仁</span><span class="tag">核心</span></div>
+        <div class="ocd-body">
+          <div class="field"><span class="lab">释义</span><div class="val">爱人，由近及远、推己及人。</div></div>
+          <div class="field"><span class="lab">出处</span><div class="val orig">颜渊问仁，子曰「克己复礼为仁」。</div></div>
+          <div class="field"><span class="lab">现代意义</span><div class="val">把「人」放在中心，是领导与协作的根。</div></div>
+        </div>
+      </div>
+      <div class="ocd">
+        <div class="ocd-head"><span class="name">礼</span><span class="tag">节度</span></div>
+        <div class="ocd-body">
+          <div class="field"><span class="lab">释义</span><div class="val">外在的节度与尊重，使群体有序。</div></div>
+          <div class="field"><span class="lab">出处</span><div class="val orig">不学礼，无以立。</div></div>
+          <div class="field"><span class="lab">现代意义</span><div class="val">规则不是束缚，是共处的最低成本。</div></div>
+        </div>
+      </div>
+      <div class="ocd">
+        <div class="ocd-head"><span class="name">君子</span><span class="tag">人格</span></div>
+        <div class="ocd-body">
+          <div class="field"><span class="lab">释义</span><div class="val">以德性而非地位定义的人格理想。</div></div>
+          <div class="field"><span class="lab">出处</span><div class="val orig">君子求诸己，小人求诸人。</div></div>
+          <div class="field"><span class="lab">现代意义</span><div class="val">专业主义：先要求自己，再要求环境。</div></div>
+        </div>
+      </div>
+      <div class="ocd">
+        <div class="ocd-head"><span class="name">忠恕</span><span class="tag">方法</span></div>
+        <div class="ocd-body">
+          <div class="field"><span class="lab">释义</span><div class="val">尽己之谓忠，推己之谓恕。</div></div>
+          <div class="field"><span class="lab">出处</span><div class="val orig">夫子之道，忠恕而已矣。</div></div>
+          <div class="field"><span class="lab">现代意义</span><div class="val">对内有担当，对外有同理，一内一外。</div></div>
+        </div>
+      </div>
+      <div class="ocd">
+        <div class="ocd-head"><span class="name">学思</span><span class="tag">成长</span></div>
+        <div class="ocd-body">
+          <div class="field"><span class="lab">释义</span><div class="val">学与思互补，如车两轮不可偏废。</div></div>
+          <div class="field"><span class="lab">出处</span><div class="val orig">学而不思则罔，思而不学则殆。</div></div>
+          <div class="field"><span class="lab">现代意义</span><div class="val">输入 × 反思 = 真成长。</div></div>
+        </div>
+      </div>
+      <div class="ocd">
+        <div class="ocd-head"><span class="name">中庸</span><span class="tag">分寸</span></div>
+        <div class="ocd-body">
+          <div class="field"><span class="lab">释义</span><div class="val">无过无不及，执两用中。</div></div>
+          <div class="field"><span class="lab">出处</span><div class="val orig">中庸之为德也，其至矣乎。</div></div>
+          <div class="field"><span class="lab">现代意义</span><div class="val">在两极之间保持判断，不极端、不骑墙。</div></div>
+        </div>
+      </div>
+      <div class="ocd">
+        <div class="ocd-head"><span class="name">政德</span><span class="tag">治理</span></div>
+        <div class="ocd-body">
+          <div class="field"><span class="lab">释义</span><div class="val">为政以德，如北辰居其所而众星共之。</div></div>
+          <div class="field"><span class="lab">出处</span><div class="val orig">为政以德，譬如北辰。</div></div>
+          <div class="field"><span class="lab">现代意义</span><div class="val">管理者的威信来自以身作则，不是职位。</div></div>
+        </div>
+      </div>
+      <div class="ocd">
+        <div class="ocd-head"><span class="name">友</span><span class="tag">圈层</span></div>
+        <div class="ocd-body">
+          <div class="field"><span class="lab">释义</span><div class="val">益者三友：友直、友谅、友多闻。</div></div>
+          <div class="field"><span class="lab">出处</span><div class="val orig">益者三友，损者三友。</div></div>
+          <div class="field"><span class="lab">现代意义</span><div class="val">你的圈子，大致定义你的上限。</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. OCD 人物对象卡 -->
+  <section>
+    <h2 class="sec-title"><span class="num">iv</span>孔门人物 · 对象卡</h2>
+    <p class="sec-sub">六位典型门人，每个都是「人物对象」：身份 / 特质 / 代表章句。</p>
+    <div class="ocd-grid">
+      <div class="ocd">
+        <div class="ocd-head"><span class="name">孔子</span><span class="tag">至圣先师</span></div>
+        <div class="ocd-body">
+          <div class="field"><span class="lab">身份</span><div class="val">教育家、思想家，私学开创者。</div></div>
+          <div class="field"><span class="lab">特质</span><div class="val">温而厉，威而不猛，恭而安。</div></div>
+          <div class="field"><span class="lab">代表</span><div class="val orig">学而不厌，诲人不倦。</div></div>
+        </div>
+      </div>
+      <div class="ocd">
+        <div class="ocd-head"><span class="name">颜回</span><span class="tag">德行科</span></div>
+        <div class="ocd-body">
+          <div class="field"><span class="lab">身份</span><div class="val">首席弟子，孔门最贤。</div></div>
+          <div class="field"><span class="lab">特质</span><div class="val">安贫乐道，闻一知十。</div></div>
+          <div class="field"><span class="lab">代表</span><div class="val orig">一箪食，一瓢饮，在陋巷，不改其乐。</div></div>
+        </div>
+      </div>
+      <div class="ocd">
+        <div class="ocd-head"><span class="name">子路</span><span class="tag">政事科</span></div>
+        <div class="ocd-body">
+          <div class="field"><span class="lab">身份</span><div class="val">勇毅干才，长于政事。</div></div>
+          <div class="field"><span class="lab">特质</span><div class="val">果敢率直，好勇任事。</div></div>
+          <div class="field"><span class="lab">代表</span><div class="val orig">千乘之国，可使治其赋也。</div></div>
+        </div>
+      </div>
+      <div class="ocd">
+        <div class="ocd-head"><span class="name">子贡</span><span class="tag">言语科</span></div>
+        <div class="ocd-body">
+          <div class="field"><span class="lab">身份</span><div class="val">善言辞，亦商亦使。</div></div>
+          <div class="field"><span class="lab">特质</span><div class="val">通达多闻，切中事理。</div></div>
+          <div class="field"><span class="lab">代表</span><div class="val orig">夫子之不可及也，犹天之不可阶而升也。</div></div>
+        </div>
+      </div>
+      <div class="ocd">
+        <div class="ocd-head"><span class="name">曾子</span><span class="tag">传经者</span></div>
+        <div class="ocd-body">
+          <div class="field"><span class="lab">身份</span><div class="val">笃实，传《大学》。</div></div>
+          <div class="field"><span class="lab">特质</span><div class="val">日省其身，任重弘毅。</div></div>
+          <div class="field"><span class="lab">代表</span><div class="val orig">士不可以不弘毅，任重而道远。</div></div>
+        </div>
+      </div>
+      <div class="ocd">
+        <div class="ocd-head"><span class="name">子夏</span><span class="tag">文学科</span></div>
+        <div class="ocd-body">
+          <div class="field"><span class="lab">身份</span><div class="val">博学严谨，传经于西河。</div></div>
+          <div class="field"><span class="lab">特质</span><div class="val">重礼明理，循序渐进。</div></div>
+          <div class="field"><span class="lab">代表</span><div class="val orig">仕而优则学，学而优则仕。</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. 脉络图 -->
+  <section>
+    <h2 class="sec-title"><span class="num">v</span>全书脉络 · 主题六幕</h2>
+    <p class="sec-sub">《论语》二十篇非编年，而由门人按主题汇辑；下以「为学→为仁→为政」的内在次序串成六幕。</p>
+    <div class="flow">
+      <div class="act"><div class="step">01</div><h4>开篇立学</h4><p>学而、为政：学习与人品是总纲，知行从「习」始。</p></div>
+      <div class="act"><div class="step">02</div><h4>为仁由己</h4><p>八佾、里仁：礼是外形，仁是内核，修养在己不在人。</p></div>
+      <div class="act"><div class="step">03</div><h4>为学之方</h4><p>公冶长、雍也、述而：弟子言行与教学方法，因材而异。</p></div>
+      <div class="act"><div class="step">04</div><h4>处世交友</h4><p>泰伯、子罕、乡党：君子气象与日常节度，分寸即修养。</p></div>
+      <div class="act"><div class="step">05</div><h4>为政以德</h4><p>先进至卫灵公：治理与用人，威信来自以身作则。</p></div>
+      <div class="act"><div class="step">06</div><h4>君子人格</h4><p>季氏至尧曰：理想人格收束全书，成人而后能成事。</p></div>
+    </div>
+  </section>
+
+  <!-- 6. 金句 -->
+  <section>
+    <h2 class="sec-title"><span class="num">vi</span>金句引用</h2>
+    <p class="sec-sub">通行大意，非逐字考据；标注篇目便于回查。</p>
+    <div class="quote">学而时习之，不亦说乎？<span class="from">—— 学而第一</span></div>
+    <div class="quote">己所不欲，勿施于人。<span class="from">—— 卫灵公第十五</span></div>
+    <div class="quote">知者不惑，仁者不忧，勇者不惧。<span class="from">—— 子罕第九</span></div>
+    <div class="quote">朝闻道，夕死可矣。<span class="from">—— 里仁第四</span></div>
+    <div class="quote">岁寒，然后知松柏之后凋也。<span class="from">—— 子罕第九</span></div>
+  </section>
+
+  <!-- 7. 行动启发 -->
+  <section>
+    <h2 class="sec-title"><span class="num">vii</span>行动启发</h2>
+    <p class="sec-sub">把对象卡里的道理，落到工作与做人两件日常里。</p>
+    <div class="two-col">
+      <div class="act-card">
+        <h4>工作 · 为政以德</h4>
+        <ul>
+          <li><b>以身作则：</b>管理者的威信来自「做得到」，不是「说得到」。</li>
+          <li><b>用人之长：</b>听其言而观其行，按德行、言语、政事、文学分才任事。</li>
+          <li><b>持续复盘：</b>温故知新，把经验沉淀成可复用的方法再教人。</li>
+          <li><b>承认边界：</b>知之为知之——专业的第一课是敢说「我不会」。</li>
+        </ul>
+      </div>
+      <div class="act-card">
+        <h4>做人 · 修身守度</h4>
+        <ul>
+          <li><b>每日三省：</b>用固定清单做自我校正，比空想有效。</li>
+          <li><b>推己及人：</b>协作前先问「换作我愿否」，降低信任成本。</li>
+          <li><b>中庸守度：</b>情绪与判断都不走极端，执两用中。</li>
+          <li><b>择友而交：</b>近直、谅、多闻者，圈子定义你的上限。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. 适合谁读 -->
+  <section>
+    <h2 class="sec-title"><span class="num">viii</span>适合谁读</h2>
+    <p class="sec-sub">对象中心，也意味着你可以只挑「对象」读——不必从头啃到尾。</p>
+    <div class="who">
+      <div class="who-box">
+        <h4>推荐</h4>
+        <ul>
+          <li>想建立自律与复盘习惯的人</li>
+          <li>管理者、教师、带团队的人（为政以德）</li>
+          <li>被关系与协作困住的人（忠恕、择友）</li>
+          <li>喜欢先秦文字、短章警句的人</li>
+        </ul>
+      </div>
+      <div class="who-box">
+        <h4>可能不合适</h4>
+        <ul>
+          <li>只想找「速成成功术」的人</li>
+          <li>排斥道德规范、只认结果的人</li>
+          <li>只读得进长情节小说的人</li>
+          <li>期待系统论证、而非格言体的人</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="seal-sm">論</div>
+    <div>读书笔记 · OCD 对象中心分格 ｜ 金句为通行大意，非逐字考据，仅供个人阅读参考</div>
+    <div>龙山大佛 · 阅读札记 ｜ 单文件 HTML，手机端自适应不裁切</div>
+  </footer>
+</div>
+</body>
+</html>

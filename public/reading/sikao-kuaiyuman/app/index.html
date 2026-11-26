@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>《思考，快与慢》· 读书笔记</title>
+<style>
+  :root{
+    --paper:#f4ecda;
+    --paper-2:#efe6d2;
+    --card:#fbf6ea;
+    --ink:#2c2620;
+    --ink-soft:#5b5040;
+    --line:#d8cbb0;
+    --brown:#7a5a32;
+    --brown-deep:#5c4222;
+    --ribbon:#a2332a;
+    --ribbon-deep:#7e231c;
+    --gold:#b08a3e;
+    --teal:#3f6b63;
+    --shadow:0 18px 40px -20px rgba(60,40,15,.45);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:"Noto Sans SC","Songti SC",Georgia,serif;
+    color:var(--ink);
+    background-color:var(--paper);
+    background-image:
+      radial-gradient(circle at 20% 10%, rgba(176,138,62,.06), transparent 45%),
+      radial-gradient(circle at 85% 80%, rgba(122,90,50,.07), transparent 40%);
+    line-height:1.85;
+    -webkit-font-smoothing:antialiased;
+  }
+  /* subtle paper grain */
+  body::before{
+    content:"";
+    position:fixed;inset:0;
+    pointer-events:none;z-index:0;
+    opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .serif{font-family:"Noto Serif SC","Songti SC",Georgia,serif;}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 22px;position:relative;z-index:1;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:74vh;
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    text-align:center;
+    overflow:hidden;
+    color:#fdf8ec;
+  }
+  .hero img{
+    position:absolute;inset:0;
+    width:100%;height:100%;
+    object-fit:cover;
+    filter:saturate(.9) brightness(.78);
+  }
+  .hero .overlay{
+    position:absolute;inset:0;
+    background:
+      linear-gradient(180deg, rgba(28,18,8,.30) 0%, rgba(28,18,8,.10) 35%, rgba(28,18,8,.78) 100%);
+  }
+  .hero-inner{position:relative;z-index:2;padding:0 24px 9vh;}
+  .hero .kicker{
+    letter-spacing:.42em;
+    font-size:clamp(.7rem,2.4vw,1rem);
+    text-transform:uppercase;
+    color:#f0dcae;
+    font-weight:500;
+    margin-bottom:18px;
+  }
+  .hero h1{
+    font-family:"Noto Serif SC",Georgia,serif;
+    font-weight:900;
+    font-size:clamp(2.4rem,8vw,5.2rem);
+    line-height:1.05;
+    margin:0 0 14px;
+    text-shadow:0 4px 26px rgba(0,0,0,.55);
+  }
+  .hero .sub{
+    font-size:clamp(1rem,3vw,1.5rem);
+    font-weight:300;
+    letter-spacing:.06em;
+    color:#f7eed7;
+    text-shadow:0 2px 14px rgba(0,0,0,.5);
+  }
+  .hero .by{
+    margin-top:18px;
+    font-size:clamp(.85rem,2.4vw,1.05rem);
+    color:#e9d9b4;
+    letter-spacing:.1em;
+  }
+
+  /* top bookmark ribbon */
+  .top-ribbon{
+    position:absolute;
+    top:0;left:50%;
+    transform:translateX(-50%);
+    z-index:5;
+    background:linear-gradient(180deg,var(--ribbon),var(--ribbon-deep));
+    color:#fbeede;
+    font-family:"Noto Serif SC",serif;
+    font-weight:600;
+    letter-spacing:.3em;
+    padding:10px 26px 16px;
+    border-radius:0 0 6px 6px;
+    box-shadow:0 8px 18px -8px rgba(60,15,10,.6);
+    font-size:clamp(.8rem,2.6vw,1rem);
+  }
+  .top-ribbon::after{
+    content:"";position:absolute;left:0;right:0;bottom:-9px;height:10px;
+    background:
+      linear-gradient(135deg,var(--ribbon-deep) 50%,transparent 51%) left/12px 10px no-repeat,
+      linear-gradient(-135deg,var(--ribbon-deep) 50%,transparent 51%) right/12px 10px no-repeat;
+  }
+
+  /* ---------- SECTION SHELL ---------- */
+  section{padding:64px 0 12px;}
+  .sec-tag{
+    display:inline-block;
+    font-family:"Noto Serif SC",serif;
+    color:var(--ribbon);
+    letter-spacing:.2em;
+    font-size:.85rem;
+    font-weight:600;
+    margin-bottom:6px;
+  }
+  h2.sec-title{
+    font-family:"Noto Serif SC",Georgia,serif;
+    font-weight:700;
+    font-size:clamp(1.6rem,5vw,2.4rem);
+    margin:0 0 6px;
+    color:var(--brown-deep);
+    position:relative;
+    padding-left:18px;
+  }
+  h2.sec-title::before{
+    content:"";position:absolute;left:0;top:.28em;bottom:.18em;width:5px;
+    background:linear-gradient(180deg,var(--gold),var(--ribbon));
+    border-radius:3px;
+  }
+  .sec-lead{color:var(--ink-soft);margin:0 0 30px;font-size:1.02rem;}
+
+  /* ---------- BOOK INFO ---------- */
+  .book-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    box-shadow:var(--shadow);
+    padding:30px 30px 26px;
+    position:relative;
+    overflow:hidden;
+  }
+  .book-card::before{
+    content:"";position:absolute;left:0;top:0;bottom:0;width:6px;
+    background:linear-gradient(180deg,var(--gold),var(--ribbon));
+  }
+  .book-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  .book-meta .m-label{font-size:.8rem;letter-spacing:.12em;color:var(--brown);font-weight:600;}
+  .book-meta .m-val{font-family:"Noto Serif SC",serif;font-size:1.05rem;margin-top:4px;color:var(--ink);}
+  .overview{
+    margin-top:26px;
+    padding:20px 24px;
+    background:linear-gradient(180deg,rgba(176,138,62,.10),rgba(176,138,62,.04));
+    border-left:4px solid var(--gold);
+    border-radius:0 10px 10px 0;
+    font-family:"Noto Serif SC",serif;
+    font-size:clamp(1.05rem,3.4vw,1.35rem);
+    line-height:1.7;
+    color:var(--brown-deep);
+  }
+  .overview b{color:var(--ribbon);}
+
+  /* ---------- SYSTEMS ---------- */
+  .sys-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:8px;}
+  .sys{
+    border-radius:14px;padding:26px 24px;
+    border:1px solid var(--line);
+    background:var(--card);
+    box-shadow:var(--shadow);
+    position:relative;
+  }
+  .sys.s1{border-top:5px solid var(--ribbon);}
+  .sys.s2{border-top:5px solid var(--teal);}
+  .sys .sys-no{
+    font-family:"Playfair Display",serif;
+    font-size:2.6rem;font-weight:800;line-height:1;
+    opacity:.25;
+  }
+  .sys.s1 .sys-no{color:var(--ribbon);}
+  .sys.s2 .sys-no{color:var(--teal);}
+  .sys h3{font-family:"Noto Serif SC",serif;margin:6px 0 4px;font-size:1.45rem;color:var(--brown-deep);}
+  .sys .tagline{color:var(--ink-soft);font-size:.95rem;margin-bottom:16px;}
+  .sys ul{margin:0;padding-left:1.1em;}
+  .sys li{margin:7px 0;font-size:.96rem;}
+  .sys li::marker{color:var(--gold);}
+  .vs-badge{
+    display:flex;justify-content:center;margin:-14px 0;
+    position:relative;z-index:3;
+  }
+  .vs-badge span{
+    background:var(--ink);color:var(--paper);
+    width:46px;height:46px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-family:"Playfair Display",serif;font-weight:700;font-size:1.1rem;
+    box-shadow:0 8px 18px -8px rgba(0,0,0,.6);
+  }
+
+  /* ---------- BIAS CARDS ---------- */
+  .bias-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:20px;}
+  .bias{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:24px 22px;
+    box-shadow:var(--shadow);
+    transition:transform .25s ease,box-shadow .25s ease;
+  }
+  .bias:hover{transform:translateY(-5px);box-shadow:0 26px 44px -22px rgba(60,40,15,.55);}
+  .bias .b-no{
+    font-family:"Playfair Display",serif;font-style:italic;
+    color:var(--ribbon);font-size:1.3rem;font-weight:600;
+  }
+  .bias h4{font-family:"Noto Serif SC",serif;margin:6px 0 2px;font-size:1.2rem;color:var(--brown-deep);}
+  .bias .en{font-size:.78rem;letter-spacing:.08em;color:var(--brown);text-transform:uppercase;margin-bottom:12px;}
+  .bias p{margin:0;font-size:.95rem;color:var(--ink-soft);}
+  .bias .ex{
+    margin-top:12px;padding:10px 12px;
+    background:rgba(122,90,50,.07);
+    border-radius:8px;font-size:.88rem;color:var(--ink);
+  }
+  .bias .ex b{color:var(--ribbon);}
+
+  /* ---------- CHAPTER MAP ---------- */
+  .map{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;}
+  .part{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:20px 20px 18px;box-shadow:var(--shadow);
+    border-left:5px solid var(--gold);
+  }
+  .part .p-no{font-family:"Playfair Display",serif;color:var(--ribbon);font-weight:700;font-size:1.05rem;letter-spacing:.05em;}
+  .part h4{font-family:"Noto Serif SC",serif;margin:4px 0 12px;font-size:1.15rem;color:var(--brown-deep);}
+  .part ul{margin:0;padding-left:1.1em;font-size:.92rem;}
+  .part li{margin:6px 0;color:var(--ink-soft);}
+  .part li::marker{color:var(--gold);}
+
+  /* ---------- QUOTES ---------- */
+  .quote{
+    position:relative;
+    background:linear-gradient(180deg,var(--paper-2),var(--card));
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:34px 30px 30px 58px;
+    margin-bottom:20px;
+    box-shadow:var(--shadow);
+  }
+  .quote::before{
+    content:"\201C";
+    position:absolute;left:16px;top:2px;
+    font-family:"Playfair Display",serif;
+    font-size:5rem;color:var(--ribbon);opacity:.35;line-height:1;
+  }
+  .quote .q-cn{font-family:"Noto Serif SC",serif;font-size:clamp(1.05rem,3.4vw,1.3rem);line-height:1.7;color:var(--ink);}
+  .quote .q-en{margin-top:10px;font-style:italic;color:var(--ink-soft);font-size:.95rem;}
+  .quote .q-from{margin-top:12px;font-size:.8rem;letter-spacing:.1em;color:var(--brown);text-align:right;}
+
+  /* ---------- ACTION ---------- */
+  .act-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+  .act-col{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px 24px;box-shadow:var(--shadow);}
+  .act-col h3{font-family:"Noto Serif SC",serif;color:var(--brown-deep);margin:0 0 14px;font-size:1.3rem;display:flex;align-items:center;gap:10px;}
+  .act-col h3 .dot{width:12px;height:12px;border-radius:50%;background:var(--gold);}
+  .act-col.work h3 .dot{background:var(--ribbon);}
+  .act-col ol{margin:0;padding-left:1.3em;}
+  .act-col li{margin:12px 0;font-size:.97rem;}
+  .act-col li::marker{color:var(--ribbon);font-weight:700;}
+  .act-col li b{color:var(--brown-deep);}
+
+  /* ---------- WHO ---------- */
+  .who{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+  .who .panel{border-radius:14px;padding:26px 24px;box-shadow:var(--shadow);}
+  .who .good{background:var(--card);border:1px solid var(--line);border-top:5px solid var(--teal);}
+  .who .no{background:var(--card);border:1px solid var(--line);border-top:5px solid var(--ribbon);}
+  .who h3{font-family:"Noto Serif SC",serif;margin:0 0 14px;font-size:1.25rem;}
+  .who .good h3{color:var(--teal);}
+  .who .no h3{color:var(--ribbon);}
+  .who ul{margin:0;padding-left:1.1em;font-size:.97rem;}
+  .who li{margin:9px 0;color:var(--ink-soft);}
+  .who li::marker{color:var(--gold);}
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    margin-top:70px;
+    background:linear-gradient(180deg,var(--brown-deep),#3a2a16);
+    color:#e7d8bb;
+    text-align:center;
+    padding:40px 22px 46px;
+    position:relative;z-index:1;
+  }
+  footer .ribbon-foot{
+    display:inline-block;color:#fbeede;background:var(--ribbon);
+    padding:6px 20px;border-radius:0 0 6px 6px;font-family:"Noto Serif SC",serif;
+    letter-spacing:.25em;font-size:.85rem;margin-bottom:18px;
+  }
+  footer p{margin:6px 0;font-size:.9rem;opacity:.85;}
+  footer .book-en{font-family:"Playfair Display",serif;font-style:italic;opacity:.7;font-size:1.05rem;}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:720px){
+    .book-meta{grid-template-columns:1fr;gap:14px;}
+    .sys-grid{grid-template-columns:1fr;}
+    .vs-badge{margin:6px 0;}
+    .act-grid{grid-template-columns:1fr;}
+    .who{grid-template-columns:1fr;}
+    section{padding:48px 0 8px;}
+    .hero{min-height:66vh;}
+  }
+  @media (max-width:420px){
+    .wrap{padding:0 16px;}
+    .book-card,.quote,.sys,.bias,.part{padding-left:18px;padding-right:18px;}
+  }
+</style>
+<style id="local-font-fallback">
+/* 站内离线字体兜底：不改动原版式，用本机同族字体替代 Google Fonts，避免跨境请求拖慢首屏 */
+@font-face{font-family:"Noto Serif SC";src:local("Source Han Serif SC"),local("Source Han Serif CN"),local("Noto Serif CJK SC"),local("Songti SC"),local("STSong"),local("SimSun"),local("宋体");font-display:swap;}
+@font-face{font-family:"Playfair Display";src:local("Playfair Display"),local("Georgia"),local("Times New Roman");font-display:swap;}
+@font-face{font-family:"Ma Shan Zheng";src:local("Ma Shan Zheng"),local("STKaiti"),local("Kaiti SC"),local("KaiTi"),local("楷体"),local("STXingkai");font-display:swap;}
+@font-face{font-family:"Noto Sans SC";src:local("Source Han Sans SC"),local("Noto Sans CJK SC"),local("PingFang SC"),local("Hiragino Sans GB"),local("Microsoft YaHei"),local("微软雅黑");font-display:swap;}
+</style>
+</head>
+<body data-pagefind-ignore>
+
+  <!-- HERO -->
+  <header class="hero">
+    <img src="/reading/sikao-kuaiyuman/assets/cover.jpg" alt="图书馆书架" onerror="this.style.display='none'" />
+    <div class="overlay"></div>
+    <div class="top-ribbon">读 书 笔 记</div>
+    <div class="hero-inner">
+      <div class="kicker">Behavioral Economics · Cognitive Psychology</div>
+      <h1 class="serif">思考，快与慢</h1>
+      <div class="sub">Thinking, Fast and Slow</div>
+      <div class="by">丹尼尔·卡尼曼（Daniel Kahneman）著 · 2011</div>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- BOOK INFO -->
+    <section id="info">
+      <span class="sec-tag">书籍信息</span>
+      <h2 class="sec-title serif">关于这本书</h2>
+      <div class="book-card">
+        <div class="book-meta">
+          <div>
+            <div class="m-label">作者</div>
+            <div class="m-val">丹尼尔·卡尼曼<br/>2002 年诺贝尔经济学奖</div>
+          </div>
+          <div>
+            <div class="m-label">领域</div>
+            <div class="m-val">行为经济学 · 认知心理学 · 决策科学</div>
+          </div>
+          <div>
+            <div class="m-label">核心命题</div>
+            <div class="m-val">人类由「快思考」与「慢思考」双系统驱动，直觉常不可靠</div>
+          </div>
+        </div>
+        <div class="overview">
+          一句话总览：我们以为自己理性，其实大多数判断由自动、直觉的<b>系统 1</b> 悄悄决定；这本书揭示它如何让我们系统性地犯错，以及怎样用<b>系统 2</b> 补救。
+        </div>
+      </div>
+    </section>
+
+    <!-- SYSTEMS -->
+    <section id="systems">
+      <span class="sec-tag">核心框架</span>
+      <h2 class="sec-title serif">系统 1 与系统 2</h2>
+      <p class="sec-lead">全书所有偏误都源于这两个系统如何分工、又如何越界。理解它们，是读懂这本书的钥匙。</p>
+      <div class="sys-grid">
+        <div class="sys s1">
+          <div class="sys-no">1</div>
+          <h3 class="serif">系统 1 · 快思考</h3>
+          <div class="tagline">自动、直觉、毫不费力、无意识</div>
+          <ul>
+            <li>速度快，并行处理，几乎不占认知资源</li>
+            <li>依赖直觉、联想与情绪</li>
+            <li>容易受 priming（启动效应）与框架影响</li>
+            <li>典型动作：识别表情、读一句话、2+2、躲避飞来物</li>
+            <li>弱点：会产生「认知错觉」，却从不怀疑自己</li>
+          </ul>
+        </div>
+        <div class="sys s2">
+          <div class="sys-no">2</div>
+          <h3 class="serif">系统 2 · 慢思考</h3>
+          <div class="tagline">刻意、理性、费力、有意识</div>
+          <ul>
+            <li>速度慢，串行处理，消耗大量精力</li>
+            <li>负责计算、比较、自我控制与逻辑推演</li>
+            <li>天生「懒惰」，常把判断权交给系统 1</li>
+            <li>典型动作：17×24、填税表、在嘈杂中专注、复杂抉择</li>
+            <li>弱点：资源有限，疲劳与分心时会「掉线」</li>
+          </ul>
+        </div>
+      </div>
+      <div class="vs-badge"><span>VS</span></div>
+      <p class="sec-lead" style="margin-top:18px;text-align:center;">
+        关键洞见：<b style="color:var(--ribbon)">系统 1 是默认的驾驶员，系统 2 多数时候只是乘客</b>——只有在系统 1 卡住或被刻意唤醒时，系统 2 才勉强接管。
+      </p>
+    </section>
+
+    <!-- BIAS CARDS -->
+    <section id="biases">
+      <span class="sec-tag">认知偏误</span>
+      <h2 class="sec-title serif">七个关键认知偏误</h2>
+      <p class="sec-lead">这些不是偶发失误，而是人类大脑「出厂设定」里的系统性漏洞。</p>
+      <div class="bias-grid">
+        <div class="bias">
+          <div class="b-no">01</div>
+          <h4 class="serif">锚定效应</h4>
+          <div class="en">Anchoring</div>
+          <p>最先接触到的数字会像船锚一样，把后续估计拽向它，即使那个数字毫无关联。</p>
+          <div class="ex">实验：先转随机轮盘再估「非洲国家占联合国比例」，高数字组给出的估值显著更高。</div>
+        </div>
+        <div class="bias">
+          <div class="b-no">02</div>
+          <h4 class="serif">可得性启发</h4>
+          <div class="en">Availability</div>
+          <p>我们靠「想起来有多容易」来判断概率，于是戏剧性的事被高估、平淡的事被低估。</p>
+          <div class="ex">人们常高估空难、谋杀的死亡率，低估糖尿病、哮喘——因为前者更「上头条」。</div>
+        </div>
+        <div class="bias">
+          <div class="b-no">03</div>
+          <h4 class="serif">损失厌恶</h4>
+          <div class="en">Loss Aversion</div>
+          <p>失去带来的痛苦约为获得快乐的 <b>2 倍</b>。同一件事，说「损失」比说「未得」更让人抗拒。</p>
+          <div class="ex">禀赋效应：到你手里的杯子，你开的卖价远高于别人愿付的买价。</div>
+        </div>
+        <div class="bias">
+          <div class="b-no">04</div>
+          <h4 class="serif">框架效应</h4>
+          <div class="en">Framing</div>
+          <p>同样的客观信息，换一种表述方式，人们的 choices 就会反转。</p>
+          <div class="ex">「能救 200 人」vs「会死 400 人」——选项完全相同，后者让更多人拒绝冒险。</div>
+        </div>
+        <div class="bias">
+          <div class="b-no">05</div>
+          <h4 class="serif">代表性启发</h4>
+          <div class="en">Representativeness</div>
+          <p>用「像不像某类典型」来做判断，于是忽略基础概率与样本大小。</p>
+          <div class="ex">把一个文静爱书的人判为「图书管理员」而非「农民」，无视农民基数大得多。</div>
+        </div>
+        <div class="bias">
+          <div class="b-no">06</div>
+          <h4 class="serif">过度自信</h4>
+          <div class="en">Overconfidence</div>
+          <p>专家的预测常不比掷骰子强；我们却对自己的判断极端自信，并陷入规划谬误。</p>
+          <div class="ex">大量基建项目严重超期超预算——因为乐观预设了「一切顺利」的情景。</div>
+        </div>
+        <div class="bias">
+          <div class="b-no">07</div>
+          <h4 class="serif">后见之明</h4>
+          <div class="en">Hindsight / WYSIATI</div>
+          <p>事后总觉得「我早该知道」，于是低估世界的随机性，也错怪当初的判断者。</p>
+          <div class="ex">「眼见即为全部」(What You See Is All There Is)：大脑用有限信息编出通顺故事就信以为真。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAPTER MAP -->
+    <section id="map">
+      <span class="sec-tag">全书脉络</span>
+      <h2 class="sec-title serif">五部分章节地图</h2>
+      <p class="sec-lead">卡尼曼把几十年的研究编织成一条清晰的主线：从「两个系统」出发，走到「两个自我」收尾。</p>
+      <div class="map">
+        <div class="part">
+          <div class="p-no">PART 1</div>
+          <h4 class="serif">故事中的两个角色</h4>
+          <ul>
+            <li>系统 1 与系统 2 的定义与分工</li>
+            <li>注意力与努力、懒惰的系统 2</li>
+            <li>联想机器与认知舒适</li>
+          </ul>
+        </div>
+        <div class="part">
+          <div class="p-no">PART 2</div>
+          <h4 class="serif">启发法与偏误</h4>
+          <ul>
+            <li>锚定、可得性、代表性</li>
+            <li>置信错觉与联想偏差</li>
+            <li>直觉性预测为何偏离</li>
+          </ul>
+        </div>
+        <div class="part">
+          <div class="p-no">PART 3</div>
+          <h4 class="serif">过度自信</h4>
+          <ul>
+            <li>主观置信度从何而来</li>
+            <li>规划谬误与「内部视角」</li>
+            <li>直觉预测与公式化判断</li>
+          </ul>
+        </div>
+        <div class="part">
+          <div class="p-no">PART 4</div>
+          <h4 class="serif">选择</h4>
+          <ul>
+            <li>前景理论：得失不对称</li>
+            <li>损失厌恶与禀赋效应</li>
+            <li>框架效应、风险政策</li>
+          </ul>
+        </div>
+        <div class="part">
+          <div class="p-no">PART 5</div>
+          <h4 class="serif">两个自我</h4>
+          <ul>
+            <li>体验自我 vs 记忆自我</li>
+            <li>峰终定律 (Peak-End Rule)</li>
+            <li>关于幸福与「生活中真正重要的事」</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUOTES -->
+    <section id="quotes">
+      <span class="sec-tag">金句摘录</span>
+      <h2 class="sec-title serif">让人停下来的五句话</h2>
+      <p class="sec-lead">卡尼曼写得很克制，但这些句子值得反复读。</p>
+
+      <div class="quote">
+        <div class="q-cn">生活中没有什么事的重要性，能与你在思考它时赋予它的重要性相提并论。</div>
+        <div class="q-en">Nothing in life is as important as you think it is while you are thinking about it.</div>
+        <div class="q-from">—— 关于「聚焦错觉」</div>
+      </div>
+
+      <div class="quote">
+        <div class="q-cn">我们能对显而易见之事视而不见，也对自身的视而不见视而不见。</div>
+        <div class="q-en">We can be blind to the obvious, and we are also blind to our blindness.</div>
+        <div class="q-from">—— 关于认知盲点</div>
+      </div>
+
+      <div class="quote">
+        <div class="q-cn">让人们对谬误信以为真的可靠办法，就是反复重复——因为熟悉感很难与真相区分开。</div>
+        <div class="q-en">A reliable way to make people believe in falsehoods is frequent repetition, because familiarity is not easily distinguished from truth.</div>
+        <div class="q-from">—— 关于「暴露效应」</div>
+      </div>
+
+      <div class="quote">
+        <div class="q-cn">一个人对自己信念的自信，主要取决于他所讲故事的连贯性，哪怕证据稀少又不可靠。</div>
+        <div class="q-en">The confidence that individuals have in their beliefs depends mostly on the coherence of the story they tell themselves, even if the evidence is sparse or unreliable.</div>
+        <div class="q-from">—— 关于「叙事谬误」</div>
+      </div>
+
+      <div class="quote">
+        <div class="q-cn">眼见即为全部：我们基于有限的已知信息做判断，却以为自己看到了全貌。</div>
+        <div class="q-en">What You See Is All There Is (WYSIATI).</div>
+        <div class="q-from">—— 贯穿全书的底层机制</div>
+      </div>
+    </section>
+
+    <!-- ACTION -->
+    <section id="action">
+      <span class="sec-tag">行动启发</span>
+      <h2 class="sec-title serif">对工作与决策的启发</h2>
+      <p class="sec-lead">读书不为收藏，而为少犯几个贵错误。下面是可直接落地的做法。</p>
+      <div class="act-grid">
+        <div class="act-col work">
+          <h3 class="serif"><span class="dot"></span>工作场景</h3>
+          <ol>
+            <li><b>重大决定前强制启动系统 2</b>：给自己一段「无声思考」时间，别在会议当场拍板。</li>
+            <li><b>用外部视角对抗规划谬误</b>：做估算时先问「同类项目历史上大多怎样」，而非「我们这次多顺利」。</li>
+            <li><b>预设反面证据</b>：招人、立项前，主动列出「什么会证明我错了」，抑制确认偏误。</li>
+            <li><b>用清单代替记忆</b>：把关键检查项写成清单，减少系统 1 的偷懒与遗漏。</li>
+            <li><b>区分结果与决策质量</b>：好结果可能来自好运，坏结果也可能源于好决策——复盘看过程。</li>
+          </ol>
+        </div>
+        <div class="act-col">
+          <h3 class="serif"><span class="dot"></span>个人决策</h3>
+          <ol>
+            <li><b>识别锚点</b>：看到第一个报价/数字时，提醒自己它只是锚，主动找参照系。</li>
+            <li><b>重新框架损失</b>：把「会失去 X」改写成「本可得到 X」，往往能更冷静地比较。</li>
+            <li><b>警惕可得性陷阱</b>：被新闻吓到时，查一下基础概率再下结论。</li>
+            <li><b>克服损失厌恶的裹足</b>：用「10–10–10」问自己——10 天后、10 个月后、10 年后怎么看这个选择。</li>
+            <li><b>给系统 2 留体力</b>：重要决定安排在精力充沛时，饿、累、压力下直觉最易翻车。</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHO -->
+    <section id="who">
+      <span class="sec-tag">适合谁读</span>
+      <h2 class="sec-title serif">这本书适合谁</h2>
+      <div class="who">
+        <div class="panel good">
+          <h3 class="serif">推荐阅读</h3>
+          <ul>
+            <li>管理者与决策者：招聘、评估、定策略都吃「判断」的亏</li>
+            <li>产品 / 运营 / 投资人：想读懂用户与市场的非理性</li>
+            <li>心理学、经济学、行为科学爱好者</li>
+            <li>希望减少人生重大错误选择的人</li>
+            <li>愿意慢下来、对自己思维保持怀疑的人</li>
+          </ul>
+        </div>
+        <div class="panel no">
+          <h3 class="serif">可能不合适</h3>
+          <ul>
+            <li>想找「3 步暴富 / 速成思维术」的读者</li>
+            <li>期待纯操作手册、不耐长线论证的人</li>
+            <li>拒绝承认自己会犯错、只想要确认既有观点的人</li>
+            <li>想要轻快爽文、不习惯被「自己不理性」冒犯的人</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="ribbon-foot">读 书 笔 记</div>
+    <p class="book-en">Thinking, Fast and Slow</p>
+    <p>丹尼尔·卡尼曼（Daniel Kahneman）· 2011 · Farrar, Straus and Giroux</p>
+    <p>本页为个人阅读笔记，非原著摘抄，引用仅供学习交流。</p>
+  </footer>
+
+</body>
+</html>

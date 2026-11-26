@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>《液态现代性》读书笔记 · 对象中心分格</title>
+<style>
+  :root{
+    --paper:#f7f2e8;
+    --paper-2:#efe7d6;
+    --ink:#2b2b2b;
+    --ink-soft:#5a5347;
+    --line:#ddd2bd;
+    --accent:#2d6e7a;        /* 液态青 */
+    --accent-dark:#1c4a55;
+    --accent-light:#7fb9c4;
+    --seal:#b04a3f;
+    --gold:#b89a5e;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:"Noto Serif SC",serif;
+    color:var(--ink);
+    background-color:var(--paper);
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/></svg>");
+    line-height:1.85;
+    font-size:17px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:0 22px 80px;}
+
+  /* ===== Hero ===== */
+  .hero{
+    position:relative;
+    height:60vh;min-height:380px;
+    margin:0 -22px 0;
+    display:flex;align-items:flex-end;justify-content:center;
+    overflow:hidden;
+    background:linear-gradient(135deg,var(--accent-dark),#3a8a98 60%,var(--accent-light));
+  }
+  .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .hero::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(to top,rgba(20,40,47,.92) 0%,rgba(20,40,47,.45) 42%,rgba(20,40,47,.12) 100%);
+  }
+  .hero-inner{position:relative;z-index:2;text-align:center;color:#f6f1e7;padding:0 24px 56px;max-width:760px;}
+  .hero-kicker{
+    font-family:"Playfair Display",serif;font-style:italic;
+    letter-spacing:.18em;font-size:14px;opacity:.85;margin-bottom:10px;
+  }
+  .hero h1{
+    font-family:"Noto Serif SC",serif;font-weight:900;
+    font-size:clamp(34px,6vw,58px);line-height:1.1;letter-spacing:.02em;
+    text-shadow:0 2px 18px rgba(0,0,0,.45);
+  }
+  .hero-sub{
+    margin-top:14px;font-size:15px;opacity:.9;letter-spacing:.04em;
+  }
+
+  /* ===== 书签色带 ===== */
+  .bookmark{
+    position:relative;width:120px;margin:-34px auto 0;z-index:5;
+    background:linear-gradient(180deg,var(--accent),var(--accent-dark));
+    color:#f6f1e7;text-align:center;padding:16px 0 22px;
+    border-radius:6px 6px 0 0;
+    box-shadow:0 8px 22px rgba(28,74,85,.35);
+  }
+  .bookmark::after{
+    content:"";position:absolute;bottom:-18px;left:0;right:0;height:18px;
+    background:linear-gradient(135deg,var(--accent-dark) 50%,transparent 50%),
+               linear-gradient(225deg,var(--accent-dark) 50%,transparent 50%);
+    background-size:50% 100%;background-repeat:no-repeat;background-position:0 0,100% 0;
+  }
+  .bookmark .glyph{font-family:"Ma Shan Zheng",cursive;font-size:46px;line-height:1;display:block;}
+  .bookmark .tag{font-size:11px;letter-spacing:.3em;opacity:.85;margin-top:6px;}
+
+  /* ===== 区块标题 ===== */
+  .sec{margin-top:58px;}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:22px;}
+  .sec-head .num{
+    font-family:"Playfair Display",serif;font-weight:800;font-size:34px;
+    color:var(--accent);opacity:.55;
+  }
+  .sec-head h2{
+    font-family:"Noto Serif SC",serif;font-weight:700;font-size:26px;letter-spacing:.04em;
+    color:var(--ink);
+  }
+  .sec-head .en{font-family:"Playfair Display",serif;font-style:italic;color:var(--ink-soft);font-size:14px;letter-spacing:.05em;}
+  .rule{height:1px;background:linear-gradient(to right,var(--accent),transparent);margin-top:10px;}
+
+  /* ===== 书籍信息卡 ===== */
+  .infocard{
+    background:var(--paper-2);border:1px solid var(--line);border-left:5px solid var(--accent);
+    border-radius:10px;padding:24px 26px;
+    box-shadow:0 4px 16px rgba(0,0,0,.05);
+  }
+  .infocard .title-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:14px;margin-bottom:8px;}
+  .infocard h3{font-size:24px;font-weight:700;}
+  .infocard .meta{color:var(--ink-soft);font-size:14px;letter-spacing:.03em;}
+  .infocard .meta b{color:var(--accent-dark);font-weight:700;}
+  .infogrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px;}
+  .infogrid .cell{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:14px 16px;}
+  .infogrid .cell .k{font-size:12px;letter-spacing:.16em;color:var(--accent);margin-bottom:6px;}
+  .infogrid .cell .v{font-size:15px;line-height:1.7;color:var(--ink);}
+  .infogrid .cell .v small{display:block;color:var(--ink-soft);font-size:12.5px;margin-top:4px;}
+
+  /* ===== 一句话总览 ===== */
+  .overview{
+    margin-top:18px;background:linear-gradient(135deg,rgba(127,185,196,.16),rgba(45,110,122,.10));
+    border:1px dashed var(--accent-light);border-radius:10px;padding:22px 26px;
+    font-size:19px;line-height:1.9;color:var(--accent-dark);font-weight:500;
+  }
+  .overview b{color:var(--seal);font-weight:700;}
+
+  /* ===== OCD legend ===== */
+  .ocd-legend{
+    margin-top:18px;background:var(--paper-2);border:1px solid var(--line);border-radius:10px;
+    padding:18px 22px;font-size:14.5px;color:var(--ink-soft);line-height:1.85;
+  }
+  .ocd-legend b{color:var(--accent-dark);}
+  .ocd-legend .badge{
+    display:inline-block;font-family:"Playfair Display",serif;font-weight:800;font-size:12px;
+    letter-spacing:.12em;color:#fff;background:var(--accent);padding:3px 10px;border-radius:20px;margin-right:8px;
+  }
+
+  /* ===== 对象卡网格 ===== */
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:24px;}
+  .obj{
+    background:var(--paper-2);border:1px solid var(--line);border-radius:10px;
+    padding:18px 20px;box-shadow:0 3px 12px rgba(0,0,0,.04);
+    display:flex;flex-direction:column;
+  }
+  .obj .ohead{display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-bottom:12px;border-bottom:1px dotted var(--line);}
+  .obj .odot{width:9px;height:9px;border-radius:50%;background:var(--accent);flex:none;}
+  .obj .oname{font-size:19px;font-weight:700;color:var(--ink);}
+  .obj .osrc{
+    margin-left:auto;font-size:11.5px;letter-spacing:.08em;color:var(--accent-dark);
+    background:rgba(127,185,196,.25);padding:2px 9px;border-radius:12px;white-space:nowrap;
+  }
+  .obj .field{margin-bottom:10px;}
+  .obj .field:last-child{margin-bottom:0;}
+  .obj .flabel{
+    font-size:11.5px;letter-spacing:.14em;color:var(--accent);font-weight:700;
+    display:inline-block;margin-bottom:2px;
+  }
+  .obj .fval{font-size:15px;line-height:1.78;color:var(--ink-soft);}
+  .obj .fval strong{color:var(--ink);font-weight:700;}
+
+  /* ===== 脉络图 ===== */
+  .flow{display:flex;flex-direction:column;gap:0;margin-top:24px;}
+  .stage{
+    display:grid;grid-template-columns:54px 1fr;gap:16px;align-items:stretch;
+  }
+  .stage .sn{
+    font-family:"Playfair Display",serif;font-weight:800;font-size:22px;color:#fff;
+    background:var(--accent);border-radius:50%;width:46px;height:46px;
+    display:flex;align-items:center;justify-content:center;align-self:center;flex:none;
+    box-shadow:0 3px 10px rgba(45,110,122,.3);
+  }
+  .stage .body{
+    background:var(--paper-2);border:1px solid var(--line);border-left:4px solid var(--accent-light);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:8px 0;
+  }
+  .stage .body h4{font-size:17px;font-weight:700;margin-bottom:3px;}
+  .stage .body p{font-size:14.5px;color:var(--ink-soft);line-height:1.7;}
+  .stage .connector{width:2px;background:var(--accent-light);margin:0 auto;opacity:.5;}
+
+  /* ===== 金句 ===== */
+  .quotes{margin-top:24px;display:flex;flex-direction:column;gap:16px;}
+  .quote{
+    position:relative;background:var(--paper-2);border:1px solid var(--line);
+    border-radius:10px;padding:20px 24px 18px 56px;
+  }
+  .quote::before{
+    content:"\201C";position:absolute;left:18px;top:6px;
+    font-family:"Playfair Display",serif;font-size:54px;color:var(--accent);opacity:.45;
+  }
+  .quote p{font-size:17px;line-height:1.85;color:var(--ink);font-style:italic;}
+  .quote .src{display:block;margin-top:8px;font-size:12.5px;color:var(--accent-dark);letter-spacing:.04em;font-style:normal;}
+
+  /* ===== 双栏行动启发 ===== */
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:24px;}
+  .pane{background:var(--paper-2);border:1px solid var(--line);border-radius:10px;padding:20px 22px;}
+  .pane h4{font-size:18px;font-weight:700;color:var(--accent-dark);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--line);}
+  .pane ul{list-style:none;}
+  .pane li{position:relative;padding-left:20px;margin-bottom:11px;font-size:15px;line-height:1.78;color:var(--ink-soft);}
+  .pane li::before{content:"▍";position:absolute;left:0;color:var(--accent);font-size:13px;top:2px;}
+
+  /* ===== 适合谁读 ===== */
+  .who{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:24px;}
+  .who .col{background:var(--paper-2);border:1px solid var(--line);border-radius:10px;padding:20px 22px;}
+  .who .col.rec{border-left:5px solid var(--accent);}
+  .who .col.skip{border-left:5px solid var(--seal);}
+  .who h4{font-size:17px;font-weight:700;margin-bottom:12px;}
+  .who .col.rec h4{color:var(--accent-dark);}
+  .who .col.skip h4{color:var(--seal);}
+  .who .col ul{list-style:none;}
+  .who .col li{position:relative;padding-left:22px;margin-bottom:10px;font-size:15px;line-height:1.7;color:var(--ink-soft);}
+  .who .col.rec li::before{content:"✓";position:absolute;left:0;color:var(--accent);font-weight:700;}
+  .who .col.skip li::before{content:"✕";position:absolute;left:0;color:var(--seal);font-weight:700;}
+
+  .note{margin-top:22px;font-size:13px;color:var(--ink-soft);line-height:1.7;font-style:italic;
+    border-left:3px solid var(--accent-light);padding-left:14px;}
+
+  footer{margin-top:70px;text-align:center;color:var(--ink-soft);font-size:13px;letter-spacing:.06em;}
+  footer .ribbon{display:inline-block;background:var(--accent);color:#fff;padding:5px 16px;border-radius:4px;margin-bottom:12px;font-family:"Ma Shan Zheng",cursive;font-size:18px;}
+
+  /* ===== 响应式 ===== */
+  @media (max-width:720px){
+    .infogrid{grid-template-columns:1fr;}
+    .grid{grid-template-columns:1fr;}
+    .two{grid-template-columns:1fr;}
+    .who{grid-template-columns:1fr;}
+    body{font-size:16px;}
+  }
+  @media (max-width:420px){
+    .wrap{padding:0 16px 60px;}
+    .hero{margin:0 -16px;}
+    .sec-head h2{font-size:22px;}
+    .infocard{padding:18px 18px;}
+    .obj .osrc{display:none;}
+  }
+</style>
+<style id="local-font-fallback">
+/* 站内离线字体兜底：不改动原版式，用本机同族字体替代 Google Fonts，避免跨境请求拖慢首屏 */
+@font-face{font-family:"Noto Serif SC";src:local("Source Han Serif SC"),local("Source Han Serif CN"),local("Noto Serif CJK SC"),local("Songti SC"),local("STSong"),local("SimSun"),local("宋体");font-display:swap;}
+@font-face{font-family:"Playfair Display";src:local("Playfair Display"),local("Georgia"),local("Times New Roman");font-display:swap;}
+@font-face{font-family:"Ma Shan Zheng";src:local("Ma Shan Zheng"),local("STKaiti"),local("Kaiti SC"),local("KaiTi"),local("楷体"),local("STXingkai");font-display:swap;}
+@font-face{font-family:"Noto Sans SC";src:local("Source Han Sans SC"),local("Noto Sans CJK SC"),local("PingFang SC"),local("Hiragino Sans GB"),local("Microsoft YaHei"),local("微软雅黑");font-display:swap;}
+</style>
+</head>
+<body data-pagefind-ignore>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <img src="/reading/yietai-xiandaixing/assets/cover.jpg"
+         alt="图书馆书架"
+         onerror="this.style.display='none'" />
+    <div class="hero-inner">
+      <div class="hero-kicker">Liquid Modernity · A Reading Note</div>
+      <h1>液态现代性</h1>
+      <div class="hero-sub">齐格蒙特·鲍曼（Zygmunt Bauman）｜ 社会学 · 现代性诊断</div>
+    </div>
+  </header>
+
+  <div class="wrap">
+
+    <!-- 书签色带 -->
+    <div class="bookmark">
+      <span class="glyph">液</span>
+      <span class="tag">BAUMAN</span>
+    </div>
+
+    <!-- ===== 书籍信息卡 ===== -->
+    <section class="sec">
+      <div class="infocard">
+        <div class="title-row">
+          <h3>《液态现代性》</h3>
+          <span class="meta">原名 <i>Liquid Modernity</i>（2000）</span>
+        </div>
+        <div class="meta">
+          作者：<b>齐格蒙特·鲍曼</b>（Zygmunt Bauman，1925–2017，波兰裔英国社会学家）　|　中译：<b>《流动的现代性》</b> 欧阳景根 译，上海三联书店 2002
+        </div>
+        <div class="infogrid">
+          <div class="cell">
+            <div class="k">领 域</div>
+            <div class="v">社会学<small>现代性理论 · 全球化 · 消费社会批判</small></div>
+          </div>
+          <div class="cell">
+            <div class="k">核心命题</div>
+            <div class="v">我们已从「固态现代性」滑入「液态现代性」<small>一切稳固的关系、制度与身份都在持续溶解</small></div>
+          </div>
+          <div class="cell">
+            <div class="k">五大维度</div>
+            <div class="v">解放 · 个体性 · 时空 · 劳动 · 共同体<small>全书以此展开对当代生活的诊断</small></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="overview">
+        一句话总览：<b>当工作、关系与自我都变成「随时可解绑」的液体</b>，自由与不安同时膨胀——鲍曼用「流动」这面镜子，照出我们既轻盈又无依的现代处境。
+      </div>
+    </section>
+
+    <!-- ===== OCD 说明 ===== -->
+    <section class="sec">
+      <div class="ocd-legend">
+        <span class="badge">OCD</span>
+        <b>对象中心文档（Object-Centered Documentation）结构说明</b>：本页所有核心内容都以<strong>「对象卡」</strong>为单位呈现。每张卡含<strong>统一字段</strong>（如释义 / 书中定位 / 现代映射），可脱离上下文单独取用、在网格中整齐排布。这是把鲍曼散点式的诊断，整理成「一件件可拿起的物」——比连续长文更易检索与回看。下面分三组对象网格：<b>核心概念</b>（是什么）、<b>核心论断</b>（鲍曼说了什么）、<b>论证脉络</b>（如何推演）。
+      </div>
+    </section>
+
+    <!-- ===== 对象网格一：核心概念 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">01</span>
+        <h2>核心概念</h2>
+        <span class="en">Core Concepts</span>
+      </div>
+      <div class="rule"></div>
+      <div class="grid">
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">液态现代性</span><span class="osrc">Liquid Modernity</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">社会结构（制度、关系、身份）不再稳固，而是持续流动、易变、可随时抛弃的「液体状态」。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">全书总隐喻，用来替代「后现代性」一词，描述当代社会最根本的形态转变。</div></div>
+          <div class="field"><span class="flabel">现代映射</span><div class="fval">零工合同、闪辞闪恋、随时取关——一切都带「隐形有效期」。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">固态现代性</span><span class="osrc">Solid Modernity</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">以重制度（工厂、终身职业、固定阶级、承诺性关系）为锚点的前一阶段，提供稳定却也压抑。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">作为对照极，说明今天的「流动」并非天然进步，而是代价换来的松绑。</div></div>
+          <div class="field"><span class="flabel">现代映射</span><div class="fval">铁饭碗、终身婚姻、单位分房——上一代的「安稳」已成怀旧对象。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">液态生活</span><span class="osrc">Liquid Life</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">在液态社会里「易碎、易变、随时待命」的日常生活方式：永远在过渡，从不安顿。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">对个体生存体验的命名，是「液态现代性」落到个人身上的感觉。</div></div>
+          <div class="field"><span class="flabel">现代映射</span><div class="fval">「说走就走」的旅行、随时搬迁的城市、永远在加载的人生规划。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">个体化</span><span class="osrc">Individualization</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">人生规划的责任被整体移交个人：你必须自己「设计、经营、推销」自己，社会却撤掉了托底。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">五大维度之一；液态时代的「自由」本质是被转嫁的风险。</div></div>
+          <div class="field"><span class="flabel">现代映射</span><div class="fval">「做自己」成了 KPI，失败只能怪自己不够努力。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">陌生人</span><span class="osrc">The Stranger</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">液态社会的主角：既非敌人也非友人，是「路过、用完即散」的临时的他者。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">鲍曼眼中的典型关系形态——连接轻、断开易，缺乏深度纽带。</div></div>
+          <div class="field"><span class="flabel">现代映射</span><div class="fval">网约车司机、外卖员、网友——近在咫尺，却互不走进彼此生活。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">消费者社会</span><span class="osrc">Consumer Society</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">从「生产者社会」转向「消费者社会」：归属不再靠阶级，而靠购买与展示生活方式。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">解释液态时代如何「用诱惑代替监控」，让人自愿配合流动。</div></div>
+          <div class="field"><span class="flabel">现代映射</span><div class="fval">「买它＝成为某种人」；断舍离与囤货欲同时发作。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">排除与废弃</span><span class="osrc">Wasted Lives</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">跟不上流动的人不被「压迫」而被「多余化」——成为系统吞吐的废料。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">液态不平等的新形态：不是被锁住，而是被丢出游戏。</div></div>
+          <div class="field"><span class="flabel">现代映射</span><div class="fval">35 岁门槛、算法淘汰、被平台「静默封号」的人。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">时空压缩</span><span class="osrc">Time-Space Compression</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">资本以电讯速度全球流动，时间被压密、空间被拉近，稳定坐标因此瓦解。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">液态性的技术根因；让「全景监狱（监控）」转向「单景监狱（诱惑）」。</div></div>
+          <div class="field"><span class="flabel">现代映射</span><div class="fval">即时通讯、跨境网购、远程办公——距离与等待被抹平，确定性也一并抹去。</div></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 对象网格二：核心论断 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">02</span>
+        <h2>核心论断</h2>
+        <span class="en">Key Theses</span>
+      </div>
+      <div class="rule"></div>
+      <div class="grid">
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">变化是唯一恒常</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">「变化是唯一恒久者，不确定是唯一确定者」——液态现代性的根本法则。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">直指「寻求稳定」的徒劳，戳破我们对确定性的执念。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">把人生策略从「找铁饭碗」改为「练适应力」。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">承诺是潜在的陷阱</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">液态关系里，长期承诺常被视为束缚，人们偏好「轻、快、可退」的选项。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">揭示亲密与合作的「 disposable（一次性）化」倾向。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">越怕被绑住，越难长出真正的信任与深度关系。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">从生产者到消费者</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">身份从「生产什么」转为「消费什么、展示什么」；诱惑取代监视成了权力主轴。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">拆穿「自由选择」背后的引导机制。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">警惕用「买买买」填补存在焦虑；区分需要与被制造的需求。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">个体化即责任转嫁</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">「做自己人生 CEO」听起来自由，实则是社会把风险与失败都算到个人头上。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">揭穿「成功学」把结构问题私人化的话术。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">承认环境限制，别把系统问题内化成自我攻击。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">陌生人构成的世界</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">我们被无数「用完即走」的陌生人环绕，却越来越缺少可托付的共同体。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">点出「连接越多、归属越少」的悖论。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">主动经营少数深关系，比扩充浅连接更抗脆弱。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">安全是退去的地平线</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">在液态时代，安全感不是终点而是一直后撤的地平线，越追越远。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">说明焦虑不是个人脆弱，而是时代的结构性情绪。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">把「彻底安心」从目标里划掉，改求「可承受的波动」。</div></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 论证脉络 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">03</span>
+        <h2>论证脉络</h2>
+        <span class="en">The Argument</span>
+      </div>
+      <div class="rule"></div>
+      <div class="flow">
+
+        <div class="stage">
+          <div class="sn">1</div>
+          <div class="body"><h4>固态的安稳（从前）</h4><p>重制度提供锚点：终身职业、固定阶级、承诺性关系——稳定，却以压抑与服从为代价。</p></div>
+        </div>
+        <div class="connector" style="height:14px;"></div>
+
+        <div class="stage">
+          <div class="sn">2</div>
+          <div class="body"><h4>松动的开端</h4><p>全球化与电讯让资本摆脱时空束缚，时空被压缩，旧结构的「凝固力」开始失效。</p></div>
+        </div>
+        <div class="connector" style="height:14px;"></div>
+
+        <div class="stage">
+          <div class="sn">3</div>
+          <div class="body"><h4>液化成型</h4><p>制度、关系、身份从「固态」熔为「液态」——一切可移动、可改、可弃，轻而无形。</p></div>
+        </div>
+        <div class="connector" style="height:14px;"></div>
+
+        <div class="stage">
+          <div class="sn">4</div>
+          <div class="body"><h4>个体化转嫁</h4><p>社会把「设计自我」的责任全盘交还个人，撤销托底；自由与焦虑同步放大。</p></div>
+        </div>
+        <div class="connector" style="height:14px;"></div>
+
+        <div class="stage">
+          <div class="sn">5</div>
+          <div class="body"><h4>消费驯服</h4><p>「单景监狱」用诱惑代替监控：以消费与展示定义归属，让人自愿配合流动、自我规训。</p></div>
+        </div>
+        <div class="connector" style="height:14px;"></div>
+
+        <div class="stage">
+          <div class="sn">6</div>
+          <div class="body"><h4>陌生人世界</h4><p>深纽带让位于浅连接，被甩出流动者成「废料」；我们轻盈，却无依、焦虑、各自漂浮。</p></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 金句 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">04</span>
+        <h2>金句摘录</h2>
+        <span class="en">Quotable Lines</span>
+      </div>
+      <div class="rule"></div>
+      <div class="quotes">
+
+        <div class="quote">
+          <p>变化是唯一恒久者，不确定是唯一确定者。</p>
+          <span class="src">— 论液态现代性的根本法则（个人阅读札记，非逐字考据）</span>
+        </div>
+
+        <div class="quote">
+          <p>液态社会不再有永恒的关系与纽带，人际互有牵连，却不再紧密扣紧，随时可以松绑。</p>
+          <span class="src">— 论关系的临时性（同上）</span>
+        </div>
+
+        <div class="quote">
+          <p>在固态现代性里，安全靠服从换取；在液态现代性里，安全靠永不停歇的自我经营——却始终退向地平线。</p>
+          <span class="src">— 论安全感的位移（同上）</span>
+        </div>
+
+        <div class="quote">
+          <p>我们生活在一个时间密集、空间紧缩的世界；于是「现在」成了唯一被认真对待的尺度。</p>
+          <span class="src">— 论时空压缩（同上）</span>
+        </div>
+
+        <div class="quote">
+          <p>被排除者不再被锁住，而是被悄悄丢出游戏——他们成了「多余的、被废弃的生命」。</p>
+          <span class="src">— 论新型不平等（同上）</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 行动启发 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">05</span>
+        <h2>行动启发</h2>
+        <span class="en">So What</span>
+      </div>
+      <div class="rule"></div>
+      <div class="two">
+
+        <div class="pane">
+          <h4>工作 · 在流动中扎根</h4>
+          <ul>
+            <li><strong>把能力做成「可携带资产」：</strong>技能、口碑、作品集比单一岗位更抗液化，别把所有安全押在一份合同上。</li>
+            <li><strong>接受「项目制人生」：</strong>像鲍曼说的松散项目串，规划多个可并行的中短期目标，而非一条笔直铁轨。</li>
+            <li><strong>警惕「责任全归我」陷阱：</strong>努力也救不了结构性风险；把系统问题和个人失败分开看，少内耗。</li>
+            <li><strong>经营深关系网络：</strong>在浅连接泛滥里，少数可信赖的合作者与导师，是真正抗脆弱的护城河。</li>
+          </ul>
+        </div>
+
+        <div class="pane">
+          <h4>做人 · 与无依共处</h4>
+          <ul>
+            <li><strong>分清「需要」与「被制造的需求」：</strong>消费者社会的诱惑很甜，买前先问「这真是我想要的，还是被递来的」。</li>
+            <li><strong>把焦虑还原为时代情绪：</strong>不安不是你脆弱，是液态结构的常态；少自我攻击，多外部归因到对的位置。</li>
+            <li><strong>主动建造小而稳的锚：</strong>固定节律、长期爱好、可托付的人——在流动里给自己造几块「固态」。</li>
+            <li><strong>对「被废弃者」多一分看见：</strong>理解排除是结构性的，而非个人不努力，说话做事留点温度。</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 适合谁读 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">06</span>
+        <h2>适合谁读</h2>
+        <span class="en">Who Should Read</span>
+      </div>
+      <div class="rule"></div>
+      <div class="who">
+        <div class="col rec">
+          <h4>推荐读</h4>
+          <ul>
+            <li>被「35 岁焦虑 / 随时被替代」困住、想看懂时代的人</li>
+            <li>做社会学、传播、urban 研究的学者与学生</li>
+            <li>内容 / 消费 / 平台行业从业者，想理解「诱惑式权力」</li>
+            <li>关心公共生活萎缩、共同体瓦解的思考者</li>
+            <li>想在不确定里，给自己找一套安稳心法的人</li>
+          </ul>
+        </div>
+        <div class="col skip">
+          <h4>暂不合适</h4>
+          <ul>
+            <li>只想看「三步逆袭」实操攻略的读者</li>
+            <li>对抽象社会理论不耐、要故事性强的</li>
+            <li>期待纯乐观「未来可期」结论的人（本书偏冷峻诊断）</li>
+            <li>情绪正低落、易被「世界很凉」论调压垮者，择时再读</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="note">
+        说明：本书中文通译《流动的现代性》（欧阳景根 译，上海三联书店 2002）；「液态现代性」为同书另一常见译名，本页统一采用后者以贴合「液态」意象。金句为阅读札记式转述，非逐字考据，引用请以原著为准。
+      </p>
+    </section>
+
+    <footer>
+      <div class="ribbon">液</div>
+      <div>《液态现代性》读书笔记 · 对象中心分格（OCD）· 龙山大佛工作台</div>
+      <div style="margin-top:6px;opacity:.7;">配色 液态青 ｜ 米色纸感 ｜ 衬线标题 ｜ 响应式不裁切</div>
+    </footer>
+
+  </div>
+</body>
+</html>

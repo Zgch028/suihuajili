@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>《三国演义》读书笔记 · 用快与慢的眼光看乱世</title>
+<style>
+  :root{
+    --paper:#f4ecdc;
+    --paper-2:#efe4cf;
+    --ink:#33271d;
+    --ink-soft:#6b5b49;
+    --seal:#9e2b25;       /* 朱红 */
+    --seal-deep:#7c201b;
+    --gold:#bf9b46;
+    --line:#d8c7a8;
+    --card:#fbf6ea;
+    --shadow:rgba(60,40,20,.14);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:"Noto Serif SC",serif;
+    color:var(--ink);
+    background-color:var(--paper);
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+    line-height:1.85;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:0 22px 80px;}
+
+  /* ===== Hero ===== */
+  .hero{
+    position:relative;
+    min-height:62vh;
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    background:#2a100c;
+    overflow:hidden;
+  }
+  .hero img{
+    position:absolute;inset:0;width:100%;height:100%;
+    object-fit:cover;object-position:center 38%;
+    filter:saturate(.9) contrast(1.02);
+  }
+  .hero::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(to bottom,
+      rgba(42,16,12,0) 18%,
+      rgba(42,16,12,.42) 55%,
+      rgba(42,16,12,.92) 100%);
+  }
+  .hero-inner{
+    position:relative;z-index:2;
+    text-align:center;padding:0 20px 56px;width:100%;
+  }
+  .hero .seal{
+    display:inline-block;
+    font-family:"Ma Shan Zheng",cursive;
+    font-size:clamp(2.6rem,9vw,4.4rem);
+    color:#fdf6ea;
+    background:var(--seal);
+    border:2px solid rgba(255,240,220,.55);
+    padding:.12em .28em;
+    border-radius:8px;
+    transform:rotate(-3deg);
+    box-shadow:0 10px 30px rgba(0,0,0,.4);
+    margin-bottom:18px;
+  }
+  .hero h1{
+    font-family:"Noto Serif SC",serif;
+    font-weight:900;
+    color:#fcf4e6;
+    font-size:clamp(2rem,7vw,3.4rem);
+    letter-spacing:.06em;
+    margin:.1em 0 .25em;
+    text-shadow:0 2px 16px rgba(0,0,0,.6);
+  }
+  .hero .sub{
+    color:#f0dcc4;
+    font-size:clamp(.95rem,2.6vw,1.15rem);
+    letter-spacing:.18em;
+    text-shadow:0 1px 10px rgba(0,0,0,.55);
+  }
+
+  /* ===== 书签色带 ===== */
+  .ribbon{
+    position:relative;
+    margin:-26px auto 40px;
+    width:max-content;
+    max-width:90%;
+    background:var(--seal);
+    color:#fdf6ea;
+    padding:10px 30px;
+    border-radius:4px;
+    font-size:1rem;
+    letter-spacing:.22em;
+    box-shadow:0 8px 22px var(--shadow);
+  }
+  .ribbon::before,.ribbon::after{
+    content:"";position:absolute;top:0;width:0;height:0;
+    border:16px solid var(--seal-deep);
+  }
+  .ribbon::before{left:-18px;border-left-color:transparent;}
+  .ribbon::after{right:-18px;border-right-color:transparent;}
+
+  /* ===== 通用区块 ===== */
+  section{margin:54px 0;}
+  .sec-title{
+    font-size:1.5rem;font-weight:700;color:var(--seal-deep);
+    display:flex;align-items:center;gap:12px;margin:0 0 6px;
+  }
+  .sec-title .num{
+    font-family:"Playfair Display",serif;font-style:italic;
+    color:var(--gold);font-size:1.6rem;
+  }
+  .sec-sub{color:var(--ink-soft);margin:0 0 22px;font-size:.95rem;letter-spacing:.04em;}
+
+  /* 书籍信息卡 */
+  .book-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-left:6px solid var(--seal);
+    border-radius:10px;
+    padding:24px 26px;
+    box-shadow:0 6px 18px var(--shadow);
+  }
+  .book-meta{display:flex;flex-wrap:wrap;gap:10px 26px;margin-bottom:16px;}
+  .book-meta div{font-size:.95rem;}
+  .book-meta b{color:var(--seal-deep);font-weight:700;margin-right:6px;}
+  .overview{
+    background:linear-gradient(180deg,#fbf3e2,#f6ead2);
+    border:1px dashed var(--gold);
+    border-radius:10px;
+    padding:18px 22px;
+    margin-top:6px;
+    font-size:1.06rem;
+  }
+  .overview b{color:var(--seal-deep);}
+
+  /* 双系统对比 */
+  .vs-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:stretch;}
+  .vs-col{
+    background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:22px;box-shadow:0 6px 16px var(--shadow);
+  }
+  .vs-col h3{margin:.2em 0 .4em;font-size:1.2rem;color:var(--seal-deep);}
+  .vs-col .tag{font-size:.8rem;letter-spacing:.14em;color:var(--ink-soft);}
+  .vs-col ul{margin:.6em 0 0;padding-left:1.1em;font-size:.96rem;}
+  .vs-col li{margin:.35em 0;}
+  .vs-mid{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    min-width:64px;
+  }
+  .vs-mid .vs{font-family:"Playfair Display",serif;font-weight:700;font-size:2rem;color:var(--gold);}
+  .vs-mid .dot{width:10px;height:10px;border-radius:50%;background:var(--seal);margin:8px 0;}
+  .insight{
+    margin-top:18px;background:#fbf1e0;border-radius:10px;padding:16px 20px;
+    border:1px solid var(--line);font-size:1rem;
+  }
+  .insight b{color:var(--seal-deep);}
+
+  /* 偏误卡片 */
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  .bias{
+    background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:20px;box-shadow:0 6px 16px var(--shadow);
+    position:relative;overflow:hidden;
+  }
+  .bias::before{
+    content:"";position:absolute;top:0;left:0;width:100%;height:4px;background:var(--seal);
+  }
+  .bias .en{font-family:"Playfair Display",serif;font-style:italic;color:var(--gold);font-size:.92rem;}
+  .bias h4{margin:.2em 0 .5em;font-size:1.16rem;color:var(--seal-deep);}
+  .bias p{margin:.3em 0;font-size:.95rem;}
+  .bias .ex{background:#f6ead2;border-radius:8px;padding:10px 12px;margin-top:10px;font-size:.9rem;color:var(--ink-soft);}
+  .bias .ex b{color:var(--seal);}
+
+  /* 脉络图 */
+  .flow{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .act{
+    background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:18px 16px;box-shadow:0 5px 14px var(--shadow);
+    border-top:4px solid var(--gold);
+  }
+  .act .step{font-family:"Playfair Display",serif;color:var(--seal);font-weight:700;font-size:1.1rem;}
+  .act h4{margin:.3em 0 .4em;font-size:1.08rem;color:var(--seal-deep);}
+  .act p{margin:0;font-size:.92rem;color:var(--ink-soft);}
+
+  /* 金句 */
+  .quote{
+    background:linear-gradient(180deg,#fbf3e2,#f5e9d0);
+    border-left:6px solid var(--seal);
+    border-radius:10px;padding:20px 24px;margin:18px 0;
+    box-shadow:0 5px 14px var(--shadow);
+  }
+  .quote .text{font-size:1.18rem;line-height:1.7;color:var(--ink);}
+  .quote .from{display:block;margin-top:8px;color:var(--ink-soft);font-size:.9rem;letter-spacing:.05em;}
+
+  /* 行动启发 */
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .act-card{
+    background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:22px;box-shadow:0 6px 16px var(--shadow);
+  }
+  .act-card h4{margin:.1em 0 .6em;color:var(--seal-deep);font-size:1.15rem;}
+  .act-card li{margin:.5em 0;font-size:.96rem;}
+  .act-card b{color:var(--seal);}
+
+  /* 适合谁读 */
+  .who{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .who-box{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px;box-shadow:0 5px 14px var(--shadow);}
+  .who-box h4{margin:.1em 0 .6em;font-size:1.1rem;}
+  .who-box.good h4{color:var(--seal-deep);}
+  .who-box.bad h4{color:var(--ink-soft);}
+  .who-box li{font-size:.95rem;margin:.4em 0;}
+
+  footer{
+    text-align:center;color:var(--ink-soft);font-size:.85rem;
+    margin-top:60px;padding-top:26px;border-top:1px solid var(--line);letter-spacing:.06em;
+  }
+  footer .seal-sm{
+    display:inline-block;font-family:"Ma Shan Zheng",cursive;
+    color:var(--seal);border:1.5px solid var(--seal);border-radius:6px;
+    padding:2px 12px;transform:rotate(-2deg);margin-bottom:10px;
+  }
+
+  /* ===== 响应式 ===== */
+  @media (max-width:720px){
+    .vs-grid{grid-template-columns:1fr;}
+    .vs-mid{flex-direction:row;min-width:0;gap:10px;padding:6px 0;}
+    .vs-mid .vs{font-size:1.5rem;}
+    .cards{grid-template-columns:repeat(2,1fr);}
+    .flow{grid-template-columns:repeat(2,1fr);}
+    .two-col,.who{grid-template-columns:1fr;}
+  }
+  @media (max-width:420px){
+    .wrap{padding:0 16px 60px;}
+    .cards{grid-template-columns:1fr;}
+    .flow{grid-template-columns:1fr;}
+    .book-meta{gap:8px 18px;}
+  }
+</style>
+<style id="local-font-fallback">
+/* 站内离线字体兜底：不改动原版式，用本机同族字体替代 Google Fonts，避免跨境请求拖慢首屏 */
+@font-face{font-family:"Noto Serif SC";src:local("Source Han Serif SC"),local("Source Han Serif CN"),local("Noto Serif CJK SC"),local("Songti SC"),local("STSong"),local("SimSun"),local("宋体");font-display:swap;}
+@font-face{font-family:"Playfair Display";src:local("Playfair Display"),local("Georgia"),local("Times New Roman");font-display:swap;}
+@font-face{font-family:"Ma Shan Zheng";src:local("Ma Shan Zheng"),local("STKaiti"),local("Kaiti SC"),local("KaiTi"),local("楷体"),local("STXingkai");font-display:swap;}
+@font-face{font-family:"Noto Sans SC";src:local("Source Han Sans SC"),local("Noto Sans CJK SC"),local("PingFang SC"),local("Hiragino Sans GB"),local("Microsoft YaHei"),local("微软雅黑");font-display:swap;}
+</style>
+</head>
+<body data-pagefind-ignore>
+
+  <!-- ===== HERO ===== -->
+  <header class="hero">
+    <img src="/reading/sanguo-yanyi/assets/cover.jpg"
+         alt="图书馆书架"
+         onerror="this.style.display='none'" />
+    <div class="hero-inner">
+      <div class="seal">汉</div>
+      <h1>三国演义</h1>
+      <div class="sub">用「快与慢」的眼光，重读三国的抉择与败局</div>
+    </div>
+  </header>
+
+  <div class="ribbon">罗贯中 · 四大名著 · 历史演义</div>
+
+  <main class="wrap">
+
+    <!-- 书籍信息 -->
+    <section>
+      <h2 class="sec-title"><span class="num">Ⅰ</span>书籍信息</h2>
+      <div class="book-card">
+        <div class="book-meta">
+          <div><b>作者</b>罗贯中（元末明初）</div>
+          <div><b>领域</b>四大名著 · 历史演义小说</div>
+          <div><b>核心命题</b>分久必合，合久必分——在乱世中，谋略、人心与抉择决定成败</div>
+        </div>
+        <div class="overview">
+          <b>一句话总览：</b>《三国演义》以东汉末年到西晋统一的三国百年为舞台，写尽英雄崛起与陨落。
+          它表面是战争与权谋，内核却是一部「人如何做决定」的教科书——
+          而丹尼尔·卡尼曼在《思考，快与慢》里总结的那些思维陷阱，早被三国的英雄们用血与火演示了千百遍。
+        </div>
+      </div>
+    </section>
+
+    <!-- 双系统框架 -->
+    <section>
+      <h2 class="sec-title"><span class="num">Ⅱ</span>系统 1 与系统 2：三国的两种决策方式</h2>
+      <p class="sec-sub">卡尼曼把人类思维分成「快思考（系统1）」与「慢思考（系统2）」。借这个透镜看三国，人物命运立刻清晰。</p>
+      <div class="vs-grid">
+        <div class="vs-col">
+          <div class="tag">SYSTEM 1 · 快思考</div>
+          <h3>凭直觉、义气与情绪</h3>
+          <ul>
+            <li><b>反应快</b>：第一反应就出手，不假思索</li>
+            <li><b>讲义气</b>：兄弟之情压倒利害计算</li>
+            <li><b>易被激</b>：一句话、一口气就能点着</li>
+            <li>代表：张飞、吕布、年轻时的关羽</li>
+          </ul>
+        </div>
+        <div class="vs-mid">
+          <div class="vs">VS</div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+        <div class="vs-col">
+          <div class="tag">SYSTEM 2 · 慢思考</div>
+          <h3>谋定后动、算无遗策</h3>
+          <ul>
+            <li><b>想得深</b>：先算利弊，再定进退</li>
+            <li><b>忍得住</b>：宁可卧薪尝胆也不冒进</li>
+            <li><b>看得远</b>：为十年后布局，不为一时爽</li>
+            <li>代表：诸葛亮、司马懿、荀彧</li>
+          </ul>
+        </div>
+      </div>
+      <div class="insight">
+        <b>核心洞见：</b>最厉害的统帅（曹操、司马懿）是 <b>系统2主导、却懂系统1</b>——
+        他们自己深思，却擅长利用对手的冲动。而纯靠系统1的英雄（吕布有勇无谋、张飞暴而为祸）往往陨落得最早。
+        真正的高手，是<b>该快时快、该慢时慢</b>。
+      </div>
+    </section>
+
+    <!-- 认知偏误卡片 -->
+    <section>
+      <h2 class="sec-title"><span class="num">Ⅲ</span>三国里的认知偏误</h2>
+      <p class="sec-sub">《思考，快与慢》列出的思维陷阱，在三国战场上一次次重演。下面每张卡片：左边是偏误，右边是三国的教训。</p>
+      <div class="cards">
+        <div class="bias">
+          <div class="en">Anchoring</div>
+          <h4>锚定效应</h4>
+          <p>第一印象或初始信息，会死死钉住后续判断。</p>
+          <div class="ex"><b>例：</b>曹操被「关羽降汉不降曹」的旧印象锚住，始终不忍杀之，反屡屡放虎归山。</div>
+        </div>
+        <div class="bias">
+          <div class="en">Availability</div>
+          <h4>可得性偏误</h4>
+          <p>越鲜活、越近期的事，越容易被当成「全部真相」。</p>
+          <div class="ex"><b>例：</b>关羽水淹七军后威震华夏，东吴因「荆州之恨」记忆鲜活，决意偷袭；曹操赤壁后仍总疑心火攻。</div>
+        </div>
+        <div class="bias">
+          <div class="en">Loss Aversion</div>
+          <h4>损失厌恶</h4>
+          <p>失去的痛苦，远大于得到的快乐，于是宁可不动。</p>
+          <div class="ex"><b>例：</b>刘备为关羽报仇，怒而倾国伐吴，是被「失去兄弟」的情绪推着走，丢了全局。</div>
+        </div>
+        <div class="bias">
+          <div class="en">Framing</div>
+          <h4>框架效应</h4>
+          <p>同一件事，换个说法，抉择就变。</p>
+          <div class="ex"><b>例：</b>诸葛亮用激将法把「你不敢出战」框成「你怕司马懿」，一句话激出将帅之怒。</div>
+        </div>
+        <div class="bias">
+          <div class="en">Overconfidence</div>
+          <h4>过度自信</h4>
+          <p>连续胜仗后，人会以为自己永远赢。</p>
+          <div class="ex"><b>例：</b>关羽「威震华夏」后轻视东吴，大意失荆州；曹操横槊赋诗轻视江东，败于赤壁。</div>
+        </div>
+        <div class="bias">
+          <div class="en">Confirmation</div>
+          <h4>确认偏误</h4>
+          <p>只听附和自己的话，过滤掉逆耳忠言。</p>
+          <div class="ex"><b>例：</b>袁绍不听田丰、沮授之谏，只信迎合者；马谡守街亭固执己见，痛失要地。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 脉络图 -->
+    <section>
+      <h2 class="sec-title"><span class="num">Ⅳ</span>全书章节脉络</h2>
+      <p class="sec-sub">从群雄并起到三国归晋，六幕读尽兴衰。</p>
+      <div class="flow">
+        <div class="act"><div class="step">01</div><h4>群雄讨董</h4><p>黄巾乱起、董卓乱政，十八路诸侯起兵，英雄登台。</p></div>
+        <div class="act"><div class="step">02</div><h4>官渡定北</h4><p>曹操以少胜多败袁绍，统一北方，奠定霸业。</p></div>
+        <div class="act"><div class="step">03</div><h4>三顾茅庐</h4><p>刘备请出诸葛亮，「隆中对」规划三分天下蓝图。</p></div>
+        <div class="act"><div class="step">04</div><h4>赤壁三分</h4><p>孙刘联盟火烧赤壁，曹操北退，三国鼎立成形。</p></div>
+        <div class="act"><div class="step">05</div><h4>北伐星落</h4><p>诸葛亮六出祁山、「鞠躬尽瘁」，终星陨五丈原。</p></div>
+        <div class="act"><div class="step">06</div><h4>归于一统</h4><p>司马篡魏、三国相继而亡，西晋合久必分后的「合」。</p></div>
+      </div>
+    </section>
+
+    <!-- 金句 -->
+    <section>
+      <h2 class="sec-title"><span class="num">Ⅴ</span>金句摘录</h2>
+      <p class="sec-sub">以下为原著或通行大意，非逐字考据本。</p>
+      <div class="quote">
+        <span class="text">「天下大势，分久必合，合久必分。」</span>
+        <span class="from">—— 第一回 开篇纲领</span>
+      </div>
+      <div class="quote">
+        <span class="text">「滚滚长江东逝水，浪花淘尽英雄。是非成败转头空。」</span>
+        <span class="from">—— 杨慎《临江仙》（毛宗岗评本卷首词）</span>
+      </div>
+      <div class="quote">
+        <span class="text">「鞠躬尽瘁，死而后已。」</span>
+        <span class="from">—— 诸葛亮《后出师表》</span>
+      </div>
+      <div class="quote">
+        <span class="text">「万事俱备，只欠东风。」</span>
+        <span class="from">—— 赤壁之战，周瑜待东南风而火攻</span>
+      </div>
+      <div class="quote">
+        <span class="text">「良禽择木而栖，贤臣择主而事。」</span>
+        <span class="from">—— 书中反复申说之道理（如李肃说吕布）</span>
+      </div>
+    </section>
+
+    <!-- 行动启发 -->
+    <section>
+      <h2 class="sec-title"><span class="num">Ⅵ</span>对工作与决策的启发</h2>
+      <p class="sec-sub">把上面那套认知框架，从「读三国」搬回「过日子」。</p>
+      <div class="two-col">
+        <div class="act-card">
+          <h4>工作：做对决定</h4>
+          <ul>
+            <li><b>大事慢思考：</b>换工作、投项目前，强制给自己一夜缓冲，别被系统1的冲动签了字。</li>
+            <li><b>警惕锚定：</b>对方开的第一个价、第一条负面评价，都只是「锚」，别被它钉死。</li>
+            <li><b>识破框架：</b>「这是风险」还是「这是机会」，往往只差一种说法——拆开看事实。</li>
+            <li><b>听逆耳话：</b>学曹操容不下田丰的反面教材，主动找敢反对你的人。</li>
+          </ul>
+        </div>
+        <div class="act-card">
+          <h4>决策：守住自己</h4>
+          <ul>
+            <li><b>别让损失厌恶锁死你：</b>沉没成本不是成本，坏局里及时止损好过陪葬。</li>
+            <li><b>胜后别飘：</b>关羽、曹操都败在「连胜后的过度自信」，顺境更该如临深渊。</li>
+            <li><b>看清可得性陷阱：</b>最近一次失败不代表你不行，最近一次成功也不代表稳了。</li>
+            <li><b>择木而栖：</b>「良禽择木」放在今天，就是主动经营能力与口碑，等风来。</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 适合谁读 -->
+    <section>
+      <h2 class="sec-title"><span class="num">Ⅶ</span>适合谁读</h2>
+      <div class="who">
+        <div class="who-box good">
+          <h4>推荐给</h4>
+          <ul>
+            <li>想读名著、又想顺带理解「人怎么做决定」的读者</li>
+            <li>管理者、创业者——书里全是用人、放权、博弈的样本</li>
+            <li>刚接触《思考，快与慢》的人——三国是最好懂的案例库</li>
+            <li>喜欢权谋、战争与人物群像的故事派读者</li>
+          </ul>
+        </div>
+        <div class="who-box bad">
+          <h4>可能不合适</h4>
+          <ul>
+            <li>只想看「正史考据」的读者（本书是演义，非严谨史料）</li>
+            <li>偏好轻松治愈、回避权谋纷争的读者</li>
+            <li>期待女性视角均衡、现代价值观叙事的读者（成书于明代）</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="seal-sm">汉</div>
+      <div>米色纸感读书笔记 · 以《思考，快与慢》之眼读《三国演义》</div>
+      <div>阅读札记，金句为原著或通行大意，非逐字考据本。</div>
+    </footer>
+
+  </main>
+</body>
+</html>

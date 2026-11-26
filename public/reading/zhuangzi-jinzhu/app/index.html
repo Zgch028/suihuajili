@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>陈鼓应《庄子今注今译》研读笔记 · 对象中心分格</title>
+<style>
+  :root{
+    --paper:#f7f2e8;
+    --paper-2:#efe7d6;
+    --ink:#2b2b2b;
+    --ink-soft:#5a5347;
+    --line:#ddd2bd;
+    --accent:#a8412a;        /* 丹朱（朱笔批注） */
+    --accent-dark:#6e2a1c;
+    --accent-light:#d49a6a;
+    --seal:#b04a3f;
+    --gold:#c2a35e;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:"Noto Serif SC",serif;
+    color:var(--ink);
+    background-color:var(--paper);
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/></svg>");
+    line-height:1.85;
+    font-size:17px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:0 22px 80px;}
+
+  /* ===== Hero ===== */
+  .hero{
+    position:relative;
+    height:60vh;min-height:380px;
+    margin:0 -22px 0;
+    display:flex;align-items:flex-end;justify-content:center;
+    overflow:hidden;
+    background:linear-gradient(135deg,var(--accent-dark),#b05a3f 60%,var(--accent-light));
+  }
+  .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .hero::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(to top,rgba(60,26,16,.92) 0%,rgba(60,26,16,.45) 42%,rgba(60,26,16,.12) 100%);
+  }
+  .hero-inner{position:relative;z-index:2;text-align:center;color:#f6f1e7;padding:0 24px 56px;max-width:760px;}
+  .hero-kicker{
+    font-family:"Playfair Display",serif;font-style:italic;
+    letter-spacing:.18em;font-size:14px;opacity:.85;margin-bottom:10px;
+  }
+  .hero h1{
+    font-family:"Noto Serif SC",serif;font-weight:900;
+    font-size:clamp(32px,5.6vw,54px);line-height:1.15;letter-spacing:.02em;
+    text-shadow:0 2px 18px rgba(0,0,0,.45);
+  }
+  .hero-sub{
+    margin-top:14px;font-size:15px;opacity:.9;letter-spacing:.04em;
+  }
+
+  /* ===== 书签色带 ===== */
+  .bookmark{
+    position:relative;width:120px;margin:-34px auto 0;z-index:5;
+    background:linear-gradient(180deg,var(--accent),var(--accent-dark));
+    color:#f6f1e7;text-align:center;padding:16px 0 22px;
+    border-radius:6px 6px 0 0;
+    box-shadow:0 8px 22px rgba(110,42,28,.35);
+  }
+  .bookmark::after{
+    content:"";position:absolute;bottom:-18px;left:0;right:0;height:18px;
+    background:linear-gradient(135deg,var(--accent-dark) 50%,transparent 50%),
+               linear-gradient(225deg,var(--accent-dark) 50%,transparent 50%);
+    background-size:50% 100%;background-repeat:no-repeat;background-position:0 0,100% 0;
+  }
+  .bookmark .glyph{font-family:"Ma Shan Zheng",cursive;font-size:46px;line-height:1;display:block;}
+  .bookmark .tag{font-size:11px;letter-spacing:.3em;opacity:.85;margin-top:6px;}
+
+  /* ===== 区块标题 ===== */
+  .sec{margin-top:58px;}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:22px;}
+  .sec-head .num{
+    font-family:"Playfair Display",serif;font-weight:800;font-size:34px;
+    color:var(--accent);opacity:.55;
+  }
+  .sec-head h2{
+    font-family:"Noto Serif SC",serif;font-weight:700;font-size:26px;letter-spacing:.04em;
+    color:var(--ink);
+  }
+  .sec-head .en{font-family:"Playfair Display",serif;font-style:italic;color:var(--ink-soft);font-size:14px;letter-spacing:.05em;}
+  .rule{height:1px;background:linear-gradient(to right,var(--accent),transparent);margin-top:10px;}
+
+  /* ===== 书籍信息卡 ===== */
+  .infocard{
+    background:var(--paper-2);border:1px solid var(--line);border-left:5px solid var(--accent);
+    border-radius:10px;padding:24px 26px;
+    box-shadow:0 4px 16px rgba(0,0,0,.05);
+  }
+  .infocard .title-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:14px;margin-bottom:8px;}
+  .infocard h3{font-size:24px;font-weight:700;}
+  .infocard .meta{color:var(--ink-soft);font-size:14px;letter-spacing:.03em;}
+  .infocard .meta b{color:var(--accent-dark);font-weight:700;}
+  .infogrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px;}
+  .infogrid .cell{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:14px 16px;}
+  .infogrid .cell .k{font-size:12px;letter-spacing:.16em;color:var(--accent);margin-bottom:6px;}
+  .infogrid .cell .v{font-size:15px;line-height:1.7;color:var(--ink);}
+  .infogrid .cell .v small{display:block;color:var(--ink-soft);font-size:12.5px;margin-top:4px;}
+
+  /* ===== 一句话总览 ===== */
+  .overview{
+    margin-top:18px;background:linear-gradient(135deg,rgba(212,154,106,.20),rgba(168,65,42,.10));
+    border:1px dashed var(--accent-light);border-radius:10px;padding:22px 26px;
+    font-size:19px;line-height:1.9;color:var(--accent-dark);font-weight:500;
+  }
+  .overview b{color:var(--seal);font-weight:700;}
+
+  /* ===== OCD legend ===== */
+  .ocd-legend{
+    margin-top:18px;background:var(--paper-2);border:1px solid var(--line);border-radius:10px;
+    padding:18px 22px;font-size:14.5px;color:var(--ink-soft);line-height:1.85;
+  }
+  .ocd-legend b{color:var(--accent-dark);}
+  .ocd-legend .badge{
+    display:inline-block;font-family:"Playfair Display",serif;font-weight:800;font-size:12px;
+    letter-spacing:.12em;color:#fff;background:var(--accent);padding:3px 10px;border-radius:20px;margin-right:8px;
+  }
+
+  /* ===== 对象卡网格 ===== */
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:24px;}
+  .obj{
+    background:var(--paper-2);border:1px solid var(--line);border-radius:10px;
+    padding:18px 20px;box-shadow:0 3px 12px rgba(0,0,0,.04);
+    display:flex;flex-direction:column;
+  }
+  .obj .ohead{display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-bottom:12px;border-bottom:1px dotted var(--line);}
+  .obj .odot{width:9px;height:9px;border-radius:50%;background:var(--accent);flex:none;}
+  .obj .oname{font-size:19px;font-weight:700;color:var(--ink);}
+  .obj .osrc{
+    margin-left:auto;font-size:11.5px;letter-spacing:.08em;color:var(--accent-dark);
+    background:rgba(212,154,106,.35);padding:2px 9px;border-radius:12px;white-space:nowrap;
+  }
+  .obj .field{margin-bottom:10px;}
+  .obj .field:last-child{margin-bottom:0;}
+  .obj .flabel{
+    font-size:11.5px;letter-spacing:.14em;color:var(--accent);font-weight:700;
+    display:inline-block;margin-bottom:2px;
+  }
+  .obj .fval{font-size:15px;line-height:1.78;color:var(--ink-soft);}
+  .obj .fval strong{color:var(--ink);font-weight:700;}
+
+  /* ===== 脉络图 ===== */
+  .flow{display:flex;flex-direction:column;gap:0;margin-top:24px;}
+  .stage{
+    display:grid;grid-template-columns:54px 1fr;gap:16px;align-items:stretch;
+  }
+  .stage .sn{
+    font-family:"Playfair Display",serif;font-weight:800;font-size:22px;color:#fff;
+    background:var(--accent);border-radius:50%;width:46px;height:46px;
+    display:flex;align-items:center;justify-content:center;align-self:center;flex:none;
+    box-shadow:0 3px 10px rgba(168,65,42,.3);
+  }
+  .stage .body{
+    background:var(--paper-2);border:1px solid var(--line);border-left:4px solid var(--accent-light);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:8px 0;
+  }
+  .stage .body h4{font-size:17px;font-weight:700;margin-bottom:3px;}
+  .stage .body p{font-size:14.5px;color:var(--ink-soft);line-height:1.7;}
+
+  /* ===== 金句 ===== */
+  .quotes{margin-top:24px;display:flex;flex-direction:column;gap:16px;}
+  .quote{
+    position:relative;background:var(--paper-2);border:1px solid var(--line);
+    border-radius:10px;padding:20px 24px 18px 56px;
+  }
+  .quote::before{
+    content:"\201C";position:absolute;left:18px;top:6px;
+    font-family:"Playfair Display",serif;font-size:54px;color:var(--accent);opacity:.45;
+  }
+  .quote p{font-size:17px;line-height:1.85;color:var(--ink);font-style:italic;}
+  .quote .src{display:block;margin-top:8px;font-size:12.5px;color:var(--accent-dark);letter-spacing:.04em;font-style:normal;}
+
+  /* ===== 双栏行动启发 ===== */
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:24px;}
+  .pane{background:var(--paper-2);border:1px solid var(--line);border-radius:10px;padding:20px 22px;}
+  .pane h4{font-size:18px;font-weight:700;color:var(--accent-dark);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--line);}
+  .pane ul{list-style:none;}
+  .pane li{position:relative;padding-left:20px;margin-bottom:11px;font-size:15px;line-height:1.78;color:var(--ink-soft);}
+  .pane li::before{content:"▍";position:absolute;left:0;color:var(--accent);font-size:13px;top:2px;}
+
+  /* ===== 适合谁读 ===== */
+  .who{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:24px;}
+  .who .col{background:var(--paper-2);border:1px solid var(--line);border-radius:10px;padding:20px 22px;}
+  .who .col.rec{border-left:5px solid var(--accent);}
+  .who .col.skip{border-left:5px solid var(--seal);}
+  .who h4{font-size:17px;font-weight:700;margin-bottom:12px;}
+  .who .col.rec h4{color:var(--accent-dark);}
+  .who .col.skip h4{color:var(--seal);}
+  .who .col ul{list-style:none;}
+  .who .col li{position:relative;padding-left:22px;margin-bottom:10px;font-size:15px;line-height:1.7;color:var(--ink-soft);}
+  .who .col.rec li::before{content:"✓";position:absolute;left:0;color:var(--accent);font-weight:700;}
+  .who .col.skip li::before{content:"✕";position:absolute;left:0;color:var(--seal);font-weight:700;}
+
+  .note{margin-top:22px;font-size:13px;color:var(--ink-soft);line-height:1.7;font-style:italic;
+    border-left:3px solid var(--accent-light);padding-left:14px;}
+
+  footer{margin-top:70px;text-align:center;color:var(--ink-soft);font-size:13px;letter-spacing:.06em;}
+  footer .ribbon{display:inline-block;background:var(--accent);color:#fff;padding:5px 16px;border-radius:4px;margin-bottom:12px;font-family:"Ma Shan Zheng",cursive;font-size:18px;}
+
+  /* ===== 响应式 ===== */
+  @media (max-width:720px){
+    .infogrid{grid-template-columns:1fr;}
+    .grid{grid-template-columns:1fr;}
+    .two{grid-template-columns:1fr;}
+    .who{grid-template-columns:1fr;}
+    body{font-size:16px;}
+  }
+  @media (max-width:420px){
+    .wrap{padding:0 16px 60px;}
+    .hero{margin:0 -16px;}
+    .sec-head h2{font-size:22px;}
+    .infocard{padding:18px 18px;}
+    .obj .osrc{display:none;}
+  }
+</style>
+<style id="local-font-fallback">
+/* 站内离线字体兜底：不改动原版式，用本机同族字体替代 Google Fonts，避免跨境请求拖慢首屏 */
+@font-face{font-family:"Noto Serif SC";src:local("Source Han Serif SC"),local("Source Han Serif CN"),local("Noto Serif CJK SC"),local("Songti SC"),local("STSong"),local("SimSun"),local("宋体");font-display:swap;}
+@font-face{font-family:"Playfair Display";src:local("Playfair Display"),local("Georgia"),local("Times New Roman");font-display:swap;}
+@font-face{font-family:"Ma Shan Zheng";src:local("Ma Shan Zheng"),local("STKaiti"),local("Kaiti SC"),local("KaiTi"),local("楷体"),local("STXingkai");font-display:swap;}
+@font-face{font-family:"Noto Sans SC";src:local("Source Han Sans SC"),local("Noto Sans CJK SC"),local("PingFang SC"),local("Hiragino Sans GB"),local("Microsoft YaHei"),local("微软雅黑");font-display:swap;}
+</style>
+</head>
+<body data-pagefind-ignore>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <img src="/reading/zhuangzi-jinzhu/assets/cover.jpg"
+         alt="图书馆书架"
+         onerror="this.style.display='none'" />
+    <div class="hero-inner">
+      <div class="hero-kicker">Zhuangzi · Annotated &amp; Translated</div>
+      <h1>庄子今注今译 · 研读</h1>
+      <div class="hero-sub">陈鼓应 注译 ｜ 解题 · 注释 · 今译 三位一体 ｜ 道家经典研究读本</div>
+    </div>
+  </header>
+
+  <div class="wrap">
+
+    <!-- 书签色带 -->
+    <div class="bookmark">
+      <span class="glyph">注</span>
+      <span class="tag">ZHUANGZI · CHEN</span>
+    </div>
+
+    <!-- ===== 书籍信息卡 ===== -->
+    <section class="sec">
+      <div class="infocard">
+        <div class="title-row">
+          <h3>《庄子今注今译》</h3>
+          <span class="meta">陈鼓应 注译 · 底本为郭庆藩《庄子集释》</span>
+        </div>
+        <div class="meta">
+          注译者：<b>陈鼓应</b>（1935–，福建长汀人，1949 赴台；1956–1963 就读台湾大学哲学系及研究所，师从方东美、殷海光；享誉国际的道家文化学者，倡「中国哲学道家主干说」）　|　原作：<b>庄周《庄子》</b>（内篇七、外篇十五、杂篇十一，共 33 篇）
+        </div>
+        <div class="infogrid">
+          <div class="cell">
+            <div class="k">领 域</div>
+            <div class="v">校注体 · 道家经典读本<small>先秦哲学 · 注疏学 · 白话今译</small></div>
+          </div>
+          <div class="cell">
+            <div class="k">核心命题</div>
+            <div class="v">以现代语言重通庄周<small>解题提挈义理、注释明训、今译达意，让逍遥可学</small></div>
+          </div>
+          <div class="cell">
+            <div class="k">版本落点</div>
+            <div class="v">1974 台商务初版<small>1983 中华书局繁体；2024 修订重排本（ISBN 978-7-101-14496-3）</small></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="overview">
+        一句话总览：<b>陈鼓应的《庄子今注今译》是「把庄子读进现代」的阶梯</b>——他用解题搭梁、注释立柱、今译铺路，让两千年前的寓言与思辨，第一次对没有古文功底的人也能「打开即用」。
+      </div>
+    </section>
+
+    <!-- ===== OCD 说明 ===== -->
+    <section class="sec">
+      <div class="ocd-legend">
+        <span class="badge">OCD</span>
+        <b>对象中心文档（Object-Centered Documentation）结构说明</b>：本页内容以<strong>「对象卡」</strong>为单位呈现，每张卡含<strong>统一字段</strong>（如 体例 / 陈注指要 / 学用价值），可脱离上下文单独取用、在网格中整齐排布。有趣的是——这本书本身正是 OCD 的范本：它把《庄子》33 篇逐篇拆成「解题 / 原文 / 注释 / 今译」四件自包含对象，读者按需取用。下面我们再把「校注体例、核心论断、读法脉络」做成三组对象卡，形成<strong>卡片套卡片</strong>的研读结构。
+      </div>
+    </section>
+
+    <!-- ===== 对象网格一：校注体例 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">01</span>
+        <h2>校注体例</h2>
+        <span class="en">How It Annotates</span>
+      </div>
+      <div class="rule"></div>
+      <div class="grid">
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">解题导读</span><span class="osrc">每篇之首</span></div>
+          <div class="field"><span class="flabel">体例</span><div class="fval">每篇开头先梳理大意、点出义理主线，并钩沉源自本篇的成语、习语。</div></div>
+          <div class="field"><span class="flabel">陈注指要</span><div class="fval">先立骨架再读正文——把「这篇在讲什么」说在前头，<strong>初学者不迷路</strong>。</div></div>
+          <div class="field"><span class="flabel">学用价值</span><div class="fval">读庄先读解题，等于先拿到地图；避免一头扎进寓言却抓不住主旨。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">原文校勘</span><span class="osrc">底本择定</span></div>
+          <div class="field"><span class="flabel">体例</span><div class="fval">以郭庆藩《庄子集释》（王孝鱼校点本）为底本，参校道藏、宋本、近人校本，异文必在注中说明。</div></div>
+          <div class="field"><span class="flabel">陈注指要</span><div class="fval">「凡有增删原文，均于注释中说明」——<strong>校勘有据、改动透明</strong>。</div></div>
+          <div class="field"><span class="flabel">学用价值</span><div class="fval">学到做学问的诚实：改一字要有来由，不悄悄替古人做主。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">集解汇注</span><span class="osrc">注释</span></div>
+          <div class="field"><span class="flabel">体例</span><div class="fval">汇集郭象、成玄英、陆德明及清儒王念孙、俞樾、王先谦等诸家训诂，并吸收徐复观等近人成果。</div></div>
+          <div class="field"><span class="flabel">陈注指要</span><div class="fval">首创「校注＋集释」模式，<strong>标明各家出处</strong>，不掠美、可溯源。</div></div>
+          <div class="field"><span class="flabel">学用价值</span><div class="fval">读注如入学术沙龙，一语之下兼听众说，培养「看分歧」的眼光。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">白话今译</span><span class="osrc">今译</span></div>
+          <div class="field"><span class="flabel">体例</span><div class="fval">依注释逐句译为现代白话，参考英、日文及大陆译本，「别人译得好的尽量采用」。</div></div>
+          <div class="field"><span class="flabel">陈注指要</span><div class="fval">「为求畅晓与切近原意」——<strong>文学性不让位于准确</strong>，庖丁、梦蝶皆口语化还原。</div></div>
+          <div class="field"><span class="flabel">学用价值</span><div class="fval">读不懂古字就读今译，再由今译反查注释，形成「译—注—文」闭环。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">词语注释</span><span class="osrc">微观据实</span></div>
+          <div class="field"><span class="flabel">体例</span><div class="fval">一字一词一考，常「查遍古注而不得其解」处仍穷究，注「某字当读某」。</div></div>
+          <div class="field"><span class="flabel">陈注指要</span><div class="fval">「微观上据实求证」——<strong>不绕过难点</strong>，把训诂做扎实。</div></div>
+          <div class="field"><span class="flabel">学用价值</span><div class="fval">示范「啃硬骨头」：真理解往往藏在一个被跳过的字里。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">思想析论</span><span class="osrc">宏观总揽</span></div>
+          <div class="field"><span class="flabel">体例</span><div class="fval">注释之外常就义理发挥，把庄子的「内圣之学、心学、气论、天人之学」点明。</div></div>
+          <div class="field"><span class="flabel">陈注指要</span><div class="fval">「宏观上总揽全局」——<strong>注中见论</strong>，不只是字词匠气。</div></div>
+          <div class="field"><span class="flabel">学用价值</span><div class="fval">借注释者的思想坐标读原典，读到的不只是字，还有「为何这样说」。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">异文辨正</span><span class="osrc">校勘精神</span></div>
+          <div class="field"><span class="flabel">体例</span><div class="fval">对传世文本讹误「订正不少」，给出合理依据；两岸版本异同、排印错误逐一复校。</div></div>
+          <div class="field"><span class="flabel">陈注指要</span><div class="fval">2024 重排本「增删异动约百余条」——<strong>文本是活物，需代代校订</strong>。</div></div>
+          <div class="field"><span class="flabel">学用价值</span><div class="fval">教人尊重版本：你手里的「原文」也可能是历代传抄的误会。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">成语钩沉</span><span class="osrc">每篇题解</span></div>
+          <div class="field"><span class="flabel">体例</span><div class="fval">解题中专列「源自本篇的成语、习语」，如鹏程万里、朝三暮四、相濡以沫等。</div></div>
+          <div class="field"><span class="flabel">陈注指要</span><div class="fval">把<strong>活语言</strong>与死文本勾连——庄子的词今天仍在你我嘴边。</div></div>
+          <div class="field"><span class="flabel">学用价值</span><div class="fval">读经典不再是考古：它塑造了你正在用的话，距离感瞬间消融。</div></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 对象网格二：核心论断 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">02</span>
+        <h2>核心论断</h2>
+        <span class="en">Key Theses</span>
+      </div>
+      <div class="rule"></div>
+      <div class="grid">
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">逍遥无待</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">「至人无己，神人无功，圣人无名」——卸功名自我之累，方能乘天地之正、御六气之辩。</div></div>
+          <div class="field"><span class="flabel">陈注锋芒</span><div class="fval">陈注把「无待」解为<strong>不系于心、不困于物</strong>的自由，而非消极避世。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">把评价权交还自己；少挂「待」，心才轻、路才宽。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">齐物丧我</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">「天地一指也，万物一马也」——从道观之，是非、彼此皆相对，无绝对标尺。</div></div>
+          <div class="field"><span class="flabel">陈注锋芒</span><div class="fval">陈注强调「丧我」是破<strong>自我中心</strong>的认知训练，非相对主义虚无。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">换位思考、放下非此即彼；关系与争论都少内耗。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">养生缘督</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">「缘督以为经」——依乎天理、顺其纹理，在人间世中保身全生、游刃有余。</div></div>
+          <div class="field"><span class="flabel">陈注锋芒</span><div class="fval">陈注以庖丁解牛为<strong>「技进于道」</strong>的范例，专业到极致即艺术。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">复杂系统里先找规律、避硬碰；护生即护产能。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">人间虚室</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">「虚室生白」——心空则明，先清空成见，方容得下真实与应对。</div></div>
+          <div class="field"><span class="flabel">陈注锋芒</span><div class="fval">陈注把《人间世》读成<strong>「在乱世中如何自处」</strong>的处世哲学，极贴现实。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">定期清空杂念、给大脑留白；信息过载时「空」才是生产力。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">坐忘丧耦</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">「堕肢体，黜聪明，离形去知，同于大通」——虚静以接道，物我两忘。</div></div>
+          <div class="field"><span class="flabel">陈注锋芒</span><div class="fval">陈注点出这是<strong>认知的「去蔽」</strong>，与现象学「悬搁」异曲同工。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">放下预设再去看人看事，判断往往更准、更柔。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">道通为一</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">「举莛与楹，厉与西施……道通为一」——千差万别，归本于道则无隔。</div></div>
+          <div class="field"><span class="flabel">陈注锋芒</span><div class="fval">陈注以「通」释庄子的<strong>整体宇宙观</strong>，批评割裂对立的常识思维。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">遇分歧先找更高一层的「共同框架」，矛盾常是层级不够。</div></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 论证脉络 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">03</span>
+        <h2>读法脉络</h2>
+        <span class="en">The Reading Path</span>
+      </div>
+      <div class="rule"></div>
+      <div class="flow">
+
+        <div class="stage">
+          <div class="sn">1</div>
+          <div class="body"><h4>底本择定 → 立可信文本</h4><p>以郭庆藩《庄子集释》王孝鱼校点本为底，参校众本——先有「靠得住的原文」，注释今译才有根。</p></div>
+        </div>
+        <div class="connector" style="height:14px;"></div>
+
+        <div class="stage">
+          <div class="sn">2</div>
+          <div class="body"><h4>解题提挈 → 先见森林</h4><p>每篇开头讲清主旨与成语源流，读者先握地图，再进寓言森林不迷路。</p></div>
+        </div>
+        <div class="connector" style="height:14px;"></div>
+
+        <div class="stage">
+          <div class="sn">3</div>
+          <div class="body"><h4>集注释训 → 兼听众说</h4><p>汇郭象、成玄英、清儒及近人成果，标出处、不掠美——在分歧中长出判断力。</p></div>
+        </div>
+        <div class="connector" style="height:14px;"></div>
+
+        <div class="stage">
+          <div class="sn">4</div>
+          <div class="body"><h4>今译达意 → 接通现代</h4><p>白话逐句转译，文学性不让准确；由今译反查注释，形成「译—注—文」闭环。</p></div>
+        </div>
+        <div class="connector" style="height:14px;"></div>
+
+        <div class="stage">
+          <div class="sn">5</div>
+          <div class="body"><h4>内七为宗 → 主次分明</h4><p>以《内篇》七篇为庄子思想核心，《外》《杂》辅翼参看——先立主干，再观枝蔓。</p></div>
+        </div>
+        <div class="connector" style="height:14px;"></div>
+
+        <div class="stage">
+          <div class="sn">6</div>
+          <div class="body"><h4>以庄解庄 → 逍遥可学</h4><p>不以外诠内、不以儒解道，让庄子自己说话；读懂后，逍遥从玄理变成可练的活法。</p></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 金句 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">04</span>
+        <h2>金句摘录</h2>
+        <span class="en">Quotable Lines</span>
+      </div>
+      <div class="rule"></div>
+      <div class="quotes">
+
+        <div class="quote">
+          <p>北冥有鱼，其名为鲲。鲲之大，不知其几千里也；化而为鸟，其名为鹏。</p>
+          <span class="src">— 《庄子·逍遥游》（陈本卷一，解题言「小大之辨」）</span>
+        </div>
+
+        <div class="quote">
+          <p>至人无己，神人无功，圣人无名。</p>
+          <span class="src">— 《庄子·逍遥游》（陈注：无待之境在三无）</span>
+        </div>
+
+        <div class="quote">
+          <p>吾生也有涯，而知也无涯。以有涯随无涯，殆已。</p>
+          <span class="src">— 《庄子·养生主》（陈注以「缘督」应「有涯」）</span>
+        </div>
+
+        <div class="quote">
+          <p>天地一指也，万物一马也。</p>
+          <span class="src">— 《庄子·齐物论》（陈注：以道观之，彼此齐一）</span>
+        </div>
+
+        <div class="quote">
+          <p>井蛙不可以语于海者，拘于虚也；夏虫不可以语于冰者，笃于时也。</p>
+          <span class="src">— 《庄子·秋水》（陈本钩沉「坐井观天」等成语）</span>
+        </div>
+
+      </div>
+      <p class="note">注：金句为《庄子》原典摘录，出处依陈鼓应《庄子今注今译》所分篇章；个别通行本字句依该注本处理，引用请以原典与所据版本为准。陈鼓应题解有云「内圣外王的理想是庄子首先提出的」，可参看各篇解题。</p>
+    </section>
+
+    <!-- ===== 行动启发 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">05</span>
+        <h2>行动启发</h2>
+        <span class="en">So What</span>
+      </div>
+      <div class="rule"></div>
+      <div class="two">
+
+        <div class="pane">
+          <h4>治学 · 研读与校注方法</h4>
+          <ul>
+            <li><strong>解题先行：</strong>读任何难书前先抓主旨框架（像陈鼓应每篇解题），避免陷进细节迷路。</li>
+            <li><strong>译—注—文闭环：</strong>读外文书/古文，今译→注释→原文三处互证，理解比单看译本牢。</li>
+            <li><strong>兼听众说：</strong>重要判断先找「分歧点」，标注出处再下结论，像集解汇注那样诚实。</li>
+            <li><strong>改字有据：</strong>写方案、改文档也学陈注——任何调整都留依据，不悄悄替他人做主。</li>
+          </ul>
+        </div>
+
+        <div class="pane">
+          <h4>做人 · 体道与自处</h4>
+          <ul>
+            <li><strong>虚室生白：</strong>信息过载时先清空成见与杂念，判断才准、心才明。</li>
+            <li><strong>缘督游刃：</strong>在复杂人际/任务里找「纹理」，顺其理而非硬碰，护得住自己。</li>
+            <li><strong>齐物换位思考：</strong>是非不必争赢，承认视角之别，关系与争论都少内耗。</li>
+            <li><strong>无待减挂：</strong>少把自由系于功名评价，心轻了，路自然宽。</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 适合谁读 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">06</span>
+        <h2>适合谁读</h2>
+        <span class="en">Who Should Read</span>
+      </div>
+      <div class="rule"></div>
+      <div class="who">
+        <div class="col rec">
+          <h4>推荐读</h4>
+          <ul>
+            <li>想认真读《庄子》却苦于无古文功底、需要「今译＋注释」扶手者</li>
+            <li>哲学/中文/国学专业学生与研究者：把它当标准校注底本引用</li>
+            <li>爱「看一本书怎么被读懂」的方法控：解题—注释—今译的结构本身就是课</li>
+            <li>已读庄子选读本、想进阶通读 33 篇全本者（内七为宗、外杂辅翼）</li>
+            <li>被绩效焦虑压得喘不过气、想借注释走近「逍遥」出口的人</li>
+          </ul>
+        </div>
+        <div class="col skip">
+          <h4>暂不合适</h4>
+          <ul>
+            <li>只想听三分钟「庄子精华」者——这是逐字校注，厚且慢</li>
+            <li>排斥训诂考据、只要结论不要过程者（注释会让你觉得啰嗦）</li>
+            <li>把「逍遥」误读为「躺平」者——陈注明言逍遥是卸待非放弃</li>
+            <li>急需强行动推力者——庄子重虚静，易读成「别折腾」，慎读</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="note">
+        说明：陈鼓应（1935–），福建长汀人，台湾大学哲学研究所硕士，师从方东美、殷海光，享誉国际的道家文化学者，主张「中国哲学道家主干说」。《庄子今注今译》初版于 1974 年台湾商务印书馆，中华书局 1983 年以繁体字印行，2024 年推出最新修订重排本（ISBN 978-7-101-14496-3）。全书以郭庆藩《庄子集释》（王孝鱼校点本）为底本，参考古今中外六十余种校注，分内篇七、外篇十五、杂篇十一，共 33 篇，每篇设解题、注释、今译。汉学家梅维恒（Victor H. Mair）的《庄子》英文全译本即以陈本为底本。本页为研读笔记，内容依公开版本信息整理。
+      </p>
+    </section>
+
+    <footer>
+      <div class="ribbon">注</div>
+      <div>陈鼓应《庄子今注今译》研读笔记 · 对象中心分格（OCD）· 龙山大佛工作台</div>
+      <div style="margin-top:6px;opacity:.7;">配色 丹墨（朱笔批注＋墨色正文） ｜ 米色纸感 ｜ 衬线标题 ｜ 响应式不裁切</div>
+    </footer>
+
+  </div>
+</body>
+</html>

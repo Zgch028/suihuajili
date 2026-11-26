@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>《庄子》选读读书笔记 · 对象中心分格</title>
+<style>
+  :root{
+    --paper:#f7f2e8;
+    --paper-2:#efe7d6;
+    --ink:#2b2b2b;
+    --ink-soft:#5a5347;
+    --line:#ddd2bd;
+    --accent:#2e7d8a;        /* 青碧 */
+    --accent-dark:#1c5560;
+    --accent-light:#7fb9c4;
+    --seal:#b04a3f;
+    --gold:#b89a5e;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:"Noto Serif SC",serif;
+    color:var(--ink);
+    background-color:var(--paper);
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/></svg>");
+    line-height:1.85;
+    font-size:17px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:0 22px 80px;}
+
+  /* ===== Hero ===== */
+  .hero{
+    position:relative;
+    height:60vh;min-height:380px;
+    margin:0 -22px 0;
+    display:flex;align-items:flex-end;justify-content:center;
+    overflow:hidden;
+    background:linear-gradient(135deg,var(--accent-dark),#3f9aab 60%,var(--accent-light));
+  }
+  .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .hero::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(to top,rgba(20,55,62,.92) 0%,rgba(20,55,62,.45) 42%,rgba(20,55,62,.12) 100%);
+  }
+  .hero-inner{position:relative;z-index:2;text-align:center;color:#f6f1e7;padding:0 24px 56px;max-width:760px;}
+  .hero-kicker{
+    font-family:"Playfair Display",serif;font-style:italic;
+    letter-spacing:.18em;font-size:14px;opacity:.85;margin-bottom:10px;
+  }
+  .hero h1{
+    font-family:"Noto Serif SC",serif;font-weight:900;
+    font-size:clamp(34px,6vw,58px);line-height:1.1;letter-spacing:.02em;
+    text-shadow:0 2px 18px rgba(0,0,0,.45);
+  }
+  .hero-sub{
+    margin-top:14px;font-size:15px;opacity:.9;letter-spacing:.04em;
+  }
+
+  /* ===== 书签色带 ===== */
+  .bookmark{
+    position:relative;width:120px;margin:-34px auto 0;z-index:5;
+    background:linear-gradient(180deg,var(--accent),var(--accent-dark));
+    color:#f6f1e7;text-align:center;padding:16px 0 22px;
+    border-radius:6px 6px 0 0;
+    box-shadow:0 8px 22px rgba(28,85,96,.35);
+  }
+  .bookmark::after{
+    content:"";position:absolute;bottom:-18px;left:0;right:0;height:18px;
+    background:linear-gradient(135deg,var(--accent-dark) 50%,transparent 50%),
+               linear-gradient(225deg,var(--accent-dark) 50%,transparent 50%);
+    background-size:50% 100%;background-repeat:no-repeat;background-position:0 0,100% 0;
+  }
+  .bookmark .glyph{font-family:"Ma Shan Zheng",cursive;font-size:46px;line-height:1;display:block;}
+  .bookmark .tag{font-size:11px;letter-spacing:.3em;opacity:.85;margin-top:6px;}
+
+  /* ===== 区块标题 ===== */
+  .sec{margin-top:58px;}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:22px;}
+  .sec-head .num{
+    font-family:"Playfair Display",serif;font-weight:800;font-size:34px;
+    color:var(--accent);opacity:.55;
+  }
+  .sec-head h2{
+    font-family:"Noto Serif SC",serif;font-weight:700;font-size:26px;letter-spacing:.04em;
+    color:var(--ink);
+  }
+  .sec-head .en{font-family:"Playfair Display",serif;font-style:italic;color:var(--ink-soft);font-size:14px;letter-spacing:.05em;}
+  .rule{height:1px;background:linear-gradient(to right,var(--accent),transparent);margin-top:10px;}
+
+  /* ===== 书籍信息卡 ===== */
+  .infocard{
+    background:var(--paper-2);border:1px solid var(--line);border-left:5px solid var(--accent);
+    border-radius:10px;padding:24px 26px;
+    box-shadow:0 4px 16px rgba(0,0,0,.05);
+  }
+  .infocard .title-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:14px;margin-bottom:8px;}
+  .infocard h3{font-size:24px;font-weight:700;}
+  .infocard .meta{color:var(--ink-soft);font-size:14px;letter-spacing:.03em;}
+  .infocard .meta b{color:var(--accent-dark);font-weight:700;}
+  .infogrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px;}
+  .infogrid .cell{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:14px 16px;}
+  .infogrid .cell .k{font-size:12px;letter-spacing:.16em;color:var(--accent);margin-bottom:6px;}
+  .infogrid .cell .v{font-size:15px;line-height:1.7;color:var(--ink);}
+  .infogrid .cell .v small{display:block;color:var(--ink-soft);font-size:12.5px;margin-top:4px;}
+
+  /* ===== 一句话总览 ===== */
+  .overview{
+    margin-top:18px;background:linear-gradient(135deg,rgba(127,185,196,.18),rgba(46,125,138,.10));
+    border:1px dashed var(--accent-light);border-radius:10px;padding:22px 26px;
+    font-size:19px;line-height:1.9;color:var(--accent-dark);font-weight:500;
+  }
+  .overview b{color:var(--seal);font-weight:700;}
+
+  /* ===== OCD legend ===== */
+  .ocd-legend{
+    margin-top:18px;background:var(--paper-2);border:1px solid var(--line);border-radius:10px;
+    padding:18px 22px;font-size:14.5px;color:var(--ink-soft);line-height:1.85;
+  }
+  .ocd-legend b{color:var(--accent-dark);}
+  .ocd-legend .badge{
+    display:inline-block;font-family:"Playfair Display",serif;font-weight:800;font-size:12px;
+    letter-spacing:.12em;color:#fff;background:var(--accent);padding:3px 10px;border-radius:20px;margin-right:8px;
+  }
+
+  /* ===== 对象卡网格 ===== */
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:24px;}
+  .obj{
+    background:var(--paper-2);border:1px solid var(--line);border-radius:10px;
+    padding:18px 20px;box-shadow:0 3px 12px rgba(0,0,0,.04);
+    display:flex;flex-direction:column;
+  }
+  .obj .ohead{display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-bottom:12px;border-bottom:1px dotted var(--line);}
+  .obj .odot{width:9px;height:9px;border-radius:50%;background:var(--accent);flex:none;}
+  .obj .oname{font-size:19px;font-weight:700;color:var(--ink);}
+  .obj .osrc{
+    margin-left:auto;font-size:11.5px;letter-spacing:.08em;color:var(--accent-dark);
+    background:rgba(127,185,196,.3);padding:2px 9px;border-radius:12px;white-space:nowrap;
+  }
+  .obj .field{margin-bottom:10px;}
+  .obj .field:last-child{margin-bottom:0;}
+  .obj .flabel{
+    font-size:11.5px;letter-spacing:.14em;color:var(--accent);font-weight:700;
+    display:inline-block;margin-bottom:2px;
+  }
+  .obj .fval{font-size:15px;line-height:1.78;color:var(--ink-soft);}
+  .obj .fval strong{color:var(--ink);font-weight:700;}
+
+  /* ===== 脉络图 ===== */
+  .flow{display:flex;flex-direction:column;gap:0;margin-top:24px;}
+  .stage{
+    display:grid;grid-template-columns:54px 1fr;gap:16px;align-items:stretch;
+  }
+  .stage .sn{
+    font-family:"Playfair Display",serif;font-weight:800;font-size:22px;color:#fff;
+    background:var(--accent);border-radius:50%;width:46px;height:46px;
+    display:flex;align-items:center;justify-content:center;align-self:center;flex:none;
+    box-shadow:0 3px 10px rgba(46,125,138,.3);
+  }
+  .stage .body{
+    background:var(--paper-2);border:1px solid var(--line);border-left:4px solid var(--accent-light);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:8px 0;
+  }
+  .stage .body h4{font-size:17px;font-weight:700;margin-bottom:3px;}
+  .stage .body p{font-size:14.5px;color:var(--ink-soft);line-height:1.7;}
+
+  /* ===== 金句 ===== */
+  .quotes{margin-top:24px;display:flex;flex-direction:column;gap:16px;}
+  .quote{
+    position:relative;background:var(--paper-2);border:1px solid var(--line);
+    border-radius:10px;padding:20px 24px 18px 56px;
+  }
+  .quote::before{
+    content:"\201C";position:absolute;left:18px;top:6px;
+    font-family:"Playfair Display",serif;font-size:54px;color:var(--accent);opacity:.45;
+  }
+  .quote p{font-size:17px;line-height:1.85;color:var(--ink);font-style:italic;}
+  .quote .src{display:block;margin-top:8px;font-size:12.5px;color:var(--accent-dark);letter-spacing:.04em;font-style:normal;}
+
+  /* ===== 双栏行动启发 ===== */
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:24px;}
+  .pane{background:var(--paper-2);border:1px solid var(--line);border-radius:10px;padding:20px 22px;}
+  .pane h4{font-size:18px;font-weight:700;color:var(--accent-dark);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--line);}
+  .pane ul{list-style:none;}
+  .pane li{position:relative;padding-left:20px;margin-bottom:11px;font-size:15px;line-height:1.78;color:var(--ink-soft);}
+  .pane li::before{content:"▍";position:absolute;left:0;color:var(--accent);font-size:13px;top:2px;}
+
+  /* ===== 适合谁读 ===== */
+  .who{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:24px;}
+  .who .col{background:var(--paper-2);border:1px solid var(--line);border-radius:10px;padding:20px 22px;}
+  .who .col.rec{border-left:5px solid var(--accent);}
+  .who .col.skip{border-left:5px solid var(--seal);}
+  .who h4{font-size:17px;font-weight:700;margin-bottom:12px;}
+  .who .col.rec h4{color:var(--accent-dark);}
+  .who .col.skip h4{color:var(--seal);}
+  .who .col ul{list-style:none;}
+  .who .col li{position:relative;padding-left:22px;margin-bottom:10px;font-size:15px;line-height:1.7;color:var(--ink-soft);}
+  .who .col.rec li::before{content:"✓";position:absolute;left:0;color:var(--accent);font-weight:700;}
+  .who .col.skip li::before{content:"✕";position:absolute;left:0;color:var(--seal);font-weight:700;}
+
+  .note{margin-top:22px;font-size:13px;color:var(--ink-soft);line-height:1.7;font-style:italic;
+    border-left:3px solid var(--accent-light);padding-left:14px;}
+
+  footer{margin-top:70px;text-align:center;color:var(--ink-soft);font-size:13px;letter-spacing:.06em;}
+  footer .ribbon{display:inline-block;background:var(--accent);color:#fff;padding:5px 16px;border-radius:4px;margin-bottom:12px;font-family:"Ma Shan Zheng",cursive;font-size:18px;}
+
+  /* ===== 响应式 ===== */
+  @media (max-width:720px){
+    .infogrid{grid-template-columns:1fr;}
+    .grid{grid-template-columns:1fr;}
+    .two{grid-template-columns:1fr;}
+    .who{grid-template-columns:1fr;}
+    body{font-size:16px;}
+  }
+  @media (max-width:420px){
+    .wrap{padding:0 16px 60px;}
+    .hero{margin:0 -16px;}
+    .sec-head h2{font-size:22px;}
+    .infocard{padding:18px 18px;}
+    .obj .osrc{display:none;}
+  }
+</style>
+<style id="local-font-fallback">
+/* 站内离线字体兜底：不改动原版式，用本机同族字体替代 Google Fonts，避免跨境请求拖慢首屏 */
+@font-face{font-family:"Noto Serif SC";src:local("Source Han Serif SC"),local("Source Han Serif CN"),local("Noto Serif CJK SC"),local("Songti SC"),local("STSong"),local("SimSun"),local("宋体");font-display:swap;}
+@font-face{font-family:"Playfair Display";src:local("Playfair Display"),local("Georgia"),local("Times New Roman");font-display:swap;}
+@font-face{font-family:"Ma Shan Zheng";src:local("Ma Shan Zheng"),local("STKaiti"),local("Kaiti SC"),local("KaiTi"),local("楷体"),local("STXingkai");font-display:swap;}
+@font-face{font-family:"Noto Sans SC";src:local("Source Han Sans SC"),local("Noto Sans CJK SC"),local("PingFang SC"),local("Hiragino Sans GB"),local("Microsoft YaHei"),local("微软雅黑");font-display:swap;}
+</style>
+</head>
+<body data-pagefind-ignore>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <img src="/reading/zhuangzi/assets/cover.jpg"
+         alt="图书馆书架"
+         onerror="this.style.display='none'" />
+    <div class="hero-inner">
+      <div class="hero-kicker">Zhuangzi · Free &amp; Easy Wandering</div>
+      <h1>庄子 · 选读</h1>
+      <div class="hero-sub">《逍遥游》《养生主》《秋水》｜ 道家 · 哲学 · 寓言</div>
+    </div>
+  </header>
+
+  <div class="wrap">
+
+    <!-- 书签色带 -->
+    <div class="bookmark">
+      <span class="glyph">逍</span>
+      <span class="tag">ZHUANGZI</span>
+    </div>
+
+    <!-- ===== 书籍信息卡 ===== -->
+    <section class="sec">
+      <div class="infocard">
+        <div class="title-row">
+          <h3>《庄子》选读</h3>
+          <span class="meta">选《逍遥游》《养生主》《秋水》三篇</span>
+        </div>
+        <div class="meta">
+          作者：<b>庄周</b>（庄子，约前 369–前 286，战国中期宋国蒙人，与老子并称「老庄」）　|　成书：庄子及其后学集体创作，《内篇》七篇多归庄子亲笔
+        </div>
+        <div class="infogrid">
+          <div class="cell">
+            <div class="k">领 域</div>
+            <div class="v">道家经典<small>哲学 · 寓言 · 生命美学</small></div>
+          </div>
+          <div class="cell">
+            <div class="k">核心命题</div>
+            <div class="v">逍遥无待·齐物我<small>卸下「有待」之累，依乎天理、与道逍遥</small></div>
+          </div>
+          <div class="cell">
+            <div class="k">三篇落点</div>
+            <div class="v">逍遥 · 养生 · 齐物<small>游（自由）/ 刃（顺天）/ 水（观化）</small></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="overview">
+        一句话总览：<b>庄子说，人活得不自在，多半是心里挂了太多「待」</b>——待功名、待是非、待大小；把它们一一卸下，像鲲化鹏、像庖丁游刃，便能「无待」地逍遥。
+      </div>
+    </section>
+
+    <!-- ===== OCD 说明 ===== -->
+    <section class="sec">
+      <div class="ocd-legend">
+        <span class="badge">OCD</span>
+        <b>对象中心文档（Object-Centered Documentation）结构说明</b>：本页核心内容以<strong>「对象卡」</strong>为单位呈现，每张卡含<strong>统一字段</strong>（如 释义 / 书中定位 / 现代映射），可脱离上下文单独取用、在网格中整齐排布。庄子以寓言说理，物物皆可为卡——鲲鹏、蝴蝶、庖丁、河伯本就是一件件独立的「意象之物」，最宜拆成对象卡。下面分三组对象网格：<b>核心意象</b>（是什么）、<b>核心论断</b>（庄子说了什么）、<b>论证脉络</b>（如何推演）。
+      </div>
+    </section>
+
+    <!-- ===== 对象网格一：核心意象 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">01</span>
+        <h2>核心意象</h2>
+        <span class="en">Key Images</span>
+      </div>
+      <div class="rule"></div>
+      <div class="grid">
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">鲲鹏</span><span class="osrc">逍遥游</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">北冥巨鱼化为大鹏，「怒而飞，其翼若垂天之云」，抟扶摇九万里。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">「小大之辨」的极致象征，喻视野与格局的跃迁——<strong>大知</strong>破小知之限。</div></div>
+          <div class="field"><span class="flabel">现代映射</span><div class="fval">跳出舒适区的远见者；别用眼前 KPI 框死「九万里」的方向。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">蜩与学鸠</span><span class="osrc">逍遥游</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">小虫小鸟笑鹏：「奚以之九万里而南为？」——我决起而飞，抢榆枋即止。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">「小知不及大知」的对照，代表困于方寸、以己度天下的局限。</div></div>
+          <div class="field"><span class="flabel">现代映射</span><div class="fval">安于小格局者对远见者的不解；先承认自己可能只是「蜩」，再谈成长。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">庖丁解牛</span><span class="osrc">养生主</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">依乎天理，「批大郤，导大窾」，十九年刀刃若新发于硎，提刀而立，为之四顾。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">「养生主」以技喻道——<strong>缘督以为经</strong>，顺应纹理而非硬碰。</div></div>
+          <div class="field"><span class="flabel">现代映射</span><div class="fval">在复杂系统里找规律、避硬碰、游刃其间；专业到极致即艺术。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">蝴蝶梦</span><span class="osrc">齐物论</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">「昔者庄周梦为胡蝶，栩栩然胡蝶也…不知周之梦为胡蝶与，胡蝶之梦为周与？」</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">「物化」与齐物我——形与名皆相对，<strong>我</strong>并非绝对不变的实体。</div></div>
+          <div class="field"><span class="flabel">现代映射</span><div class="fval">视角相对、身份流动；别太把「我执」当铁律，给认知留弹性。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">河伯与海若</span><span class="osrc">秋水</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">秋水时至，河伯自喜，至北海乃望洋兴叹；海若言「吾未尝以此自多」。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">大小、内外、贵贱皆<strong>以道观之</strong>而后齐——走出自我中心。</div></div>
+          <div class="field"><span class="flabel">现代映射</span><div class="fval">打破信息茧房、承认认知边界；见过大海才知小河之狭。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">濠梁之辩</span><span class="osrc">秋水</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">「鯈鱼出游从容，是鱼之乐也」「子非鱼，安知鱼之乐？」「子非我，安知我不知鱼之乐？」</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">知与乐的相对性、<strong>物我可通</strong>——逻辑壁垒外尚有共情。</div></div>
+          <div class="field"><span class="flabel">现代映射</span><div class="fval">别用「你不是我」堵死理解；先接住对方的情绪，再谈对错。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">无用之大树</span><span class="osrc">逍遥游</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">惠子大瓠「无用」、庄子大樗「无所可用」，反得彷徨乎无为其侧、逍遥寝卧其下。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval"><strong>无用之用</strong>——不材之木免斧斤，反得终其天年。</div></div>
+          <div class="field"><span class="flabel">现代映射</span><div class="fval">非功利的探索、长期主义；别被「有用」绑架，留白往往最有用。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">坐忘 · 心斋</span><span class="osrc">人间世</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">「堕肢体，黜聪明，离形去知，同于大通」（坐忘）；「无听之以耳而听之以心」（心斋）。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">虚静以接道——清空成见，方容得下真实。</div></div>
+          <div class="field"><span class="flabel">现代映射</span><div class="fval">定期清空杂念、给大脑留白；信息过载时，「空」才是生产力。</div></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 对象网格二：核心论断 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">02</span>
+        <h2>核心论断</h2>
+        <span class="en">Key Theses</span>
+      </div>
+      <div class="rule"></div>
+      <div class="grid">
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">无己 · 无功 · 无名</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">「至人无己，神人无功，圣人无名」——忘我、不居功、不求名，方入逍遥之境。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">批判功名、自我对自由的反向捆绑：你追的「待」，正是困你的锁。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">把评价权交还自己；少挂「待」，心才轻、路才宽。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">吾生有涯</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">「吾生也有涯，而知也无涯。以有涯随无涯，殆已」——以有限生命逐无限知识，危矣。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">反对盲目堆砌、自我透支式的「终身学习」；护生先于求知。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">精力聚焦、做减法；承认边界，才守得住产能与安康。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">子非鱼</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">「子非鱼，安知鱼之乐？」——你不是鱼，焉知鱼之乐；惠子以逻辑反诘。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">戳破「我的理解即唯一正确」的傲慢；知有边界，乐可相通。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">承认理解的边界，给共情留位置；别用论证赢了、把人推远了。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">天地一指</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">「天地一指也，万物一马也」——从道观之，万物齐一，是非无绝对。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">瓦解是非对立的执念；你死我活的对错，常是视角之偏。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">换位思考、放下非此即彼；关系与争论都少内耗。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">鹪鹩一枝</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">「鹪鹩巢于深林，不过一枝；偃鼠饮河，不过满腹」——所需极少，足矣。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">批判贪多务得、以占有量度幸福；多即累，少即轻。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">够用就好，减欲即增自由；物质做减法、精神做加法。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">朴素唯美</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">「朴素而天下莫能与之争美」——去掉雕饰的本色，才是至美。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">反异化、反浮华；被「装饰」裹挟的人，离本真最远。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">做减法、守本真；表达与活法，朴素最持久。</div></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 论证脉络 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">03</span>
+        <h2>论证脉络</h2>
+        <span class="en">The Argument</span>
+      </div>
+      <div class="rule"></div>
+      <div class="flow">
+
+        <div class="stage">
+          <div class="sn">1</div>
+          <div class="body"><h4>鲲鹏起兴 → 小大之辨</h4><p>《逍遥游》以鲲化鹏破「蜩与学鸠」的方寸格局，先立视野之差——不是对错，是层级。</p></div>
+        </div>
+        <div class="connector" style="height:14px;"></div>
+
+        <div class="stage">
+          <div class="sn">2</div>
+          <div class="body"><h4>小大之辨 → 无待逍遥</h4><p>顺物之性、忘功名自我，方能「乘天地之正，御六气之辩」——无待，才是真自由。</p></div>
+        </div>
+        <div class="connector" style="height:14px;"></div>
+
+        <div class="stage">
+          <div class="sn">3</div>
+          <div class="body"><h4>养生顺天 → 庖丁游刃</h4><p>《养生主》以解牛喻道：依乎天理、缘督以为经，在人间世里保身全生、游刃有余。</p></div>
+        </div>
+        <div class="connector" style="height:14px;"></div>
+
+        <div class="stage">
+          <div class="sn">4</div>
+          <div class="body"><h4>齐物忘我 → 蝴蝶物化</h4><p>《齐物论》梦蝶、天地一指，松动「我」与「是非」的绝对性，执念由此松绑。</p></div>
+        </div>
+        <div class="connector" style="height:14px;"></div>
+
+        <div class="stage">
+          <div class="sn">5</div>
+          <div class="body"><h4>秋水归海 → 河伯自省</h4><p>《秋水》河伯见海若而叹，走出自我中心；以道观之，贵贱大小皆齐。</p></div>
+        </div>
+        <div class="connector" style="height:14px;"></div>
+
+        <div class="stage">
+          <div class="sn">6</div>
+          <div class="body"><h4>与道逍遥 → 自由自在</h4><p>卸待、顺天、齐物三者归一：不系于心、不困于物，即得庄子式「无待」的逍遥。</p></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 金句 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">04</span>
+        <h2>金句摘录</h2>
+        <span class="en">Quotable Lines</span>
+      </div>
+      <div class="rule"></div>
+      <div class="quotes">
+
+        <div class="quote">
+          <p>北冥有鱼，其名为鲲。鲲之大，不知其几千里也；化而为鸟，其名为鹏。</p>
+          <span class="src">— 《庄子·逍遥游》（鲲鹏起兴）</span>
+        </div>
+
+        <div class="quote">
+          <p>至人无己，神人无功，圣人无名。</p>
+          <span class="src">— 《庄子·逍遥游》（逍遥之境）</span>
+        </div>
+
+        <div class="quote">
+          <p>吾生也有涯，而知也无涯。以有涯随无涯，殆已。</p>
+          <span class="src">— 《庄子·养生主》（护生为本）</span>
+        </div>
+
+        <div class="quote">
+          <p>子非鱼，安知鱼之乐？</p>
+          <span class="src">— 《庄子·秋水》（濠梁之辩）</span>
+        </div>
+
+        <div class="quote">
+          <p>井蛙不可以语于海者，拘于虚也；夏虫不可以语于冰者，笃于时也。</p>
+          <span class="src">— 《庄子·秋水》（破自我中心）</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 行动启发 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">05</span>
+        <h2>行动启发</h2>
+        <span class="en">So What</span>
+      </div>
+      <div class="rule"></div>
+      <div class="two">
+
+        <div class="pane">
+          <h4>工作 · 游刃与聚焦</h4>
+          <ul>
+            <li><strong>庖丁式专精：</strong>在复杂任务里先找「天理」（规律、关键路径），避硬碰、游刃其间，不靠蛮力硬扛。</li>
+            <li><strong>无用之用：</strong>给非功利探索留时间（闲读、发呆、跨界），长期看往往是最有用的「大樗」。</li>
+            <li><strong>小大之辨：</strong>别被眼前 KPI 框死格局，定期跳出来看「九万里」层面的方向。</li>
+            <li><strong>吾生有涯：</strong>精力聚焦、拒绝无限摊薄；护生即护产能，透支换不来真产出。</li>
+          </ul>
+        </div>
+
+        <div class="pane">
+          <h4>做人 · 卸待与齐物</h4>
+          <ul>
+            <li><strong>卸下「待」：</strong>功名、是非、大小都少挂心，减少对外在评价的依赖，心才自在。</li>
+            <li><strong>齐物换位思考：</strong>是非不必争赢，承认「天地一指」，关系与争论都少内耗。</li>
+            <li><strong>濠梁共情：</strong>别用「你不是我」堵死理解，先试着接住对方的情绪。</li>
+            <li><strong>减欲增自由：</strong>鹪鹩一枝、偃鼠满腹，够用就好；物质做减法、精神做加法。</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 适合谁读 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">06</span>
+        <h2>适合谁读</h2>
+        <span class="en">Who Should Read</span>
+      </div>
+      <div class="rule"></div>
+      <div class="who">
+        <div class="col rec">
+          <h4>推荐读</h4>
+          <ul>
+            <li>被绩效焦虑、内卷压得喘不过气，想找「卸待」出口的人</li>
+            <li>创作者、思考者：迷寓言与意象、爱逆向思维</li>
+            <li>想补上「儒道互补」另一极的国学读者（孟子之后读庄子）</li>
+            <li>在是非争执里内耗、想学换位思考者</li>
+            <li>管理者：从「无用之用」「庖丁游刃」看长期主义与系统观</li>
+          </ul>
+        </div>
+        <div class="col skip">
+          <h4>暂不合适</h4>
+          <ul>
+            <li>只想要确定性答案、步骤清单、实操手册者（庄子给意象不给手册）</li>
+            <li>排斥隐喻、不耐寓言、要严密逻辑论证者</li>
+            <li>正值重度消沉、急需行动推力者（易读成「别折腾」，慎读）</li>
+            <li>把「逍遥」误读为「躺平摆烂」者（逍遥是卸待非放弃）</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="note">
+        说明：庄子名周，蒙（今河南商丘一带）人，约前 369–前 286，战国中期道家代表，与老子并称「老庄」。《庄子》分内篇七（多归庄子亲笔）、外篇十五、杂篇十一。本次选读《逍遥游》（内篇一）、《养生主》（内篇三）、《秋水》（外篇）。金句为原文摘录，标篇章出处；个别通行本字句依注本处理，引用请以原典为准。
+      </p>
+    </section>
+
+    <footer>
+      <div class="ribbon">逍</div>
+      <div>《庄子》选读读书笔记 · 对象中心分格（OCD）· 龙山大佛工作台</div>
+      <div style="margin-top:6px;opacity:.7;">配色 青碧 ｜ 米色纸感 ｜ 衬线标题 ｜ 响应式不裁切</div>
+    </footer>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>李开复《AI未来已来》研读笔记 · 对象中心分格</title>
+<style>
+  :root{
+    --paper:#f7f2e8;
+    --paper-2:#efe7d6;
+    --ink:#2b2b2b;
+    --ink-soft:#5a5347;
+    --line:#ddd2bd;
+    --accent:#42558f;        /* 智蓝·电光 */
+    --accent-dark:#2b3a63;
+    --accent-light:#93a5cf;
+    --seal:#b04a3f;
+    --gold:#b89a5e;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:"Noto Serif SC",serif;
+    color:var(--ink);
+    background-color:var(--paper);
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/></svg>");
+    line-height:1.85;
+    font-size:17px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:0 22px 80px;}
+
+  /* ===== Hero ===== */
+  .hero{
+    position:relative;
+    height:60vh;min-height:380px;
+    margin:0 -22px 0;
+    display:flex;align-items:flex-end;justify-content:center;
+    overflow:hidden;
+    background:linear-gradient(135deg,var(--accent-dark),#3a5a9a 60%,var(--accent-light));
+  }
+  .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .hero::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(to top,rgba(18,26,48,.92) 0%,rgba(18,26,48,.45) 42%,rgba(18,26,48,.12) 100%);
+  }
+  .hero-inner{position:relative;z-index:2;text-align:center;color:#f6f1e7;padding:0 24px 56px;max-width:760px;}
+  .hero-kicker{
+    font-family:"Playfair Display",serif;font-style:italic;
+    letter-spacing:.18em;font-size:14px;opacity:.85;margin-bottom:10px;
+  }
+  .hero h1{
+    font-family:"Noto Serif SC",serif;font-weight:900;
+    font-size:clamp(32px,5.6vw,54px);line-height:1.15;letter-spacing:.02em;
+    text-shadow:0 2px 18px rgba(0,0,0,.45);
+  }
+  .hero-sub{
+    margin-top:14px;font-size:15px;opacity:.9;letter-spacing:.04em;
+  }
+
+  /* ===== 书签色带 ===== */
+  .bookmark{
+    position:relative;width:120px;margin:-34px auto 0;z-index:5;
+    background:linear-gradient(180deg,var(--accent),var(--accent-dark));
+    color:#f6f1e7;text-align:center;padding:16px 0 22px;
+    border-radius:6px 6px 0 0;
+    box-shadow:0 8px 22px rgba(43,58,99,.35);
+  }
+  .bookmark::after{
+    content:"";position:absolute;bottom:-18px;left:0;right:0;height:18px;
+    background:linear-gradient(135deg,var(--accent-dark) 50%,transparent 50%),
+               linear-gradient(225deg,var(--accent-dark) 50%,transparent 50%);
+    background-size:50% 100%;background-repeat:no-repeat;background-position:0 0,100% 0;
+  }
+  .bookmark .glyph{font-family:"Ma Shan Zheng",cursive;font-size:46px;line-height:1;display:block;}
+  .bookmark .tag{font-size:11px;letter-spacing:.3em;opacity:.85;margin-top:6px;}
+
+  /* ===== 区块标题 ===== */
+  .sec{margin-top:58px;}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:22px;}
+  .sec-head .num{
+    font-family:"Playfair Display",serif;font-weight:800;font-size:34px;
+    color:var(--accent);opacity:.55;
+  }
+  .sec-head h2{
+    font-family:"Noto Serif SC",serif;font-weight:700;font-size:26px;letter-spacing:.04em;
+    color:var(--ink);
+  }
+  .sec-head .en{font-family:"Playfair Display",serif;font-style:italic;color:var(--ink-soft);font-size:14px;letter-spacing:.05em;}
+  .rule{height:1px;background:linear-gradient(to right,var(--accent),transparent);margin-top:10px;}
+
+  /* ===== 书籍信息卡 ===== */
+  .infocard{
+    background:var(--paper-2);border:1px solid var(--line);border-left:5px solid var(--accent);
+    border-radius:10px;padding:24px 26px;
+    box-shadow:0 4px 16px rgba(0,0,0,.05);
+  }
+  .infocard .title-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:14px;margin-bottom:8px;}
+  .infocard h3{font-size:24px;font-weight:700;}
+  .infocard .meta{color:var(--ink-soft);font-size:14px;letter-spacing:.03em;}
+  .infocard .meta b{color:var(--accent-dark);font-weight:700;}
+  .infogrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px;}
+  .infogrid .cell{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:14px 16px;}
+  .infogrid .cell .k{font-size:12px;letter-spacing:.16em;color:var(--accent);margin-bottom:6px;}
+  .infogrid .cell .v{font-size:15px;line-height:1.7;color:var(--ink);}
+  .infogrid .cell .v small{display:block;color:var(--ink-soft);font-size:12.5px;margin-top:4px;}
+
+  /* ===== 一句话总览 ===== */
+  .overview{
+    margin-top:18px;background:linear-gradient(135deg,rgba(147,165,207,.22),rgba(66,85,143,.10));
+    border:1px dashed var(--accent-light);border-radius:10px;padding:22px 26px;
+    font-size:19px;line-height:1.9;color:var(--accent-dark);font-weight:500;
+  }
+  .overview b{color:var(--seal);font-weight:700;}
+
+  /* ===== OCD legend ===== */
+  .ocd-legend{
+    margin-top:18px;background:var(--paper-2);border:1px solid var(--line);border-radius:10px;
+    padding:18px 22px;font-size:14.5px;color:var(--ink-soft);line-height:1.85;
+  }
+  .ocd-legend b{color:var(--accent-dark);}
+  .ocd-legend .badge{
+    display:inline-block;font-family:"Playfair Display",serif;font-weight:800;font-size:12px;
+    letter-spacing:.12em;color:#fff;background:var(--accent);padding:3px 10px;border-radius:20px;margin-right:8px;
+  }
+
+  /* ===== 对象卡网格 ===== */
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:24px;}
+  .obj{
+    background:var(--paper-2);border:1px solid var(--line);border-radius:10px;
+    padding:18px 20px;box-shadow:0 3px 12px rgba(0,0,0,.04);
+    display:flex;flex-direction:column;
+  }
+  .obj .ohead{display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-bottom:12px;border-bottom:1px dotted var(--line);}
+  .obj .odot{width:9px;height:9px;border-radius:50%;background:var(--accent);flex:none;}
+  .obj .oname{font-size:19px;font-weight:700;color:var(--ink);}
+  .obj .osrc{
+    margin-left:auto;font-size:11.5px;letter-spacing:.08em;color:var(--accent-dark);
+    background:rgba(147,165,207,.35);padding:2px 9px;border-radius:12px;white-space:nowrap;
+  }
+  .obj .field{margin-bottom:10px;}
+  .obj .field:last-child{margin-bottom:0;}
+  .obj .flabel{
+    font-size:11.5px;letter-spacing:.14em;color:var(--accent);font-weight:700;
+    display:inline-block;margin-bottom:2px;
+  }
+  .obj .fval{font-size:15px;line-height:1.78;color:var(--ink-soft);}
+  .obj .fval strong{color:var(--ink);font-weight:700;}
+
+  /* ===== 脉络图 ===== */
+  .flow{display:flex;flex-direction:column;gap:0;margin-top:24px;}
+  .stage{
+    display:grid;grid-template-columns:54px 1fr;gap:16px;align-items:stretch;
+  }
+  .stage .sn{
+    font-family:"Playfair Display",serif;font-weight:800;font-size:22px;color:#fff;
+    background:var(--accent);border-radius:50%;width:46px;height:46px;
+    display:flex;align-items:center;justify-content:center;align-self:center;flex:none;
+    box-shadow:0 3px 10px rgba(66,85,143,.3);
+  }
+  .stage .body{
+    background:var(--paper-2);border:1px solid var(--line);border-left:4px solid var(--accent-light);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:8px 0;
+  }
+  .stage .body h4{font-size:17px;font-weight:700;margin-bottom:3px;}
+  .stage .body p{font-size:14.5px;color:var(--ink-soft);line-height:1.7;}
+
+  /* ===== 金句 ===== */
+  .quotes{margin-top:24px;display:flex;flex-direction:column;gap:16px;}
+  .quote{
+    position:relative;background:var(--paper-2);border:1px solid var(--line);
+    border-radius:10px;padding:20px 24px 18px 56px;
+  }
+  .quote::before{
+    content:"\201C";position:absolute;left:18px;top:6px;
+    font-family:"Playfair Display",serif;font-size:54px;color:var(--accent);opacity:.45;
+  }
+  .quote p{font-size:17px;line-height:1.85;color:var(--ink);font-style:italic;}
+  .quote .src{display:block;margin-top:8px;font-size:12.5px;color:var(--accent-dark);letter-spacing:.04em;font-style:normal;}
+
+  /* ===== 双栏行动启发 ===== */
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:24px;}
+  .pane{background:var(--paper-2);border:1px solid var(--line);border-radius:10px;padding:20px 22px;}
+  .pane h4{font-size:18px;font-weight:700;color:var(--accent-dark);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--line);}
+  .pane ul{list-style:none;}
+  .pane li{position:relative;padding-left:20px;margin-bottom:11px;font-size:15px;line-height:1.78;color:var(--ink-soft);}
+  .pane li::before{content:"▍";position:absolute;left:0;color:var(--accent);font-size:13px;top:2px;}
+
+  /* ===== 适合谁读 ===== */
+  .who{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:24px;}
+  .who .col{background:var(--paper-2);border:1px solid var(--line);border-radius:10px;padding:20px 22px;}
+  .who .col.rec{border-left:5px solid var(--accent);}
+  .who .col.skip{border-left:5px solid var(--seal);}
+  .who h4{font-size:17px;font-weight:700;margin-bottom:12px;}
+  .who .col.rec h4{color:var(--accent-dark);}
+  .who .col.skip h4{color:var(--seal);}
+  .who .col ul{list-style:none;}
+  .who .col li{position:relative;padding-left:22px;margin-bottom:10px;font-size:15px;line-height:1.7;color:var(--ink-soft);}
+  .who .col.rec li::before{content:"✓";position:absolute;left:0;color:var(--accent);font-weight:700;}
+  .who .col.skip li::before{content:"✕";position:absolute;left:0;color:var(--seal);font-weight:700;}
+
+  .note{margin-top:22px;font-size:13px;color:var(--ink-soft);line-height:1.7;font-style:italic;
+    border-left:3px solid var(--accent-light);padding-left:14px;}
+
+  footer{margin-top:70px;text-align:center;color:var(--ink-soft);font-size:13px;letter-spacing:.06em;}
+  footer .ribbon{display:inline-block;background:var(--accent);color:#fff;padding:5px 16px;border-radius:4px;margin-bottom:12px;font-family:"Ma Shan Zheng",cursive;font-size:18px;}
+
+  /* ===== 响应式 ===== */
+  @media (max-width:720px){
+    .infogrid{grid-template-columns:1fr;}
+    .grid{grid-template-columns:1fr;}
+    .two{grid-template-columns:1fr;}
+    .who{grid-template-columns:1fr;}
+    body{font-size:16px;}
+  }
+  @media (max-width:420px){
+    .wrap{padding:0 16px 60px;}
+    .hero{margin:0 -16px;}
+    .sec-head h2{font-size:22px;}
+    .infocard{padding:18px 18px;}
+    .obj .osrc{display:none;}
+  }
+</style>
+<style id="local-font-fallback">
+/* 站内离线字体兜底：不改动原版式，用本机同族字体替代 Google Fonts，避免跨境请求拖慢首屏 */
+@font-face{font-family:"Noto Serif SC";src:local("Source Han Serif SC"),local("Source Han Serif CN"),local("Noto Serif CJK SC"),local("Songti SC"),local("STSong"),local("SimSun"),local("宋体");font-display:swap;}
+@font-face{font-family:"Playfair Display";src:local("Playfair Display"),local("Georgia"),local("Times New Roman");font-display:swap;}
+@font-face{font-family:"Ma Shan Zheng";src:local("Ma Shan Zheng"),local("STKaiti"),local("Kaiti SC"),local("KaiTi"),local("楷体"),local("STXingkai");font-display:swap;}
+@font-face{font-family:"Noto Sans SC";src:local("Source Han Sans SC"),local("Noto Sans CJK SC"),local("PingFang SC"),local("Hiragino Sans GB"),local("Microsoft YaHei"),local("微软雅黑");font-display:swap;}
+</style>
+</head>
+<body data-pagefind-ignore>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <img src="/reading/ai-weilai-yilai/assets/cover.jpg"
+         alt="图书馆书架"
+         onerror="this.style.display='none'" />
+    <div class="hero-inner">
+      <div class="hero-kicker">Kai-Fu Lee · AI's Future Has Arrived</div>
+      <h1>AI未来已来 · 研读</h1>
+      <div class="hero-sub">李开复 著 ｜ 零一万物创始人兼CEO · 创新工场董事长 ｜ CEO · 组织 · 个人的时代红利</div>
+    </div>
+  </header>
+
+  <div class="wrap">
+
+    <!-- 书签色带 -->
+    <div class="bookmark">
+      <span class="glyph">智</span>
+      <span class="tag">KAI-FU · LEE</span>
+    </div>
+
+    <!-- ===== 书籍信息卡 ===== -->
+    <section class="sec">
+      <div class="infocard">
+        <div class="title-row">
+          <h3>《AI未来已来》</h3>
+          <span class="meta">副题「CEO、组织、个人的时代红利」 · AI 时代行动指南</span>
+        </div>
+        <div class="meta">
+          作者：<b>李开复</b>（卡内基梅隆大学计算机科学博士，零一万物创始人兼CEO、创新工场董事长，曾任谷歌全球副总裁兼大中华区总裁）　|　性质：<b>企业AI转型战略著作</b>
+        </div>
+        <div class="infogrid">
+          <div class="cell">
+            <div class="k">领 域</div>
+            <div class="v">人工智能 · 企业转型 · 组织管理<small>AI 2.0 · 智能体 · 决策中枢 · AI-First 组织</small></div>
+          </div>
+          <div class="cell">
+            <div class="k">核心命题</div>
+            <div class="v">AI 是重塑成本结构、决策系统、组织形态与个人价值的新生产力<small>AI 转型本质是管理革命，而非技术升级</small></div>
+          </div>
+          <div class="cell">
+            <div class="k">版本落点</div>
+            <div class="v">人民邮电出版社 2026 年 7 月<small>繁体版《AI未來已來》天下文化 2026 年 8 月</small></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="overview">
+        一句话总览：<b>当智能的成本坍塌到近乎免费、AI 开始接管「执行」，企业和个人的分水岭就不再是「会不会用 AI」</b>——而是敢不敢让 CEO 亲自下场、用 AI 重构决策与组织，并把人的价值押在品味、远见、信念与勇气上。
+      </div>
+    </section>
+
+    <!-- ===== OCD 说明 ===== -->
+    <section class="sec">
+      <div class="ocd-legend">
+        <span class="badge">OCD</span>
+        <b>对象中心文档（Object-Centered Documentation）结构说明</b>：本页内容以<strong>「对象卡」</strong>为单位呈现，每张卡含<strong>统一字段</strong>（如 释义 / 书中定位 / 今用映射），可脱离上下文单独取用、在网格中整齐排布。有趣的是——这本书本身就是 OCD 的范本：它把庞大的「企业 AI 转型」拆成<strong>决策中枢、组织、个人</strong>三个自包含对象域，每个对象（Ontology、数据飞轮、DRI、老板 AI……）都能单独读懂、单独取用，再拼回整幅转型图景。下面我们把「核心概念、核心论断、读法脉络」做成三组对象卡，形成研读结构。
+      </div>
+    </section>
+
+    <!-- ===== 对象网格一：核心概念 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">01</span>
+        <h2>核心概念</h2>
+        <span class="en">Key Concepts</span>
+      </div>
+      <div class="rule"></div>
+      <div class="grid">
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">AI 2.0</span><span class="osrc">趋势篇</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">以生成式 AI、大模型、智能体为代表的新一代 AI：率先冲击<strong>认知型工作</strong>、扩散速度远超以往技术革命、智能成本坍塌式下降、AI 正在加速 AI 自身进化。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">全书立论的<strong>时代前提</strong>——四大颠覆性共同指向"变革已至"。</div></div>
+          <div class="field"><span class="flabel">今用映射</span><div class="fval">别再问"AI 会不会影响我"，先问"我的哪块认知型工作正在被它重写"。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">生产力—生产关系框架</span><span class="osrc">认知篇</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">以经济学底层逻辑看 AI：数据、算法、算力成为驱动产业变革的核心要素；AI 是全新生产要素，须匹配新的生产关系（组织）。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">作者重构 AI 商业认知的<strong>顶层框架</strong>，跳出纯技术、纯工具讨论。</div></div>
+          <div class="field"><span class="flabel">今用映射</span><div class="fval">引 AI 不只是装工具，还要改组织——否则新生产力会被旧生产关系拖死。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">企业本体 Ontology</span><span class="osrc">落地篇</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">把企业内部多年累积的数据、流程与知识做结构化建模，形成"企业 AI 认知地图"——这是企业独有、别人无法复制的资产。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">企业 AI 决策中枢的<strong>地基</strong>：没有本体，AI 读不懂你的业务。</div></div>
+          <div class="field"><span class="flabel">今用映射</span><div class="fval">先把散落各处的流程/知识/数据理清，再谈 AI 落地——乱账喂不出好 AI。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">企业 AI 决策中枢</span><span class="osrc">落地篇</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">以企业本体为核心、结合多智能体系统的"决策大脑"：让 AI 进入真实业务闭环，获得更实时、更透明、更可行动的组织视角。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">企业转型真正需要的<strong>系统</strong>，而非零散工具堆叠。</div></div>
+          <div class="field"><span class="flabel">今用映射</span><div class="fval">别止步于"局部提效"，让 AI 进运营与决策的核心环节，影响增长与利润率。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">数据飞轮</span><span class="osrc">落地篇</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">把企业各处数据整合起来让"飞轮"持续运转——系统愈用愈聪明，数据愈用愈多，形成自我强化的复利。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">让 AI 从"成本工具"升级为<strong>每天都在变强的增长引擎</strong>的机制。</div></div>
+          <div class="field"><span class="flabel">今用映射</span><div class="fval">每一次 AI 投资都该沉淀成数据资产，而不是一次性烧掉——否则永远在起跑线。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">智能体时代</span><span class="osrc">趋势篇</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">AI 从"辅助工具"演变为能自主分析、决策与执行任务的<strong>智能生产力</strong>，智能体走向企业一线，开始接管"执行"。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">贯穿全书的<strong>变量</strong>：执行被机器接管后，人的价值坐标随之重排。</div></div>
+          <div class="field"><span class="flabel">今用映射</span><div class="fval">把重复执行交给 Agent，自己往"指挥 AI、承担结果"的位置挪。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">DRI 直接责任人</span><span class="osrc">组织篇</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">Directly Responsible Individual——能指挥 AI、承担结果、跨团队调度资源并最终把事情做成的<strong>「微型 CEO」</strong>，是 AI-First 组织的核心贡献者。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">对抗"信息损耗、信息扭曲、问责失焦"的<strong>责任制解法</strong>。</div></div>
+          <div class="field"><span class="flabel">今用映射</span><div class="fval">每件事落到一个"对结果负责的人"，而不是一群人"都参与、都不背"。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">AI-First 组织</span><span class="osrc">组织篇</span></div>
+          <div class="field"><span class="flabel">释义</span><div class="fval">由 CEO 作为"一号位"亲自推动、以 AI-First 方式重构业务流程、组织协同和决策机制；走向更扁平、更结果导向，甚至"一人公司"。</div></div>
+          <div class="field"><span class="flabel">书中定位</span><div class="fval">继"互联网基因企业"之后，率先定义的<strong>AI 原生组织范式</strong>。</div></div>
+          <div class="field"><span class="flabel">今用映射</span><div class="fval">转型是"一把手工程"：领导不亲自用 AI，下面全是 Demo 和局部提效。</div></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 对象网格二：核心论断 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">02</span>
+        <h2>核心论断</h2>
+        <span class="en">Key Theses</span>
+      </div>
+      <div class="rule"></div>
+      <div class="grid">
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">90% 转型失败的三大根源</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">企业 AI 落地的真实困境是<strong>推动力不足、认知错位、场景脱节</strong>——只买模型和工具，却没有重构业务、数据、责任与组织。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">批判<strong>"装了 AI、用不好 AI、变不了现"</strong>的普遍失败模式。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">转型前先自查：推动的人在不在位？认知对不对？场景贴不贴核心业务？</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">AI 不是普通 IT 工具</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">AI 不应停留在 Demo 或局部提效阶段；最大价值是进入企业运营和决策的核心环节，真正影响增长、利润率和组织效率。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">反对<strong>把 AI 当"又一套 IT 系统"采购了事</strong>。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">评估 AI 项目的标准是"动了哪个关键结果"，不是"上了多少个模型"。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">智能近乎免费，靠什么立足</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">当 AI 工具像水电一样平价，你和竞争对手用的 AI 没有差别，过去靠技术与效率建立的优势都将被抹平。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">打破<strong>"买个工具就能建立壁垒"</strong>的幻觉。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">真正的护城河是内部独有的数据、流程与知识——把它炼成 Ontology 与飞轮。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">当执行被机器接管</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">AI 会越来越擅长思考和执行，但人类仍要负责引领、决定方向；<strong>品味、远见、信念与勇气</strong>，是 AI 难以替代的人类核心能力。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">反驳<strong>"人会被全面替代"</strong>的焦虑叙事，也反驳"人只剩被替代"的宿命论。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">把成长重心从"把事做快"挪到"判断方向、守住信念、敢于拍板"。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">转型是 CEO 的一号位工程</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">AI 转型不仅是一场技术升级，更是一场<strong>管理革命</strong>；创始人、董事长和 CEO 必须亲自承担这一战略转型的责任。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">批判<strong>"交给信息部门就能完成"</strong>的错位与推责。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">一号位要亲自用 AI、切入能改善财报的关键环节、找到真正对结果负责的人。</div></div>
+        </div>
+
+        <div class="obj">
+          <div class="ohead"><span class="odot"></span><span class="oname">个人价值的两张地图</span></div>
+          <div class="field"><span class="flabel">原意</span><div class="fval">系统分析个人贡献者与管理者的<strong>各 4 种结局</strong>，并给出判断岗位安全性的"两张地图"，指明 AI 时代的职业方向。</div></div>
+          <div class="field"><span class="flabel">锋芒</span><div class="fval">戳破<strong>"AI 时代人人自危却不知危在何处"</strong>的迷雾。</div></div>
+          <div class="field"><span class="flabel">启示</span><div class="fval">用"岗位安全地图"给自己定位：是往微型 CEO 走，还是被 DRI 带领的 Agent 替代。</div></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 论证脉络 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">03</span>
+        <h2>读法脉络</h2>
+        <span class="en">The Reading Path</span>
+      </div>
+      <div class="rule"></div>
+      <div class="flow">
+
+        <div class="stage">
+          <div class="sn">1</div>
+          <div class="body"><h4>AI 2.0 降临 · 冲击认知型工作</h4><p>生成式 AI 与大模型成熟，AI 从辅助工具演变为能自主分析、决策、执行的智能生产力，率先冲击的是过去被认为安全的认知型工作。</p></div>
+        </div>
+
+        <div class="stage">
+          <div class="sn">2</div>
+          <div class="body"><h4>智能成本坍塌 · 比工业革命更深刻</h4><p>智能成本趋近于零，"智力"变得像水电一样平价——蒸汽机解放劳动力、内燃机与电力让能量自由流动、互联网让信息成本归零，AI 让"人人获得顶级智能"。</p></div>
+        </div>
+
+        <div class="stage">
+          <div class="sn">3</div>
+          <div class="body"><h4>落地之痛 · 90% 失败的三根源</h4><p>多数企业仍停留在部署模型、培训与试点，AI 投资无法反映在营收与获利上。败因集中在推动力不足、认知错位、场景脱节——只买工具，不改业务。</p></div>
+        </div>
+
+        <div class="stage">
+          <div class="sn">4</div>
+          <div class="body"><h4>决策中枢 · 本体 + 多智能体 + 老板 AI</h4><p>以企业本体 Ontology 为核心建 AI 决策中枢，让数据飞轮持续运转、系统愈用愈聪明；一号位用"老板 AI"获得更实时、透明、可行动的组织视角。</p></div>
+        </div>
+
+        <div class="stage">
+          <div class="sn">5</div>
+          <div class="body"><h4>组织重构 · DRI 与微型 CEO</h4><p>AI-First 组织走向扁平与结果导向，DRI（直接责任人）成为核心贡献者；未来的优秀个体是能指挥 AI、承担结果、跨团队调度的"微型 CEO"。</p></div>
+        </div>
+
+        <div class="stage">
+          <div class="sn">6</div>
+          <div class="body"><h4>人的价值 · 品味、远见、信念、勇气</h4><p>当执行被机器接管，人类仍要负责引领方向。品味、远见、信念与勇气成为最稀缺的能力；心理咨询师、护理师、咨询师、FDE 等新角色价值凸显。</p></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 金句 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">04</span>
+        <h2>金句摘录</h2>
+        <span class="en">Quotable Lines</span>
+      </div>
+      <div class="rule"></div>
+      <div class="quotes">
+
+        <div class="quote">
+          <p>AI 是人类认识并理解自己的最后一里路。</p>
+          <span class="src">— 李开复 44 年前在卡内基梅隆大学的博士申请信（新书发布会上林毅夫引述）</span>
+        </div>
+
+        <div class="quote">
+          <p>AI 会越来越擅长思考和执行，但人类仍要负责引领，决定前行的方向；品味、远见、信念与勇气，依然是 AI 难以替代的人类核心能力。</p>
+          <span class="src">— 组织与个人未来 · 北大新书发布会演讲</span>
+        </div>
+
+        <div class="quote">
+          <p>未来已来，真正重要的不是会不会使用 AI，而是能否借 AI 重新定义自己的位置。</p>
+          <span class="src">— 全书主旨 · 写给普通人的提醒</span>
+        </div>
+
+        <div class="quote">
+          <p>当 AI 工具变得像水电一样平价，你用的 AI 和竞争对手的没有差别，过去那些靠技术与效率建立的优势都将被抹平。</p>
+          <span class="src">— 智能近乎免费的时代 · 靠什么立足</span>
+        </div>
+
+        <div class="quote">
+          <p>唯有公司内部多年累积的资料、流程与知识，才是企业独有的资产，也是别人无法复制的竞争优势。</p>
+          <span class="src">— 企业 AI 中枢 · 数据飞轮</span>
+        </div>
+
+      </div>
+      <p class="note">注：以上金句依《AI未来已来》（李开复著，人民邮电出版社 2026 年 7 月）内容大意整理，部分为发布会演讲转述与推荐语化用，非逐字考据，具体行文请以原书为准。</p>
+    </section>
+
+    <!-- ===== 行动启发 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">05</span>
+        <h2>行动启发</h2>
+        <span class="en">So What</span>
+      </div>
+      <div class="rule"></div>
+      <div class="two">
+
+        <div class="pane">
+          <h4>治企 · 工作</h4>
+          <ul>
+            <li><strong>一号位亲自下场：</strong>领导者以身作则亲自用 AI，别把转型甩给信息部门——否则只剩 Demo 和局部提效。</li>
+            <li><strong>先理本体再上 AI：</strong>把散落的数据、流程、知识结构化成 Ontology，乱账喂不出好 AI。</li>
+            <li><strong>让 AI 进决策闭环：</strong>不停在"局部提效"，切入能改善增长、利润率、组织效率的关键环节。</li>
+            <li><strong>让飞轮转起来：</strong>每一次 AI 投资都沉淀成数据资产，系统愈用愈聪明，而非一次性烧掉。</li>
+            <li><strong>用 DRI 定责任：</strong>每件事落到一个"对结果负责的人"，治"都参与、都不背"的问责失焦。</li>
+          </ul>
+        </div>
+
+        <div class="pane">
+          <h4>个人 · 发展</h4>
+          <ul>
+            <li><strong>用两张地图定位：</strong>判断自己的岗位安全性，看清是往"微型 CEO"走，还是会被 Agent 替代。</li>
+            <li><strong>从执行者到指挥者：</strong>把重复执行交给 AI，练"指挥 AI、承担结果、跨团队调度"的能力。</li>
+            <li><strong>押注人类稀缺项：</strong>品味、远见、信念、勇气——这些恰是 AI 难替代的护城河。</li>
+            <li><strong>警惕"工具幻觉"：</strong>会用 AI 不再是优势，人人都用得起了；差异化在判断与方向。</li>
+            <li><strong>关注新角色：</strong>心理咨询师、咨询师、大客户经理、FDE 等"人味"与"判断型"岗位正在升值。</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 适合谁读 ===== -->
+    <section class="sec">
+      <div class="sec-head">
+        <span class="num">06</span>
+        <h2>适合谁读</h2>
+        <span class="en">Who Should Read</span>
+      </div>
+      <div class="rule"></div>
+      <div class="who">
+        <div class="col rec">
+          <h4>推荐读</h4>
+          <ul>
+            <li>企业管理者 / CEO / 董事长——转型是"一号位工程"，本书就是给决策层的手册</li>
+            <li>数字化转型负责人：用"决策中枢 + Ontology + 数据飞轮"搭落地框架</li>
+            <li>带团队者：借 DRI、扁平化、微型 CEO 重构组织与问责</li>
+            <li>焦虑"岗位会不会被 AI 替代"的职场人——两张地图给自己定位</li>
+            <li>FDE / 智能体组织建设者：书中框架与"场景发现 + 需求翻译"一线实践高度互证</li>
+          </ul>
+        </div>
+        <div class="col skip">
+          <h4>暂不合适</h4>
+          <ul>
+            <li>只想学 AI 工具操作 / 提示词技巧者——本书讲战略与组织，不讲上手操作</li>
+            <li>寻求技术原理、算法与模型细节者——这是一本管理书而非技术书</li>
+            <li>对"管理革命 / 组织变革"话语无感、只想要现成答案者</li>
+            <li>期待严谨学术考据者——观点与案例为商业著述，非学术研究</li>
+            <li>坚信"AI 只是又一轮技术炒作"、拒看变革者</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="note">
+        说明：李开复，卡内基梅隆大学计算机科学博士，零一万物创始人兼 CEO、创新工场董事长，曾任谷歌全球副总裁兼大中华区总裁，在微软、苹果及 SGI 担任要职，曾任世界经济论坛人工智能委员会联席主席，荣登《时代》周刊全球百大 AI 影响力人物。《AI未来已来》（副题"CEO、组织、个人的时代红利"）由人民邮电出版社 2026 年 7 月出版（繁体版《AI未來已來》由天下文化 2026 年 8 月出版），基于其四十余年 AI 研究与产业实践，提出企业 AI 转型是"管理革命而非技术升级"，围绕企业 AI 决策中枢、企业本体 Ontology、数据飞轮、DRI 直接责任人、AI-First 组织等展开。本页为研读笔记，作者与版本信息依公开资料整理；金句为内容大意化用、非逐字考据，深读请以原书为准。
+      </p>
+    </section>
+
+    <footer>
+      <div class="ribbon">智</div>
+      <div>李开复《AI未来已来》研读笔记 · 对象中心分格（OCD）· 龙山大佛工作台</div>
+      <div style="margin-top:6px;opacity:.7;">配色 智蓝·电光 ｜ 米色纸感 ｜ 衬线标题 ｜ 响应式不裁切</div>
+    </footer>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta content="width=device-width, initial-scale=1, maximum-scale=5" name="viewport">
+<title>伟大远征 · 中国工农红军长征胜利90周年交互地图</title>
+<meta content="纪念中国工农红军长征胜利90周年（1936—2026）：打开即地图，路线随查看逐步展开，点击节点与路线查看经过、意义、依据与纪念馆线索。节点日期以权威史料为准，待核之处公开标注。" name="description">
+<style>
+:root{
+  --bg:#f7f3ea; --paper:#fffdf8; --ink:#2c2520; --muted:#6d6257;
+  --red:#8c1c13; --red-dark:#6b140d; --red-soft:#f7e9e5;
+  --gold:#b0873b; --gold-soft:#f6efdd; --line:#e3d8c6;
+  --green:#2f6b4f; --green-soft:#e6f0e9; --amber:#9a6b18; --amber-soft:#fbf1d9;
+  --blue:#42658a;
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden}
+body{background:var(--bg);color:var(--ink);font-family:"Microsoft YaHei","PingFang SC",Arial,sans-serif;font-size:13px;line-height:1.65}
+#stage{position:relative;width:100%;height:100%;overflow:hidden;background:#efe9dd}
+#map{position:absolute;inset:0;z-index:1;isolation:isolate;transition:right .32s ease,bottom .32s ease}
+body.d-open #map{right:400px}
+#mapOffline{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;padding:30px;text-align:center;color:var(--muted);background:#f4eee2}
+#mapOffline h3{color:var(--red-dark);margin:0 0 8px}
+#mapOffline p{max-width:560px;margin:4px 0}
+.hud{position:absolute;z-index:20;background:rgba(255,253,248,.95);border:1px solid var(--line);border-radius:10px;box-shadow:0 4px 18px rgba(60,40,20,.13);backdrop-filter:blur(5px)}
+.hud-title{top:14px;left:14px;width:320px;padding:13px 16px;background:linear-gradient(135deg,rgba(140,28,19,.97),rgba(78,15,10,.97));color:#fff4e7;border-color:#8c1c13}
+.hud-title .kicker{font-size:10px;letter-spacing:.2em;color:#f0cf8e}
+.hud-title h1{margin:3px 0 5px;font-family:"Noto Serif SC","Songti SC",serif;font-size:22px;letter-spacing:.04em}
+.hud-title p{margin:0;font-size:11px;color:#f0d9c8;line-height:1.55}
+.hud-title .about{margin-top:9px;background:rgba(255,255,255,.13);border:1px solid rgba(255,235,190,.42);color:#fff4e7;border-radius:5px;padding:3px 10px;font-size:11px;cursor:pointer;font-family:inherit}
+.hud-title .about:hover{background:rgba(255,255,255,.22)}
+.hud-ctrl{top:14px;right:14px;padding:7px 9px;display:flex;gap:5px;align-items:center;flex-wrap:wrap;max-width:calc(100% - 360px);transition:right .32s ease}
+body.d-open .hud-ctrl{right:414px}
+.btn{background:transparent;color:var(--red-dark);border:1px solid var(--line);border-radius:6px;padding:5px 9px;font-size:11px;cursor:pointer;font-family:inherit;white-space:nowrap}
+.btn:hover{border-color:var(--red);background:var(--red-soft)}
+.btn.on{background:var(--red);color:#fff;border-color:var(--red)}
+.lb{font-size:10px;color:var(--muted);margin-right:1px;white-space:nowrap}
+.sep{width:1px;height:16px;background:var(--line);margin:0 3px}
+.hud-legend{left:14px;bottom:116px;padding:8px 11px;font-size:11px;max-width:230px}
+.hud-legend .lg-t{font-weight:700;color:var(--red-dark);margin-bottom:3px}
+.hud-legend div{margin:2px 0;white-space:nowrap}
+.hud-prog{left:50%;transform:translateX(-50%);bottom:116px;padding:6px 11px;font-size:11px;display:flex;gap:10px;align-items:center;transition:left .32s ease}
+body.d-open .hud-prog{left:calc(50% - 200px)}
+.prog-txt{color:var(--red-dark);font-weight:700;white-space:nowrap}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:middle}
+#drawer{position:absolute;top:0;right:0;width:400px;height:100%;background:var(--paper);border-left:1px solid var(--line);z-index:30;transform:translateX(101%);transition:transform .32s ease;display:flex;flex-direction:column;box-shadow:-6px 0 24px rgba(60,40,20,.14)}
+body.d-open #drawer{transform:translateX(0)}
+.d-head{padding:11px 14px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px;background:#fdfaf3;flex:0 0 auto}
+.d-head h2{margin:0;font-size:15px;color:var(--red-dark);font-family:"Noto Serif SC","Songti SC",serif;flex:1;line-height:1.4}
+.d-close{border:0;background:none;color:var(--muted);font-size:19px;cursor:pointer;line-height:1;padding:2px 5px}
+.d-close:hover{color:var(--red)}
+.d-tabs{display:flex;border-bottom:1px solid var(--line);background:#fdfaf3;overflow-x:auto;flex:0 0 auto}
+.d-tabs button{flex:1;min-width:54px;padding:8px 3px;border:0;background:none;font-size:11px;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;font-family:inherit;white-space:nowrap}
+.d-tabs button.on{color:var(--red-dark);font-weight:700;border-bottom-color:var(--red)}
+.d-body{flex:1;overflow:auto;padding:13px 15px 24px}
+.empty{color:var(--muted);font-size:12px;padding:24px 6px;text-align:center}
+.kv{display:grid;grid-template-columns:70px 1fr;gap:5px 8px;font-size:12px}
+.kv .k{color:var(--muted);font-size:11px;padding-top:1px}
+.tag{display:inline-block;font-size:10px;padding:1px 7px;border-radius:10px;background:var(--red-soft);color:var(--red-dark);margin:0 4px 4px 0}
+.tag.ok{background:var(--green-soft);color:var(--green)}
+.tag.warn{background:var(--amber-soft);color:var(--amber);font-weight:700}
+.tag.blue{background:#e8eff6;color:var(--blue)}
+.src-line{font-size:11px;color:var(--muted);margin-top:11px;padding-top:9px;border-top:1px dashed var(--line)}
+.small{font-size:11px;color:var(--muted)}
+code{font-family:Consolas,monospace;background:#f3ecdf;padding:1px 5px;border-radius:4px;font-size:10px}
+.note-fig{margin:12px 0 0;padding:8px;background:#fdfaf3;border:1px dashed var(--line);border-radius:8px;text-align:center}
+.note-fig svg{width:100%;max-height:210px;border-radius:5px;display:block}
+.note-fig figcaption{font-size:10px;color:var(--muted);margin-top:5px}
+.hist-fig{margin:12px 0 0;padding:9px;background:#fffdf7;border:1px solid var(--line);border-radius:9px}
+.hist-fig img{width:100%;border-radius:6px;display:block;background:#efe7d8}
+.hist-fig .hf-cap{font-size:11px;color:var(--ink);margin-top:7px;line-height:1.6}
+.hist-fig .hf-cap b{color:var(--red-dark)}
+.hist-fig .hf-meta{font-size:10px;color:var(--muted);margin-top:4px;line-height:1.6}
+.hist-fig a{color:var(--red-dark);word-break:break-all}
+.hintrow{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.route-card{display:flex;align-items:center;gap:4px;width:100%;text-align:left;background:#fdfaf3;border:1px solid var(--line);border-radius:8px;padding:9px 11px;margin-bottom:7px;cursor:pointer;font-family:inherit;font-size:12px;color:var(--ink)}
+.route-card:hover{border-color:var(--red);background:var(--red-soft)}
+.route-card .small{margin-left:auto;white-space:nowrap}
+.route-head{display:flex;align-items:center;gap:4px;margin-bottom:6px;flex-wrap:wrap}
+.route-head strong{flex:1;font-size:13px;color:var(--red-dark)}
+.route-list{margin-top:10px;border-top:1px solid var(--line)}
+.rl-item{display:block;width:100%;text-align:left;border:0;border-bottom:1px solid #f0e8da;background:none;padding:8px 3px;cursor:pointer;font-family:inherit}
+.rl-item:hover{background:var(--red-soft)}
+.rl-item strong{display:block;font-size:12px;color:var(--ink);margin:1px 0}
+.rl-item .n-date{font-size:10px;color:var(--red);font-weight:700}
+table.mini{width:100%;border-collapse:collapse;font-size:11px}
+table.mini th{background:var(--gold-soft);color:#5c451c;text-align:left;padding:6px 5px;font-size:10.5px;border-bottom:2px solid var(--gold)}
+table.mini td{padding:6px 5px;border-bottom:1px solid var(--line);vertical-align:top}
+table.mini tbody tr{cursor:pointer}
+table.mini tbody tr:hover{background:var(--red-soft)}
+.disc{background:var(--gold-soft);border-left:4px solid var(--gold);padding:9px 11px;border-radius:0 7px 7px 0;font-size:11px;color:#5c451c;margin-bottom:11px}
+.card-s{background:#fdfaf3;border:1px solid var(--line);border-radius:8px;padding:9px 11px;margin-bottom:9px;font-size:11.5px}
+.card-s b{color:var(--red-dark)}
+#rail{position:absolute;left:0;right:0;bottom:0;height:96px;background:rgba(255,253,248,.97);border-top:1px solid var(--line);z-index:25;transition:right .32s ease}
+body.d-open #rail{right:400px}
+.rail-top{height:32px;display:flex;align-items:center;gap:8px;padding:0 14px;border-bottom:1px solid var(--line);overflow:hidden}
+.rail-top .rt-title{font-size:11px;font-weight:700;color:var(--red-dark);white-space:nowrap}
+.rail-top input[type=range]{flex:1;min-width:80px;accent-color:var(--red)}
+.rail-top .rt-v{font-size:10px;color:var(--muted);white-space:nowrap}
+.rail-body{height:63px;overflow-x:auto;overflow-y:hidden;display:flex;align-items:center;padding:0 12px}
+.rail-node{position:relative;flex:0 0 auto;width:76px;height:55px;border:0;background:none;cursor:pointer;padding:0;color:var(--muted);font-family:inherit}
+.rail-node:after{content:"";position:absolute;left:0;right:0;top:17px;height:2px;background:#ded3bf;z-index:0}
+.rail-node:first-child:before{content:"";position:absolute;left:0;top:17px;height:2px;width:38px;background:#ded3bf;z-index:0}
+.rail-node:last-child:after{width:38px;right:auto}
+.rail-node .rn-dot{position:relative;z-index:1;display:block;width:10px;height:10px;border-radius:50%;margin:12px auto 5px;border:2px solid #fff;box-shadow:0 0 0 1px #b8a98d;transition:transform .15s}
+.rail-node.on .rn-dot{box-shadow:0 0 0 2px var(--red)}
+.rail-node.cur .rn-dot{transform:scale(1.45)}
+.rail-node.cur .rn-lb{color:var(--red-dark);font-weight:700}
+.rail-node .rn-lb{display:block;font-size:9px;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 2px}
+#modal{position:absolute;inset:0;z-index:60;background:rgba(32,22,16,.5);display:flex;align-items:center;justify-content:center;padding:18px}
+#modal .mbox{background:var(--paper);border-radius:12px;max-width:780px;width:100%;max-height:86vh;overflow:auto;padding:22px 26px}
+#modal h2{margin:0 0 10px;font-family:"Noto Serif SC","Songti SC",serif;color:var(--red-dark);font-size:20px}
+#modal h3{margin:16px 0 6px;font-size:14px;color:var(--red-dark)}
+#modal p,#modal li{font-size:12px;line-height:1.8}
+#modal .mclose{float:right;border:0;background:none;font-size:21px;color:var(--muted);cursor:pointer;line-height:1}
+.toast{position:absolute;left:50%;transform:translateX(-50%);bottom:132px;background:var(--red-dark);color:#fff;padding:8px 15px;border-radius:7px;font-size:11.5px;z-index:80;opacity:0;transition:opacity .25s;pointer-events:none}
+.toast.show{opacity:1}
+.hidden{display:none!important}
+@media(max-width:900px){
+  .hud-ctrl{top:auto;bottom:106px;left:14px;right:14px;max-width:none;justify-content:center}
+  body.d-open .hud-ctrl{right:14px;bottom:calc(55vh + 106px)}
+  .hud-title{width:auto;max-width:calc(100% - 28px)}
+  .hud-title p{display:none}
+  .hud-legend{display:none}
+  .hud-prog{bottom:152px;left:50%!important}
+  #drawer{top:auto;bottom:0;width:100%;height:55vh;transform:translateY(101%);border-left:0;border-top:1px solid var(--line)}
+  body.d-open #drawer{transform:translateY(0)}
+  body.d-open #map{bottom:55vh;right:0}
+  body.d-open #rail{bottom:55vh;right:0}
+  body.d-open .hud-prog{bottom:calc(55vh + 152px)}
+  .toast{bottom:190px}
+}
+</style>
+<!-- 合规：腾讯地图官方代理模式，前端零密钥；占位符由运行时替换，勿改 -->
+<script type="text/javascript">
+  window._TMapSecurityConfig = {
+    serviceHost: 'http://127.0.0.1:__WB_HTTP_PORT__/_TMapService/_wbt/__WB_TMAP_SECRET__',
+  };
+</script>
+<script src="https://map.qq.com/api/gljs?v=1.exp"></script>
+</head>
+<body data-pagefind-ignore>
+<div id="stage">
+  <div id="map"></div>
+  <div id="mapOffline">
+    <h3>当前环境未加载在线底图</h3>
+    <p>为遵守地图合规要求，本页不绘制自绘行政区划。离线状态下地图不可用，但可通过底部时间轴逐节点查看全部事件、人物、依据与史料内容。</p>
+    <p>联网后将自动恢复腾讯地图底图。</p>
+  </div>
+
+  <header class="hud hud-title">
+    <div class="kicker">1936 — 2026 · 长征胜利90周年</div>
+    <h1>伟大远征 · 长征时空地图</h1>
+    <p>路线随时间展开。点击地图节点或彩色路线，查看经过、意义、依据与纪念馆线索。</p>
+    <button class="about" id="aboutBtn">口径与图片授权说明 ›</button>
+  </header>
+
+  <div class="hud hud-ctrl">
+    <span class="lb">幕次</span>
+    <button class="btn on" data-act="0">全部</button>
+    <button class="btn" data-act="1">一</button>
+    <button class="btn" data-act="2">二</button>
+    <button class="btn" data-act="3">三</button>
+    <button class="btn" data-act="4">四</button>
+    <button class="btn" data-act="5">并行线</button>
+    <span class="sep"></span>
+    <button class="btn on" data-layer="nodes">节点</button>
+    <button class="btn on" data-layer="routes">路线</button>
+    <button class="btn on" data-layer="memorials">纪念馆</button>
+    <span class="sep"></span>
+    <button class="btn solid" id="playBtn">▶ 展开路线</button>
+    <span class="sep"></span>
+    <button aria-label="放大地图" class="btn" id="zoomIn" title="放大地图">＋</button>
+    <button aria-label="缩小地图" class="btn" id="zoomOut" title="缩小地图">－</button>
+  </div>
+
+  <div class="hud hud-legend" id="legend"></div>
+  <div class="hud hud-prog"><span class="prog-txt" id="progText">已展开 0 / 30 节点</span><button class="btn" id="skipBtn">跳到终点</button></div>
+
+  <aside id="drawer">
+    <div class="d-head"><h2 id="dTitle">节点详情</h2><button aria-label="关闭" class="d-close" id="dClose">×</button></div>
+    <div class="d-tabs">
+      <button class="on" data-tab="node">节点</button>
+      <button data-tab="route">路线</button>
+      <button data-tab="place">地名</button>
+      <button data-tab="memorial">纪念馆</button>
+      <button data-tab="image">图片</button>
+      <button data-tab="source">史料</button>
+    </div>
+    <div class="d-body" id="dBody"></div>
+  </aside>
+
+  <div id="rail">
+    <div class="rail-top">
+      <span class="rt-title">长征进程</span>
+      <input aria-label="路线展开进度" id="range" max="30" min="0" type="range" value="0">
+      <span class="rt-v" id="rtv">拖动展开 · 点击查看</span>
+    </div>
+    <div class="rail-body" id="railBody"></div>
+  </div>
+
+  <div class="hidden" id="modal"></div>
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+/* ========== 一、数据层：三层分离，全部内联 ========== */
+const PLACES = {
+  yudu:{h:'于都',n:'江西于都',c:[115.98,25.95],a:'江西省赣州市于都县',e:['1934年10月中央红军主力集结渡河出发','今设中央红军长征出发地纪念园'],s:'已核',src:['S05','S13']},
+  ganzhou:{h:'安远·信丰—汝城—宜章',n:'赣南至湘南',c:[114.60,25.40],a:'江西赣南 / 湖南湘南',e:['1934.10—11 连破前三道封锁线'],s:'已核',src:['S05']},
+  quanzhou:{h:'全州·兴安·界首',n:'广西全州、兴安',c:[111.07,25.94],a:'广西壮族自治区桂林市',e:['1934年湘江战役主战场','今设红军长征湘江战役纪念馆'],s:'已核',src:['S05','S13']},
+  tongdao:{h:'通道',n:'湖南通道',c:[109.79,26.16],a:'湖南省怀化市通道侗族自治县',e:['1934.12.12 通道会议，决定西进贵州'],s:'已核',src:['S05']},
+  liping:{h:'黎平',n:'贵州黎平',c:[109.14,26.13],a:'贵州省黔东南苗族侗族自治州黎平县',e:['1934.12.18 黎平会议，转向川黔边'],s:'已核',src:['S01','S05']},
+  houchang:{h:'猴场',n:'贵州瓮安',c:[107.48,27.08],a:'贵州省黔南布依族苗族自治州瓮安县',e:['1934年底猴场会议，限制李德军事指挥权'],s:'已核',src:['S01','S05']},
+  zunyi:{h:'遵义',n:'贵州遵义',c:[106.93,27.73],a:'贵州省遵义市',e:['1935.1.7 攻占遵义','1935.1.15—17 遵义会议','今设遵义会议纪念馆'],s:'已核',src:['S01','S02']},
+  tucheng:{h:'土城·青杠坡',n:'贵州习水',c:[106.20,28.32],a:'贵州省遵义市习水县',e:['1935.1.28 青杠坡战斗','1.29 一渡赤水','今设四渡赤水纪念馆'],s:'已核',src:['S02','S04']},
+  zhaxi:{h:'扎西',n:'云南威信',c:[105.04,28.05],a:'云南省昭通市威信县',e:['1935.2.9 扎西会议与部队整编'],s:'馆名待核',src:['S04']},
+  taipingdu:{h:'太平渡·二郎滩',n:'贵州古蔺、习水一带',c:[105.80,28.08],a:'贵州省遵义市习水县 / 泸州市古蔺县',e:['1935.2 二渡赤水、3.21—22 四渡赤水主要渡口'],s:'已核',src:['S02','S04']},
+  maotai:{h:'茅台',n:'贵州仁怀',c:[106.40,27.87],a:'贵州省遵义市仁怀市',e:['1935.3.16—17 三渡赤水','今设红军长征过茅台陈列馆'],s:'已核',src:['S02','S04']},
+  wujiang:{h:'梯子岩等渡口',n:'贵州贵阳北',c:[106.63,26.97],a:'贵州省贵阳市北',e:['1935.3.31 南渡乌江，佯攻贵阳'],s:'已核',src:['S01','S03']},
+  jiaopingdu:{h:'皎平渡',n:'云南禄劝',c:[102.38,26.06],a:'云南省昆明市禄劝彝族苗族自治县',e:['1935年5月上旬巧渡金沙江主要渡口'],s:'馆名待核',src:['S01','S03']},
+  yihai:{h:'彝海',n:'四川冕宁',c:[102.20,28.57],a:'四川省凉山彝族自治州冕宁县',e:['1935.5.22 刘伯承与小叶丹歃血为盟','今设冕宁红军长征纪念馆'],s:'已核',src:['S03']},
+  anshunchang:{h:'安顺场',n:'四川石棉',c:[102.37,29.35],a:'四川省雅安市石棉县',e:['1935.5.25 十七勇士强渡大渡河','今设中国工农红军强渡大渡河纪念馆'],s:'已核',src:['S01','S03','S13']},
+  luding:{h:'泸定桥',n:'四川泸定',c:[102.23,29.91],a:'四川省甘孜藏族自治州泸定县',e:['1935.5.29 飞夺泸定桥','今设红军飞夺泸定桥纪念馆'],s:'已核',src:['S03','S13']},
+  jiajinshan:{h:'夹金山',n:'四川宝兴—小金间',c:[102.67,30.37],a:'四川省雅安市宝兴县 / 阿坝州小金县',e:['1935.6.12 中央红军翻越雪山'],s:'馆名待核',src:['S04']},
+  maogong:{h:'懋功·达维',n:'四川小金',c:[102.36,31.00],a:'四川省阿坝藏族羌族自治州小金县',e:['1935.6 中央红军与红四方面军会师','懋功后更名小金县'],s:'馆名待核',src:['S04']},
+  lianghekou:{h:'两河口',n:'四川小金',c:[102.20,31.35],a:'四川省阿坝藏族羌族自治州小金县',e:['1935.6.26 两河口会议，确定北上方针'],s:'已核',src:['S04']},
+  caodi:{h:'松潘草地',n:'四川松潘、若尔盖一带',c:[102.60,33.10],a:'四川省阿坝州 / 甘肃省甘南州交界',e:['1935.8.21起 右路军过草地六天六夜'],s:'已核',src:['S04','S13']},
+  ejie:{h:'俄界',n:'甘肃迭部',c:[103.22,34.05],a:'甘肃省甘南藏族自治州迭部县',e:['1935.9.12 俄界会议，改称陕甘支队'],s:'馆名待核',src:['S01','S04']},
+  hadapu:{h:'腊子口·哈达铺',n:'甘肃迭部、宕昌',c:[104.45,34.05],a:'甘肃省甘南州迭部县 / 陇南市宕昌县',e:['1935.9.17 突破腊子口','9.18 哈达铺得知陕北根据地消息'],s:'已核',src:['S04','S13']},
+  bangluo:{h:'榜罗镇',n:'甘肃通渭',c:[105.24,35.21],a:'甘肃省定西市通渭县',e:['1935.9.27 榜罗镇会议，落脚点定在陕北'],s:'已核',src:['S04']},
+  wuqi:{h:'吴起镇',n:'陕西吴起',c:[108.17,36.92],a:'陕西省延安市吴起县',e:['1935.10.19 中央红军长征胜利结束','今设中央红军长征胜利纪念园'],s:'已核',src:['S01','S04']},
+  hejiazhai:{h:'何家寨',n:'河南信阳一带',c:[114.08,32.15],a:'河南省信阳市',e:['1934.11.16 红二十五军西征出发地'],s:'馆名待核',src:['S05']},
+  yongping:{h:'永坪镇',n:'陕西延川',c:[109.87,36.78],a:'陕西省延安市延川县',e:['1935.9.15 红二十五军与陕北红军会师'],s:'已核',src:['S05']},
+  sangzhi:{h:'桑植',n:'湖南桑植',c:[110.17,29.47],a:'湖南省张家界市桑植县',e:['红二、红六军团长征出发地','今设贺龙纪念馆'],s:'已核',src:['S04','S13']},
+  ganzi:{h:'甘孜',n:'四川甘孜',c:[99.99,31.62],a:'四川省甘孜藏族自治州甘孜县',e:['1936.7 红二、红六军团与红四方面军会师'],s:'已核',src:['S04']},
+  huining:{h:'会宁',n:'甘肃会宁',c:[105.04,35.69],a:'甘肃省白银市会宁县',e:['1936.10.9 红四方面军指挥部与红一方面军会合','今设红军长征胜利纪念馆'],s:'已核',src:['S01','S04','S06']},
+  jiangtaibao:{h:'将台堡',n:'宁夏西吉（原隆德）',c:[105.75,35.98],a:'宁夏回族自治区固原市西吉县（历史曾属隆德）',e:['1936.10.22 红二方面军与红一方面军会合','今设将台堡红军长征会师纪念园'],s:'今属表述待核',src:['S01','S04','S06']}
+};
+
+/* [序号,幕,日期,place_id,标题,事件要点,意义,部队,人物,别名,纪念馆,依据,核验,图型] */
+const NODES = [
+[1,1,'1934.10.10 下令 / 10.17 出发','yudu','中央红军长征出发','中革军委10月10日发布命令，10月17日中央红军主力自于都河集结渡河出发。','战略转移开始，出发时主力8.6万余人。','中央红军','毛泽东 周恩来 朱德','长征出发 于都出发','中央红军长征出发地纪念园',['S05','S13'],'已核','depart'],
+[2,1,'1934.10.25—11.15','ganzhou','突破前三道封锁线','中央红军以"甬道式"行军，先后突破安远信丰、汝城城口、良田宜章三道封锁线。','行军初期较为顺利，但部队行动迟缓、辎重繁重。','中央红军','—','三道封锁线',null,['S05'],'已核','march'],
+[3,1,'1934.11.27—12.1','quanzhou','血战湘江','在全州、兴安、界首间西渡湘江，担任掩护的部队与优势敌军激战。','中央红军由8.6万余人锐减至3万余人，前所未有的重创。','中央红军','陈树湘 彭德怀 聂荣臻','湘江战役','红军长征湘江战役纪念馆',['S05','S13'],'已核','battle'],
+[4,1,'1934.12.12','tongdao','通道会议','中央领导人讨论行动方向，毛泽东主张放弃北上与红二、六军团会合，改向敌军薄弱的贵州。','中共中央第一次集体否决李德意见，毛泽东意见首次获多数赞成。','中央红军','毛泽东 张闻天 王稼祥 周恩来','通道转兵','通道转兵纪念地',['S05'],'馆名待核','meeting'],
+[5,1,'1934.12.18','liping','黎平会议','中央政治局通过《关于战略方针之决定》，放弃与红二、六军团会合，西进渡乌江北上，以遵义为中心建立川黔边根据地。','行军方向从根本上扭转，为遵义会议作了准备。','中央红军','毛泽东 周恩来 张闻天','黎平会议','黎平会议会址',['S01','S05'],'已核','meeting'],
+[6,1,'1934.12.31—1935.1.1','houchang','猴场会议','中央政治局在瓮安猴场会议重申黎平方针，决定作战时间与地点须经政治局会议。','实际上取消了李德的军事指挥权。','中央红军','毛泽东 周恩来','猴场会议','猴场会议会址',['S01','S05'],'已核','meeting'],
+[7,2,'1935.1.2—7','zunyi','突破乌江、攻占遵义','中央红军1月2日至6日突破乌江天险，1月7日攻占遵义城。','取得长征以来一个重要的立足点，为遵义会议创造条件。','中央红军','毛泽东 朱德','强渡乌江','遵义会议会址',['S01'],'已核','river'],
+[8,2,'1935.1.15—17','zunyi','遵义会议','中央政治局扩大会议集中解决军事和组织问题，增选毛泽东为中央政治局常委。','党的历史上一个生死攸关的转折点，事实上确立毛泽东在党中央和红军的领导地位。','中央红军','毛泽东 周恩来 张闻天 王稼祥 朱德','遵义会议','遵义会议纪念馆',['S01','S02'],'已核','meeting'],
+[9,2,'1935.1.28—29','tucheng','青杠坡战斗与一渡赤水','1月28日在土城东北青杠坡与川军激战；29日从土城、元厚等渡口一渡赤水，进入川南。','拉开四渡赤水序幕，由被动转向主动的开端。','中央红军','毛泽东 朱德','一渡赤水 青杠坡','四渡赤水纪念馆',['S02','S04'],'已核','river'],
+[10,2,'1935.2.9','zhaxi','扎西会议与整编','中央政治局在云南扎西召开会议，改变北渡长江计划；部队由30个团缩编为16个团及1个干部团。','"大搬家"式冗赘阵形消失，部队机动性显著提升。','中央红军','张闻天 毛泽东 周恩来','扎西会议','扎西会议纪念馆',['S04'],'馆名待核','meeting'],
+[11,2,'1935.2.18—28','taipingdu','二渡赤水、再占遵义','2月18日至21日从太平渡、二郎滩等地东渡赤水；24日至28日占桐梓、克娄山关、再占遵义。','五日之内歼敌两个师又八个团，取得长征以来最大一次胜利。','中央红军','毛泽东 彭德怀','二渡赤水 娄山关','四渡赤水纪念馆',['S02','S04'],'已核','battle'],
+[12,2,'1935.3.16—17','maotai','三渡赤水','中央红军由茅台及其附近地区西渡赤水河，再入川南。','再次打破敌军聚歼企图，进一步调动敌人。','中央红军','毛泽东','三渡赤水','红军长征过茅台陈列馆',['S02','S04'],'已核','river'],
+[13,2,'1935.3.21—22','taipingdu','四渡赤水','中央红军由二郎滩、太平渡等地东渡赤水，重回黔北。','四渡赤水使中央红军从被动走向主动，是运动战经典战例。','中央红军','毛泽东','四渡赤水','四渡赤水纪念馆',['S02','S04'],'已核','river'],
+[14,2,'1935.3.31','wujiang','南渡乌江、佯攻贵阳','中央红军主力经江口、大塘、梯子岩等处南渡乌江，兵临贵阳，乘滇军增援之机直插云南。','跳出乌江以北包围圈，为进军云南、巧渡金沙江创造条件。','中央红军','毛泽东 周恩来','南渡乌江',null,['S01','S03'],'已核','river'],
+[15,2,'1935.5上旬','jiaopingdu','巧渡金沙江','中央红军主力从皎平渡等处渡过金沙江。','摆脱数十万敌军围追堵截，取得战略转移中具有决定意义的胜利。','中央红军','毛泽东 刘伯承','巧渡金沙江','皎平渡红军渡江遗址',['S01','S03'],'馆名待核','river'],
+[16,3,'1935.5.22','yihai','彝海结盟','先遣队司令员刘伯承与彝族沽基部落首领小叶丹在彝海歃血为盟。','党的民族政策成功典范，红军顺利完成彝区行军。','中央红军先遣队','刘伯承 小叶丹','彝海结盟','冕宁红军长征纪念馆',['S03'],'已核','meeting'],
+[17,3,'1935.5.25','anshunchang','强渡大渡河','红一团先头部队抵达安顺场，十七名勇士乘一叶孤舟强渡。','打开沿大渡河左岸北上的通道。','红一团','杨得志 孙继先','十七勇士','中国工农红军强渡大渡河纪念馆',['S01','S03','S13'],'已核','river'],
+[18,3,'1935.5.29','luding','飞夺泸定桥','红四团一昼夜急行军，二十二名突击队员攀越十三根铁索攻克泸定桥。','彻底粉碎敌人围堵企图，扫清北上障碍。','红四团','廖大珠','飞夺泸定桥','红军飞夺泸定桥纪念馆',['S03','S13'],'已核','battle'],
+[19,3,'1935.6.12','jiajinshan','翻越夹金山','中央红军开始翻越海拔四千余米、终年积雪的夹金山。','以血肉之躯征服自然极限，随后与红四方面军会师。','中央红军','—','翻雪山','夹金山红军长征纪念馆',['S04'],'馆名待核','snow'],
+[20,3,'1935.6.12—18','maogong','懋功会师','先头部队6月12日到达达维镇与红四方面军部队会师，18日中央红军主力到达懋功地区。','两大主力会师，集结兵力达十余万人。','红一方面军 / 红四方面军','毛泽东 朱德 李先念','懋功会师 达维会师','懋功会师纪念地',['S04'],'馆名待核','meeting'],
+[21,3,'1935.6.26','lianghekou','两河口会议','中共中央政治局在两河口召开会议，决定集中主力向北进攻，创造川陕甘根据地。','确立北上建立川陕甘根据地的战略方针。','中共中央','毛泽东 周恩来 张国焘','两河口会议','两河口会议会址',['S04'],'已核','meeting'],
+[22,3,'1935.8.21起 六天六夜','caodi','穿越松潘草地','红一、红四方面军混合编成左右路军北上，右路军8月21日开始过草地，历时六天六夜。','极端自然条件下坚持北上，随后出现北上与南下的路线分歧。','右路军 / 左路军','毛泽东 周恩来 朱德 张国焘','过草地','红军长征纪念碑碑园',['S04','S13'],'已核','grass'],
+[23,3,'1935.9.12','ejie','俄界会议','中央政治局在甘肃迭部俄界召开扩大会议，通过关于张国焘错误的决定，将北上红军改称陕甘支队。','坚持北上方针，部队改编为陕甘支队。','中共中央','毛泽东 彭德怀','俄界会议','俄界会议会址',['S01','S04'],'馆名待核','meeting'],
+[24,3,'1935.9.17—18','hadapu','腊子口与哈达铺','9月17日先头部队突破川甘边界天险腊子口，18日占领哈达铺，从报纸得知陕北根据地情况。','打开进入甘肃的通道，明确了北上落脚方向。','陕甘支队','毛泽东','腊子口 哈达铺','哈达铺红军长征纪念馆',['S04','S13'],'已核','battle'],
+[25,3,'1935.9.27','bangluo','榜罗镇会议','中共中央政治局在甘肃通渭榜罗镇开会，正式决定把长征落脚点放到陕北。','确立巩固和发展陕北革命根据地作为领导中国革命的大本营。','中共中央','毛泽东 张闻天','榜罗镇会议','榜罗镇会议纪念馆',['S04'],'已核','meeting'],
+[26,3,'1935.10.19','wuqi','到达吴起镇','陕甘支队到达陕北吴起镇，同陕北红军会师。','中央红军主力行程二万五千里、纵横11个省的长征胜利结束。','陕甘支队','毛泽东 彭德怀','吴起镇会师','中央红军长征胜利纪念园',['S01','S04'],'已核','arrive'],
+[27,5,'1934.11.16—1935.9.15','hejiazhai','红二十五军西征','红二十五军对外称"中国工农红军北上抗日第二先遣队"开始西征，1935年9月15日到达陕西延川永坪镇。','先期到达陕北，与陕北红军会合，为中央红军开辟落脚根据地作出贡献。','红二十五军','程子华 吴焕先 徐海东','红二十五军长征','红二十五军长征纪念地',['S05'],'馆名待核','march'],
+[28,5,'1935.11—1936.7','sangzhi','红二、六军团长征','红二、红六军团从湖南桑植等地出发转移，1936年7月在四川甘孜与红四方面军会师。','会师后合编为红二方面军，三大主力会师的重要一环。','红二 / 红六军团','贺龙 任弼时 萧克 王震','红二方面军长征','贺龙纪念馆（桑植）',['S04','S13'],'部分待核','march'],
+[29,4,'1936.10.9','huining','会宁会师','红四方面军指挥部到达甘肃会宁，同红一方面军会合。','三大主力会师的重要节点，会师旧址与纪念馆保存至今。','红四方面军 / 红一方面军','朱德 张国焘','会宁会师','红军长征胜利纪念馆',['S01','S04','S06'],'已核','arrive'],
+[30,4,'1936.10.22','jiangtaibao','将台堡会师','红二方面军指挥部到达静宁将台堡（今属宁夏），同红一方面军会合。','至此三大主力红军会师，标志长征胜利结束。','红二方面军 / 红一方面军','贺龙 任弼时','将台堡会师 三大主力会师','将台堡红军长征会师纪念园',['S01','S04','S06'],'今属表述待核','arrive']
+];
+
+const ROUTES = [
+  {name:'中央红军（红一方面军）',color:'#c0392b',ids:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26]},
+  {name:'红二十五军',color:'#2f6b4f',ids:[27,25,26]},
+  {name:'红二、红六军团 / 红二方面军',color:'#42658a',ids:[28,29,30]},
+  {name:'红四方面军（会师段）',color:'#b0873b',ids:[20,29]}
+];
+/* 注：红二十五军、红二方面军路线为本页收录节点连线，含会师衔接点，非完整行军轨迹 */
+
+const SOURCES = [
+['S01','A 权威','中国政府网《中国共产党一百年大事记》','全时间轴骨架日期与事件定性；90周年大会报道同属此层。','https://www.gov.cn/xinwen/2021-06/28/content_5621160.htm'],
+['S02','A 权威','中央党史和文献研究院「纪念长征胜利90周年」专题','90周年系统图文时间轴，覆盖多个关键节点。','https://www.dswxyjy.org.cn/GB/427277/462086/index.html'],
+['S03','A 权威','国家图书馆「革命理想高于天·馆藏长征文献专题展」','彝海结盟5.22、强渡大渡河5.25、飞夺泸定桥5.29等日期。','https://m.nlc.cn/nlc-web/upload/zip/202609/c902ab1815974d6c8bfb71d7d9c44656/public/index.html'],
+['S04','A 权威','人民网党史频道《永远的丰碑 永恒的记忆》等','懋功会师、过草地、腊子口、吴起镇、会宁与将台堡。','https://dangshi.people.com.cn/n1/2016/1021/c85037-28797101.html'],
+['S05','A 权威','国防部/学习时报《1934：红军不怕远征难》','出发经过、前三道封锁线、湘江战役、红二十五军西征。','https://www.mod.gov.cn/education/2019-10/11/content_4852696.htm'],
+['S06','A 权威','新华社政论《长征，永远在路上》','胜利口径与精神表述；区分会宁与将台堡两处会师。','https://www.gov.cn/yaowen/liebiao/202610/content_7083787.htm'],
+['S07','B 一手','陈云《随军西行见闻录》','亲历者记述，用于叙事细节，需与A层交叉。','—'],
+['S08','B 一手','埃德加·斯诺《红星照耀中国》','367天、300余次战斗等统计出处。','—'],
+['S09','B 一手','《红军长征亲历记》（全国政协文史资料委员会）','基层指战员回忆，补充个体叙事。','—'],
+['S10','B 一手','徐向前《历史的回顾》、聂荣臻回忆录','红四方面军与红一军团视角，用于复杂节点多方印证。','—'],
+['S11','C 文物','国家文物局长征主题革命文物与旧址','纪念馆层与一级文物线索。','http://www.ncha.gov.cn/art/2026/8/10/art_2868_204253.html'],
+['S12','C 文物','中国人民革命军事博物馆、中国美术馆馆藏图片','历史图片首选来源，须逐图记录馆藏编号与授权。','—'],
+['S13','C 文物','央视网/人民网《长征文物活起来》','纪念馆名录与地址线索。','https://news.cctv.com/2016/10/20/ARTI1H4aFXpJl6lNSb2ioR8G161020.shtml'],
+['S14','C 文物','《中国工农红军长征史料》《红军长征史》','补充A层未覆盖的细节，引用到卷次页码。','—'],
+['S15','D 地图','权威《红军长征路线图》及党史地图集','路线绘制参考，仅作节点连线示意。','—'],
+['S16','D 影像','新华社中国照片档案馆、央视《长征》（2016）','历史图片与影像来源，须注明版权状态。','—'],
+['S17','D 影像','新华网《四渡赤水出奇兵》','四渡赤水渡口与现状对照图文。','https://www.xinhuanet.com/politics/2016-10/02/c_129309668.htm'],
+['R01','E 结构','江山时序（deanchen.me/jiangshan-map/）','只借零坐标深链接与分层数据结构机制，不复制其数据与地图。','https://deanchen.me/jiangshan-map/']
+];
+
+const MEMORIALS = [
+['中央红军长征出发地纪念园','江西省赣州市于都县渡江大道690号','长征出发集结与渡河','已核'],
+['红军长征湘江战役纪念馆','广西桂林市全州县才湾镇脚山铺','湘江战役与红军牺牲','已核'],
+['通道转兵纪念地','湖南省怀化市通道侗族自治县','通道会议与转兵','馆名待核'],
+['黎平会议会址','贵州省黔东南州黎平县','黎平会议','已核'],
+['猴场会议会址','贵州省黔南州瓮安县','猴场会议','已核'],
+['遵义会议纪念馆','贵州省遵义市','遵义会议与伟大转折','已核'],
+['四渡赤水纪念馆','贵州省遵义市习水县','四渡赤水战役','已核'],
+['扎西会议纪念馆','云南省昭通市威信县','扎西会议与整编','馆名待核'],
+['红军长征过茅台陈列馆','贵州省遵义市仁怀市茅台镇','三渡赤水','已核'],
+['皎平渡红军渡江遗址','云南省昆明市禄劝县','巧渡金沙江','馆名待核'],
+['冕宁红军长征纪念馆','四川省凉山州冕宁县','彝海结盟','已核'],
+['中国工农红军强渡大渡河纪念馆','四川省雅安市石棉县安顺场','强渡大渡河','已核'],
+['红军飞夺泸定桥纪念馆','四川省甘孜州泸定县','飞夺泸定桥','已核'],
+['夹金山红军长征纪念馆','四川省雅安市宝兴县','翻越夹金山','馆名待核'],
+['懋功会师纪念地','四川省阿坝州小金县达维镇','红一、红四方面军会师','馆名待核'],
+['两河口会议会址','四川省阿坝州小金县','两河口会议','已核'],
+['红军长征纪念碑碑园','四川省阿坝州松潘县川主寺镇','过草地与长征纪念','已核'],
+['俄界会议会址','甘肃省甘南州迭部县','俄界会议','馆名待核'],
+['哈达铺红军长征纪念馆','甘肃省陇南市宕昌县','腊子口与哈达铺','已核'],
+['榜罗镇会议纪念馆','甘肃省定西市通渭县','榜罗镇会议','已核'],
+['中央红军长征胜利纪念园','陕西省延安市吴起县','中央红军长征胜利结束','已核'],
+['红二十五军长征纪念地','河南省信阳市 / 陕西延川','红二十五军西征','馆名待核'],
+['贺龙纪念馆','湖南省张家界市桑植县','红二、六军团长征出发','已核'],
+['红军长征胜利纪念馆','甘肃省白银市会宁县会师南路22号','会宁会师','已核'],
+['将台堡红军长征会师纪念园','宁夏固原市西吉县将台堡','三大主力会师','今属表述待核']
+];
+
+/* 展开顺序：按时间排序，并行线插入对应位置；会宁10.9与将台堡10.22严格分列 */
+const REVEAL_ORDER=[1,2,27,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,28,29,30];
+
+/* ========== 二、坐标转换 WGS84 → GCJ-02 ========== */
+function outOfChina(lng,lat){return lng<73.66||lng>135.05||lat<3.86||lat>53.55}
+function tLat(x,y){let r=-100+2*x+3*y+.2*y*y+.1*x*y+.2*Math.sqrt(Math.abs(x));r+=(20*Math.sin(6*x*Math.PI)+20*Math.sin(2*x*Math.PI))*2/3;r+=(20*Math.sin(y*Math.PI)+40*Math.sin(y/3*Math.PI))*2/3;r+=(160*Math.sin(y/12*Math.PI)+320*Math.sin(y*Math.PI/30))*2/3;return r}
+function tLng(x,y){let r=300+x+2*y+.1*x*x+.1*x*y+.1*Math.sqrt(Math.abs(x));r+=(20*Math.sin(6*x*Math.PI)+20*Math.sin(2*x*Math.PI))*2/3;r+=(20*Math.sin(x*Math.PI)+40*Math.sin(x/3*Math.PI))*2/3;r+=(150*Math.sin(x/12*Math.PI)+300*Math.sin(x/30*Math.PI))*2/3;return r}
+function wgs2gcj(lng,lat){
+  if(outOfChina(lng,lat))return [lng,lat];
+  const a=6378245,ee=.00669342162296594323;
+  let dLat=tLat(lng-105,lat-35),dLng=tLng(lng-105,lat-35);
+  const rad=lat/180*Math.PI,magic=1-ee*Math.sin(rad)*Math.sin(rad),sq=Math.sqrt(magic);
+  dLat=dLat*180/((a*(1-ee))/(magic*sq)*Math.PI);
+  dLng=dLng*180/(a/sq*Math.cos(rad)*Math.PI);
+  return [lng+dLng,lat+dLat];
+}
+
+/* ========== 三、程序绘制场景示意（非史料照片） ========== */
+function fig(kind,title){
+  const sky='#f4ead6',earth='#b8893a',red='#8c1c13';
+  let inner='';
+  if(kind==='meeting') inner='<rect x="30" y="70" width="240" height="120" fill="#e8d9bd"/><path d="M20 70 L150 25 L280 70 Z" fill="'+earth+'"/><rect x="90" y="105" width="120" height="55" fill="#7c5a37"/><circle cx="150" cy="132" r="9" fill="#f0cf8e"/><rect x="55" y="150" width="12" height="40" fill="#5c451c"/><rect x="235" y="150" width="12" height="40" fill="#5c451c"/>';
+  else if(kind==='river') inner='<path d="M0 120 Q75 95 150 120 T300 120 L300 190 L0 190Z" fill="#9fb9c4"/><path d="M0 140 Q75 115 150 140 T300 140" stroke="#fff" stroke-width="3" fill="none" opacity=".6"/><path d="M40 118 l25-30 18 30 M105 118 l22-38 20 38" fill="'+red+'"/><circle cx="220" cy="95" r="8" fill="'+red+'"/>';
+  else if(kind==='battle') inner='<path d="M0 165 L80 110 L160 150 L240 90 L300 130 L300 190 L0 190Z" fill="#c9b48a"/><path d="M50 150 l30-45 12 45 M145 145 l28-55 14 55 M235 130 l25-40 12 40" fill="'+red+'"/><circle cx="270" cy="60" r="14" fill="#f0cf8e" opacity=".7"/>';
+  else if(kind==='snow') inner='<path d="M0 190 L85 55 L150 140 L215 40 L300 190Z" fill="#e9edf0"/><path d="M85 55 l25 42 -25-12 -20 18z M215 40 l30 50 -30-14 -22 20z" fill="#fff"/><circle cx="150" cy="95" r="5" fill="'+red+'"/><circle cx="163" cy="108" r="4" fill="'+red+'"/>';
+  else if(kind==='grass') inner='<rect x="0" y="120" width="300" height="70" fill="#a9b78a"/><path d="M20 190 q30-40 55 0 M90 190 q35-45 70 0 M175 190 q30-40 60 0" fill="#8fa072"/><circle cx="150" cy="110" r="9" fill="'+red+'"/><circle cx="170" cy="125" r="7" fill="'+red+'"/>';
+  else if(kind==='depart'||kind==='arrive') inner='<rect x="0" y="145" width="300" height="45" fill="#d8c9a8"/><path d="M0 145 Q80 125 160 145 T300 145" stroke="#9fb9c4" stroke-width="14" fill="none"/><path d="M60 140 l18-35 15 35z M110 140 l18-32 14 32z M160 140 l18-36 15 36z" fill="'+red+'"/><rect x="225" y="70" width="5" height="75" fill="#5c451c"/><path d="M230 70 l55 14 -55 16z" fill="'+red+'"/>';
+  else inner='<path d="M0 160 Q75 130 150 160 T300 160 L300 190 L0 190Z" fill="#c9b48a"/><path d="M45 160 l20-40 15 40 M130 160 l20-45 16 45 M215 160 l20-38 14 38" fill="'+red+'"/><circle cx="260" cy="70" r="13" fill="#f0cf8e"/>';
+  return '<svg viewBox="0 0 300 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="'+title+'场景示意，非史料照片"><rect width="300" height="190" fill="'+sky+'"/>'+inner+'<text x="12" y="24" font-size="11" fill="#8c1c13">示意图 · 非史料照片</text></svg>';
+}
+
+/* ========== 三·补 历史影像台账（来源可核验，授权状态逐张公开） ==========
+   字段：id / node / title / url / w / h / when / where / who / note / staged / auth / authClass / srcName / srcUrl
+   图片均为 1936 年前后长征亲历者影像，非行军现场照片；auth 为授权判断，待核者明确标注。 */
+const IMAGES=[
+  {id:'IMG-A4',node:17,title:'《红军勇士和斯诺在一起》',
+   url:'/works/changzheng90/assets/P1NMw9dMv5tNGOucfy7txR.jpg',w:700,h:341,
+   when:'1936 年 9 月',where:'宁夏同心县预旺堡',who:'佚名摄（红军战士用斯诺的相机拍摄）',
+   note:'强渡大渡河十七勇士与斯诺合影。人物是长征亲历者本人，影像摄于长征结束后一年，非行军现场。',
+   staged:'非摆拍（现场合影，但为长征结束后补拍）',
+   auth:'授权待核：军网署"佚名"，摄者生卒不详，不能按斯诺 1972 年去世推算公版；按"来源可核验、授权标注公开"展示，不主张已获授权。',
+   authClass:'warn',srcName:'中国军网《光影90，穿过硝烟的传奇》（2017-08-01）',srcUrl:'https://photo.81.cn/pla/2017-08/01/content_7694685.htm'},
+  {id:'IMG-B1',node:20,title:'《朱德总司令给战士讲话》',
+   url:'/works/changzheng90/assets/pgp4HIa3T9bbmkFiJ4jiUu.jpg',w:700,h:493,
+   when:'1934 年夏（胶卷随军长征，至遵义才冲洗）',where:'江西（长征前训练班）',who:'苏静 摄（1915—2001）',
+   note:'一张胶卷跟随红军走完长征的珍贵影像。长征亲历者影像，非行军途中所摄。',
+   staged:'非摆拍（训练班现场讲话）',
+   auth:'授权待核：苏静 2001 年去世，按作者终生加 50 年其作品保护期至 2051 年底，未进入公有领域。此处作学习研究展示并标明出处，商用须另行取得授权。',
+   authClass:'warn',srcName:'中国军网《光影90，穿过硝烟的传奇》（2017-08-01）',srcUrl:'https://photo.81.cn/pla/2017-08/01/content_7694685.htm'},
+  {id:'IMG-B2',node:22,title:'《红军大学》',
+   url:'/works/changzheng90/assets/m641A51mUpZTLFS6gjLtQz.jpg',w:700,h:570,
+   when:'1932—1936 年间（相机随主人长征）',where:'红军大学',who:'耿飚 摄（1909—2000）',
+   note:'耿飚用 1932 年缴获的老相机在长征途中拍摄的一组照片之一。长征亲历者影像，非刻意行军抓拍。',
+   staged:'非摆拍（学员生活纪实）',
+   auth:'授权待核：耿飚 2000 年去世，作品保护期至 2050 年底，未进入公有领域。此处作学习研究展示并标明出处，商用须另行取得授权。',
+   authClass:'warn',srcName:'中国军网《光影90，穿过硝烟的传奇》（2017-08-01）',srcUrl:'https://photo.81.cn/pla/2017-08/01/content_7694685.htm'}
+];
+function imgsForNode(id){return IMAGES.filter(x=>x.node===id)}
+function renderImageCard(x){
+  return '<figure class="hist-fig">'+
+    '<img src="'+x.url+'" alt="'+x.title+'：'+x.note+'" loading="lazy" onerror="this.style.opacity=\'.35\'" />'+
+    '<div class="hf-cap"><b>'+x.title+'</b> · '+x.when+' · '+x.where+'<br>'+x.who+'</div>'+
+    '<div class="hf-meta">'+x.note+'<br>'+x.staged+'；<strong>长征结束后或沿途拍摄的亲历者影像，非"长征行军现场照片"</strong>。<br>'+
+    '<span class="tag '+x.authClass+'">授权'+(x.authClass==='warn'?'待核':'已核')+' · 公开标注</span> '+x.auth+'<br>'+
+    '原始出处：<a href="'+x.srcUrl+'" target="_blank" rel="noopener">'+x.srcName+'</a></div></figure>';
+}
+
+/* ========== 四、地图与交互 ========== */
+let map=null,markerLayer=null,lineLayer=null,memMarkerLayer=null;
+let currentId=null,currentRoute=null,actFilter=0,drawerTab='node',revealed=0,autoTimer=null;
+const layers={nodes:true,routes:true,memorials:true};
+const $=s=>document.querySelector(s);
+const toast=msg=>{const t=$('#toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1900)};
+function actColor(a){return {1:'#c0392b',2:'#a8551c',3:'#2f6b4f',4:'#6b4b9a',5:'#42658a'}[a]}
+function markerSvg(color,pending,num){
+  const ring=pending?'<circle cx="13" cy="13" r="8" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="3 2"/>':'<circle cx="13" cy="13" r="7.5" fill="#fff" opacity=".92"/>';
+  const txt=num?('<text x="13" y="17" font-size="10" font-weight="bold" text-anchor="middle" fill="'+color+'">'+num+'</text>'):'';
+  const s='<svg xmlns="http://www.w3.org/2000/svg" width="26" height="32" viewBox="0 0 26 32"><path d="M13 0C5.8 0 0 5.8 0 13c0 9.5 13 19 13 19s13-9.5 13-19C26 5.8 20.2 0 13 0z" fill="'+color+'" stroke="#fff" stroke-width="1.6"/>'+ring+txt+'</svg>';
+  return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(s);
+}
+function buildStyles(){
+  const styles={};
+  NODES.forEach(n=>{
+    styles['n'+n[0]]=new TMap.MarkerStyle({width:26,height:32,anchor:{x:13,y:32},src:markerSvg(actColor(n[1]),false,n[0])});
+    styles['p'+n[0]]=new TMap.MarkerStyle({width:26,height:32,anchor:{x:13,y:32},src:markerSvg(actColor(n[1]),true,n[0])});
+  });
+  styles.mem=new TMap.MarkerStyle({width:18,height:18,anchor:{x:9,y:9},src:markerSvg('#b0873b',false)});
+  return styles;
+}
+function initMap(){
+  if(typeof TMap==='undefined'){fallbackMap();return}
+  try{
+    map=new TMap.Map('map',{zoom:5,center:new TMap.LatLng(32.2,106.5),showControl:false});
+    // 关闭地图自带指北针/缩放/比例尺控件：它们固定在右上角，与页面操作栏重叠
+    try{const D=TMap.constants.DEFAULT_CONTROL_ID;map.removeControl(D.ROTATION);map.removeControl(D.ZOOM);map.removeControl(D.SCALE)}catch(e){}
+    const styles=buildStyles();
+    markerLayer=new TMap.MultiMarker({map,styles,geometries:[]});
+    lineLayer=new TMap.MultiPolyline({map,styles:{},geometries:[]});
+    memMarkerLayer=new TMap.MultiMarker({map,styles:{mem:styles.mem},geometries:[]});
+    markerLayer.on('click',e=>selectNode(Number(e.geometry.id)));
+    lineLayer.on('click',e=>{const ri=Number(String(e.geometry.id).replace('route',''));if(!isNaN(ri))selectRoute(ri)});
+    memMarkerLayer.on('click',e=>{toast('纪念馆线索：'+e.geometry.properties.name);openDrawer('memorial')});
+    drawMap();
+  }catch(err){fallbackMap();console.warn('地图初始化失败，已降级为离线视图',err)}
+}
+function fallbackMap(){$('#map').classList.add('hidden');$('#mapOffline').style.display='flex';$('#legend').style.display='none';$('.hud-prog').style.display='none'}
+function drawMap(){
+  if(!map)return;
+  const shown=NODES.filter(n=>REVEAL_ORDER.indexOf(n[0])<revealed&&(actFilter===0||n[1]===actFilter));
+  markerLayer.setGeometries(layers.nodes?shown.map(n=>{
+    const p=PLACES[n[3]],c=wgs2gcj(p.c[0],p.c[1]);
+    return {id:String(n[0]),styleId:(n[12]==='已核'?'n':'p')+n[0],position:new TMap.LatLng(c[1],c[0]),properties:{title:n[4]}};
+  }):[]);
+  const ls={},gs=[];
+  ROUTES.forEach((r,ri)=>{
+    const pts=shown.filter(n=>r.ids.indexOf(n[0])>=0).sort((a,b)=>r.ids.indexOf(a[0])-r.ids.indexOf(b[0])).map(n=>{const c=wgs2gcj(PLACES[n[3]].c[0],PLACES[n[3]].c[1]);return new TMap.LatLng(c[1],c[0])});
+    if(pts.length<2)return;
+    ls['r'+ri]=new TMap.PolylineStyle({color:r.color,width:currentRoute===ri?7:4,borderWidth:1,borderColor:'#ffffff',lineCap:'round'});
+    gs.push({id:'route'+ri,styleId:'r'+ri,paths:pts});
+  });
+  lineLayer.setStyles(ls);lineLayer.setGeometries(layers.routes?gs:[]);
+  memMarkerLayer.setGeometries(layers.memorials?Object.keys(PLACES).filter(k=>shown.some(n=>n[3]===k)).map(k=>{const p=PLACES[k],c=wgs2gcj(p.c[0],p.c[1]);return {id:'m_'+k,styleId:'mem',position:new TMap.LatLng(c[1],c[0]),properties:{name:p.h}}}):[]);
+}
+function setReveal(k){
+  revealed=Math.max(0,Math.min(REVEAL_ORDER.length,k));
+  $('#range').value=revealed;
+  $('#progText').textContent='已展开 '+revealed+' / '+REVEAL_ORDER.length+' 节点';
+  drawMap();renderRail();
+}
+function stopReveal(){if(autoTimer)clearInterval(autoTimer);autoTimer=null;$('#playBtn').textContent='▶ 展开路线'}
+function startReveal(){
+  stopReveal();
+  if(revealed>=REVEAL_ORDER.length)setReveal(0);
+  $('#playBtn').textContent='❚❚ 暂停';
+  autoTimer=setInterval(()=>{
+    if(revealed>=REVEAL_ORDER.length){stopReveal();toast('路线展开完成，点击节点或路线查看内容');return}
+    setReveal(revealed+1);
+  },330);
+}
+function renderRail(){
+  $('#railBody').innerHTML=REVEAL_ORDER.map((id,i)=>{
+    const n=NODES.find(x=>x[0]===id);
+    return '<button class="rail-node'+(i<revealed?' on':'')+(currentId===id?' cur':'')+'" data-id="'+id+'" title="'+n[2]+' '+n[4]+'"><span class="rn-dot" style="background:'+(i<revealed?actColor(n[1]):'#d8cdb8')+'"></span><span class="rn-lb">'+n[4]+'</span></button>';
+  }).join('');
+  $('#railBody').querySelectorAll('.rail-node').forEach(b=>b.onclick=()=>selectNode(Number(b.dataset.id)));
+}
+function renderLegend(){
+  $('#legend').innerHTML='<div class="lg-t">图例 · 点击彩色路线看部队</div>'+ROUTES.map(r=>'<div><span class="dot" style="background:'+r.color+'"></span>'+r.name+'</div>').join('')+'<div><span class="dot" style="background:#b0873b"></span>纪念馆线索</div><div class="small">虚线白圈＝待核节点</div>';
+}
+function srcLinks(n){const ids=Array.isArray(n[11])?n[11]:[];return ids.map(s=>'<span class="tag blue">'+s+'</span>').join('')}
+function shareFor(n){return '?year='+encodeURIComponent(n[2].replace(/[^\d.—-]/g,'').slice(0,4))+'&place='+encodeURIComponent(PLACES[n[3]].h)}
+
+function openDrawer(tab){
+  drawerTab=tab||drawerTab;
+  document.body.classList.add('d-open');
+  document.querySelectorAll('.d-tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===drawerTab));
+  renderDrawer();
+  if(map&&map.resize)setTimeout(()=>map.resize(),350);
+}
+function closeDrawer(){
+  document.body.classList.remove('d-open');currentRoute=null;drawMap();
+  if(map&&map.resize)setTimeout(()=>map.resize(),350);
+}
+function renderDrawer(){
+  if(drawerTab==='node'){
+    if(currentId)renderNode(NODES.find(n=>n[0]===currentId));
+    else{$('#dTitle').textContent='节点详情';$('#dBody').innerHTML='<div class="empty">点击地图上的节点、彩色路线或底部时间轴，查看对应知识与依据。</div>'}
+  }else if(drawerTab==='route')renderRoutePanel();
+  else if(drawerTab==='place')renderPlacePanel();
+  else if(drawerTab==='memorial')renderMemorialPanel();
+  else if(drawerTab==='image')renderImagePanel();
+  else if(drawerTab==='source')renderSourcePanel();
+}
+function renderNode(n){
+  const p=PLACES[n[3]];
+  const pend=n[12]!=='已核'?'<span class="tag warn">'+n[12]+' · 公开标注</span>':'<span class="tag ok">已核</span>';
+  $('#dTitle').textContent=String(n[0]).padStart(2,'0')+' · '+n[4];
+  $('#dBody').innerHTML='<div class="kv">'+
+    '<span class="k">时间</span><span>'+n[2]+'</span>'+
+    '<span class="k">古今地名</span><span>'+p.h+' → <strong>'+p.n+'</strong>（'+p.a+'）</span>'+
+    '<span class="k">部队</span><span>'+n[7]+'</span>'+
+    '<span class="k">人物</span><span>'+n[8]+'</span>'+
+    '<span class="k">事件经过</span><span>'+n[5]+'</span>'+
+    '<span class="k">历史意义</span><span>'+n[6]+'</span>'+
+    '<span class="k">纪念馆</span><span>'+(n[10]||'—（暂无对应线索）')+'</span>'+
+    '<span class="k">核验状态</span><span>'+pend+'</span></div>'+
+    '<div class="src-line"><strong>依据来源：</strong>'+srcLinks(n)+'</div>'+
+    '<div class="small" style="margin-top:6px">别名：'+n[9]+' · 深链接：<code>'+shareFor(n)+'</code></div>'+
+    (imgsForNode(n[0]).length?imgsForNode(n[0]).map(renderImageCard).join(''):'<figure class="note-fig">'+fig(n[13],n[4])+'<figcaption>场景示意 · 程序绘制，非史料照片（本节点暂无可核验历史影像）</figcaption></figure>')+
+    '<div class="hintrow"><button class="btn" data-jump="place">查看地名沿革 →</button><button class="btn" data-jump="memorial">查看纪念馆 →</button></div>';
+  $('#dBody').querySelectorAll('[data-jump]').forEach(b=>b.onclick=()=>openDrawer(b.dataset.jump));
+}
+function selectNode(id){
+  const n=NODES.find(x=>x[0]===id);if(!n)return;
+  currentId=id;currentRoute=null;stopReveal();
+  const idx=REVEAL_ORDER.indexOf(id);if(idx>=revealed)setReveal(idx+1);
+  renderDrawer();renderRail();drawMap();openDrawer('node');
+  const p=PLACES[n[3]];
+  if(map){const c=wgs2gcj(p.c[0],p.c[1]);map.easeTo({center:new TMap.LatLng(c[1],c[0]),zoom:Math.max(map.getZoom(),7)},{duration:500})}
+  try{history.replaceState(null,'',shareFor(n))}catch(e){}
+  const el=document.querySelector('.rail-node.cur');if(el)el.scrollIntoView({block:'nearest',inline:'center'});
+}
+function selectRoute(ri){
+  const r=ROUTES[ri];if(!r)return;
+  currentRoute=ri;currentId=null;stopReveal();
+  const maxIdx=Math.max.apply(null,r.ids.map(id=>REVEAL_ORDER.indexOf(id)));
+  if(maxIdx>=revealed)setReveal(maxIdx+1);
+  drawMap();openDrawer('route');
+  if(map){try{
+    const pts=r.ids.map(id=>NODES.find(n=>n[0]===id)).filter(Boolean).map(n=>{const c=wgs2gcj(PLACES[n[3]].c[0],PLACES[n[3]].c[1]);return new TMap.LatLng(c[1],c[0])});
+    const b=new TMap.LatLngBounds(pts[0],pts[0]);pts.forEach(p=>b.extend(p));map.fitBounds(b,{padding:70});
+  }catch(e){}}
+}
+function renderRoutePanel(){
+  $('#dTitle').textContent='五路红军 · 行进路线';
+  if(currentRoute===null){
+    $('#dBody').innerHTML='<div class="small" style="margin-bottom:10px">点击地图上任意彩色路线，或选择下面一条：</div>'+ROUTES.map((r,i)=>'<button class="route-card" data-ri="'+i+'"><span class="dot" style="background:'+r.color+'"></span><strong>'+r.name+'</strong><span class="small">'+r.ids.length+' 个节点</span></button>').join('')+'<div class="disc" style="margin-top:12px">路线为史料节点连线，<strong>非精确行军轨迹</strong>。并行线路线含与主力会师的衔接节点，点击各节点查看具体经过。</div>';
+    $('#dBody').querySelectorAll('[data-ri]').forEach(b=>b.onclick=()=>selectRoute(Number(b.dataset.ri)));
+    return;
+  }
+  const r=ROUTES[currentRoute];
+  const list=r.ids.map(id=>NODES.find(n=>n[0]===id)).filter(Boolean);
+  $('#dBody').innerHTML='<div class="route-head"><span class="dot" style="background:'+r.color+'"></span><strong>'+r.name+'</strong><button class="btn" id="backRoutes">← 全部路线</button></div>'+
+    '<div class="small">收录 '+list.length+' 个关键节点，为史料节点连线示意。</div>'+
+    '<div class="route-list">'+list.map(n=>'<button class="rl-item" data-id="'+n[0]+'"><span class="n-date">'+n[2]+'</span><strong>'+n[4]+'</strong><span class="small">'+PLACES[n[3]].h+'</span></button>').join('')+'</div>';
+  $('#backRoutes').onclick=()=>{currentRoute=null;renderRoutePanel();drawMap()};
+  $('#dBody').querySelectorAll('.rl-item').forEach(b=>b.onclick=()=>selectNode(Number(b.dataset.id)));
+}
+function renderPlacePanel(){
+  $('#dTitle').textContent='古今地名对照 · 点地溯源';
+  $('#dBody').innerHTML='<div class="small" style="margin-bottom:9px">历史地名 → 今地名 → 坐标 → 沿革。点击行定位到节点。</div><table class="mini"><thead><tr><th>历史地名</th><th>今地名 / 区划</th><th>沿革要点</th><th>核验</th></tr></thead><tbody>'+
+    Object.keys(PLACES).map(k=>{const p=PLACES[k],nid=NODES.find(n=>n[3]===k);return '<tr data-id="'+(nid?nid[0]:'')+'"><td><strong>'+p.h+'</strong></td><td>'+p.n+'<br><span class="small">'+p.a+'</span></td><td class="small">'+p.e.join('；')+'</td><td><span class="tag '+(p.s==='已核'?'ok':'warn')+'">'+p.s+'</span></td></tr>'}).join('')+
+    '</tbody></table>';
+  $('#dBody').querySelectorAll('tr[data-id]').forEach(tr=>tr.onclick=()=>{if(tr.dataset.id)selectNode(Number(tr.dataset.id))});
+}
+function renderMemorialPanel(){
+  $('#dTitle').textContent='纪念馆与旧址线索';
+  $('#dBody').innerHTML='<div class="disc">线索来自馆方与文物资料，<strong>不取旅游平台 UGC 为史实</strong>；标"待核"者公开保留，待馆方核定。</div><table class="mini"><thead><tr><th>馆名 / 旧址</th><th>地址线索</th><th>状态</th></tr></thead><tbody>'+
+    MEMORIALS.map(m=>'<tr><td><strong>'+m[0]+'</strong><br><span class="small">'+m[2]+'</span></td><td class="small">'+m[1]+'</td><td><span class="tag '+(m[3]==='已核'?'ok':'warn')+'">'+m[3]+'</span></td></tr>').join('')+'</tbody></table>';
+}
+function renderImagePanel(){
+  $('#dTitle').textContent='历史影像 · 来源核验';
+  $('#dBody').innerHTML=
+    '<div class="disc"><strong>一个必须先说清的事实：</strong>长征沿途极少留下照片。现存标志性影像多为 1936 年长征结束后在陕北、宁夏拍摄的亲历者肖像与合影，部分经本人回忆确认为摆拍。<b>本页任何图片都不表述为"长征行军现场照片"</b>；每张均标明拍摄时间、地点、作者与授权判断。</div>'+
+    '<h3 style="font-size:13px;color:#6b140d;margin:12px 0 6px">一、真实历史影像（来源可核验 · 授权状态逐张公开）</h3>'+
+    IMAGES.map(renderImageCard).join('')+
+    '<h3 style="font-size:13px;color:#6b140d;margin:14px 0 6px">二、国家图书馆"馆藏长征文献专题展"书影 · 逐图核验</h3>'+
+    '<div class="card-s"><b>核验结论：</b>该展览是中国国家图书馆 <b>2026 年策展产物</b>，展览网页上的图片是<b>为展览制作的书影 /  digitized 图像</b>，<strong>展览页面图片 ≠ 馆藏原件公版</strong>——文献原件年代久远不等于其数字化图像自动进入公有领域，拍摄与数字化者可能享有权利。因此本页<b>不嵌入展览页面书影</b>，仅提供书目信息与官方入口，待逐图向馆方确认授权后再上。</div>'+
+    '<div class="card-s"><b>可安全引用的书目信息</b>（书目名称、馆藏单位、展览名称属事实信息，不受著作权保护）：<br>· 展览名称：国家图书馆"馆藏长征文献专题展"<br>· 主办：中国国家图书馆<br>· 展期：2026 年（长征胜利 90 周年主题）<br>· 官方入口：<a href="https://www.nlc.cn/" target="_blank" rel="noopener">中国国家图书馆官网 nlc.cn</a>（展览页以官网公布为准）。<br><span class="tag warn">逐图核验 · 未授权不上图</span></div>'+
+    '<h3 style="font-size:13px;color:#6b140d;margin:14px 0 6px">三、授权口径与四条安全路径</h3>'+
+    '<div class="disc"><strong>"公开可访问"≠"可自由使用"。</strong>依《著作权法》第十条，摄影作品自完成即受保护，信息网络传播权归权利人；第二十四条的"个人学习研究欣赏"与"适当引用"不适用于公开发布、整图作配图的场景。"注明出处＋侵权删除"只保住署名权，不免除侵权责任。</div>'+
+    '<div class="card-s"><b>四条安全路径</b><br>① <b>公有领域</b>：须有发表年份与作者生卒年证据，按 2021.6.1 前后法律衔接判定，不凭"照片老"推断；<br>② <b>CC 授权</b>：按协议署名并遵守相同方式共享等条件；<br>③ <b>书面授权或正规图库购买</b>；<br>④ <b>存疑即弃用</b>：来源或授权不明者不放入本页，仅提供馆方 / 权威页面链接。</div>'+
+    '<div class="small" style="margin:10px 0 6px">未匹配真实影像的节点仍显示程序绘制示意图，<strong>非史料照片、不得作历史图像引用</strong>。</div>'+
+    [['meeting','遵义会议','会议场景示意'],['river','飞夺泸定桥','铁索桥战斗场景示意'],['snow','翻越夹金山','雪山行军场景示意'],['grass','穿越松潘草地','草地行军场景示意'],['depart','于都出发','渡河出发场景示意'],['arrive','会宁会师','会师场景示意']].map(t=>'<figure class="note-fig">'+fig(t[0],t[1])+'<figcaption>'+t[1]+' · '+t[2]+' · 程序绘制</figcaption></figure>').join('');
+}
+function renderSourcePanel(){
+  $('#dTitle').textContent='资料来源与核验说明';
+  const pend=NODES.filter(n=>n[12]!=='已核').map(n=>'<div>· 节点 '+n[0]+' '+n[4]+'：'+n[12]+'</div>').join('');
+  const pMem=MEMORIALS.filter(m=>m[3]!=='已核').map(m=>'<div>· '+m[0]+'：'+m[3]+'</div>').join('');
+  $('#dBody').innerHTML='<table class="mini"><thead><tr><th>编号</th><th>层级</th><th>来源</th><th>用途与边界</th></tr></thead><tbody>'+
+    SOURCES.map(s=>'<tr><td><strong>'+s[0]+'</strong></td><td>'+s[1]+'</td><td>'+(s[4]==='—'?s[2]:'<a href="'+s[4]+'" target="_blank" rel="noopener">'+s[2]+'</a>')+'</td><td class="small">'+s[3]+'</td></tr>').join('')+'</tbody></table>'+
+    '<h3 style="font-size:13px;color:#6b140d;margin:14px 0 5px">公开待核清单</h3><div class="small">按"带标记公开"原则，下列不确定性不隐去，供读者参与纠错。</div><div class="small" style="margin-top:6px">'+pend+pMem+'</div>';
+}
+function showModal(){
+  const m=$('#modal');
+  m.innerHTML='<div class="mbox"><button class="mclose" id="mClose">×</button><h2>关于本页 · 口径与授权</h2>'+
+    '<h3>一、纪念口径</h3><p>"90周年"指长征<strong>胜利</strong>90周年（1936—2026）。中央红军于1935.10.19到达吴起镇结束其长征；1936.10.9红四方面军到会宁、10.22红二方面军到将台堡，三大主力会师标志长征全面胜利结束。两处日期、地点严格分列，不合并表述。</p>'+
+    '<h3>二、地图示意声明</h3><p>路线为<strong>史料节点连线，非精确行军轨迹</strong>；坐标为近似位置，仅供定位示意。底图由腾讯地图提供；本页不绘制自绘行政区划。离线状态下降级为时间轴与文字内容。</p>'+
+    '<h3>三、待核公开</h3><p>馆名待核、今属表述待核等不确定性一律带标记公开，不隐去、不抹平，供读者参与纠错。</p>'+
+    '<h3>四、图片授权口径</h3><p>长征沿途极少留下照片，现存标志性影像多为 1936 年长征结束后拍摄的亲历者影像，部分为摆拍；本页任何图片都不表述为"行军现场照片"。</p><p>"公开可访问"不等于"可自由使用"。依《著作权法》第十条，摄影作品自完成即受保护；第二十四条的"个人学习研究欣赏"和"适当引用"均不适用于公开发布、整图作配图的场景；"注明来源＋侵权删除"只保住署名权，挡不住信息网络传播权侵权。老照片是否进入公有领域，须按 2021.6.1 前后法律衔接、结合发表年份与作者生卒年逐张判定。</p><p>本页"图片"标签下展示三张<strong>来源可核验的历史影像</strong>（中国军网《光影90》，1932—1936 年，摄者佚名 / 苏静 / 耿飚），<strong>授权状态逐张标注为待核</strong>，商用须另行取得授权；国家图书馆"馆藏长征文献专题展"书影因展览为 2026 年策展产物、展览页面图片≠馆藏原件公版，<strong>逐图核验、未授权不上图</strong>，仅列书目与官方链接。其余节点为程序绘制示意，非史料照片。</p>'+
+    '<h3>五、操作</h3><p>拖动底部滑杆或点"展开路线"逐步绘制；点节点看事件，点彩色路线看部队；键盘 ← → 切节点、空格展开/暂停、Esc 关闭面板。地址栏深链接 <code>?year=1935&amp;place=遵义</code> 可直接定位。</p></div>';
+  m.classList.remove('hidden');
+  $('#mClose').onclick=()=>m.classList.add('hidden');
+  m.onclick=e=>{if(e.target===m)m.classList.add('hidden')};
+}
+function parseDeepLink(){
+  const q=new URLSearchParams(location.search);
+  if(!q.has('year')&&!q.has('place')&&!q.has('event'))return false;
+  const place=q.get('place');
+  if(place){const hit=NODES.find(n=>PLACES[n[3]].h===place||PLACES[n[3]].n===place||n[9].indexOf(place)>=0);if(hit){selectNode(hit[0]);toast('已从链接定位到：'+hit[4]);return true}}
+  const ev=q.get('event');
+  if(ev){const hit=NODES.find(n=>n[9].indexOf(ev)>=0||n[4].indexOf(ev)>=0);if(hit){selectNode(hit[0]);return true}}
+  const year=q.get('year');
+  if(year){const hit=NODES.find(n=>n[2].indexOf(year)===0);if(hit){selectNode(hit[0]);return true}}
+  toast('链接中的地点或年份未匹配到节点，已显示全部');return false;
+}
+
+/* ========== 五、事件绑定 ========== */
+document.querySelectorAll('[data-act]').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('[data-act]').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+  actFilter=Number(b.dataset.act);currentId=null;currentRoute=null;drawMap();renderRail();
+  if(drawerTab==='node')$('#dBody').innerHTML='<div class="empty">已筛选幕次，点击地图节点查看内容。</div>';
+}));
+document.querySelectorAll('[data-layer]').forEach(b=>b.addEventListener('click',()=>{
+  const k=b.dataset.layer;layers[k]=!layers[k];b.classList.toggle('on',layers[k]);drawMap();
+}));
+document.querySelectorAll('.d-tabs button').forEach(b=>b.addEventListener('click',()=>{drawerTab=b.dataset.tab;openDrawer(drawerTab)}));
+$('#dClose').addEventListener('click',closeDrawer);
+$('#aboutBtn').addEventListener('click',showModal);
+$('#playBtn').addEventListener('click',()=>{if(autoTimer)stopReveal();else startReveal()});
+$('#zoomIn').addEventListener('click',()=>{if(map)map.zoomTo(Math.min(map.getZoom()+1,18))});
+$('#zoomOut').addEventListener('click',()=>{if(map)map.zoomTo(Math.max(map.getZoom()-1,3))});
+$('#skipBtn').addEventListener('click',()=>{stopReveal();setReveal(REVEAL_ORDER.length);toast('已展开全部 30 个节点')});
+$('#range').addEventListener('input',e=>{stopReveal();setReveal(Number(e.target.value))});
+document.addEventListener('keydown',e=>{
+  if(['INPUT','TEXTAREA'].includes(document.activeElement.tagName))return;
+  if(e.key==='Escape'){if(!$('#modal').classList.contains('hidden')){$('#modal').classList.add('hidden');return}closeDrawer();return}
+  const list=REVEAL_ORDER;
+  let i=list.indexOf(currentId);
+  if(e.key==='ArrowRight'||e.key==='ArrowLeft'){
+    e.preventDefault();i=(i+(e.key==='ArrowRight'?1:-1)+list.length)%list.length;selectNode(list[i]);
+  }
+  if(e.key===' '){e.preventDefault();if(autoTimer)stopReveal();else startReveal()}
+});
+
+/* ========== 六、启动 ========== */
+renderRail();renderLegend();initMap();
+const hadLink=parseDeepLink();
+if(!hadLink)setTimeout(()=>startReveal(),700);
+</script>
+</body>
+</html>

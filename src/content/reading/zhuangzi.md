@@ -7,7 +7,6 @@ description: 《逍遥游》《养生主》《秋水》：道家寓言里的自�
 tags: [哲学思想, 庄子 · 选读, OCD 分格]
 edition: OCD 分格
 htmlPath: /reading/zhuangzi/app/index.html
-cover: /reading/zhuangzi/assets/cover.jpg
 featured: false
 order: 108
 ---

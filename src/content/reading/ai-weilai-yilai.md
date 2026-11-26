@@ -7,7 +7,6 @@ description: CEO、组织与个人的时代红利：AI 浪潮下的三层机会�
 tags: [AI与未来, AI 未来已来, OCD 分格]
 edition: OCD 分格
 htmlPath: /reading/ai-weilai-yilai/app/index.html
-cover: /reading/ai-weilai-yilai/assets/cover.jpg
 featured: false
 order: 526
 ---

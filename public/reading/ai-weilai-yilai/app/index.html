@@ -228,15 +228,35 @@
 @font-face{font-family:"Ma Shan Zheng";src:local("Ma Shan Zheng"),local("STKaiti"),local("Kaiti SC"),local("KaiTi"),local("楷体"),local("STXingkai");font-display:swap;}
 @font-face{font-family:"Noto Sans SC";src:local("Source Han Sans SC"),local("Noto Sans CJK SC"),local("PingFang SC"),local("Hiragino Sans GB"),local("Microsoft YaHei"),local("微软雅黑");font-display:swap;}
 </style>
+<style id="ocd-hero">
+/* P1.5 分格纹头部：以本书主色作底，叠加 30px 细格纹（呼应「对象中心分格」）+ 水墨柔光，
+   替换原通用图书馆照片，使每本书在书架上一眼可辨。 */
+.hero{
+  background-color:#2b3a63 !important;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255,255,255,.055) 0 1px, transparent 1px 30px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.055) 0 1px, transparent 1px 30px),
+    radial-gradient(120% 95% at 16% 4%, rgba(255,255,255,.20), transparent 58%),
+    radial-gradient(95% 85% at 92% 96%, rgba(66,85,143,0.45), transparent 64%) !important;
+  background-repeat:repeat,repeat,no-repeat,no-repeat !important;
+}
+.hero::before{
+  content:"智";
+  position:absolute;right:3%;bottom:-4%;
+  font-family:"Ma Shan Zheng","STKaiti","KaiTi",cursive;
+  font-size:clamp(9rem,32vw,24rem);
+  line-height:.86;
+  color:rgba(255,255,255,.075);
+  z-index:1;pointer-events:none;user-select:none;
+}
+.hero img{display:none !important;}
+</style>
 </head>
 <body data-pagefind-ignore>
 
   <!-- ===== Hero ===== -->
   <header class="hero">
-    <img src="/reading/ai-weilai-yilai/assets/cover.jpg"
-         alt="图书馆书架"
-         onerror="this.style.display='none'" />
-    <div class="hero-inner">
+  <div class="hero-inner">
       <div class="hero-kicker">Kai-Fu Lee · AI's Future Has Arrived</div>
       <h1>AI未来已来 · 研读</h1>
       <div class="hero-sub">李开复 著 ｜ 零一万物创始人兼CEO · 创新工场董事长 ｜ CEO · 组织 · 个人的时代红利</div>

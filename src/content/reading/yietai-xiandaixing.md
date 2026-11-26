@@ -7,7 +7,6 @@ description: 一切坚固的都融化了：流动社会里身份、关系与工�
 tags: [社科历史, 液态现代性, OCD 分格]
 edition: OCD 分格
 htmlPath: /reading/yietai-xiandaixing/app/index.html
-cover: /reading/yietai-xiandaixing/assets/cover.jpg
 featured: false
 order: 321
 ---

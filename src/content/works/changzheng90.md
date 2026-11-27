@@ -6,6 +6,7 @@ description: 把长征的 30 个关键节点与 5 条主力路线放到真实底
 tags: [历史, 交互地图, 数据可视化]
 cover: /works/changzheng90/cover.jpg
 demoPath: /works/changzheng90/app/index.html
+howto: 用底部时间轴按月份推进，地图上的路线与节点会依次亮起；也可以直接点节点或彩色路线反查它在时间轴上的位置。点开节点后，右侧抽屉显示经过、意义、史料依据与纪念馆线索；地图加载失败时自动降级为时间轴视图。
 tech: [腾讯地图 GL JS, 原生 JavaScript, SVG 标记, 响应式 HUD]
 featured: true
 order: 3

@@ -2,16 +2,20 @@ import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import { SITE } from '../data/site';
 
-// 动态站点地图：覆盖首页 / 关于页 / 搜索页 / 全部系列页 / 全部文章页
+// 动态站点地图：覆盖首页 / 关于 / 搜索 / 系列 / 文章 / 读书笔记 / 作品工作室
 // 带 lastmod / changefreq / priority，利于搜索引擎长尾收录与更新频率判断
 export const GET: APIRoute = async () => {
   const series = await getCollection('series');
   const posts = await getCollection('posts');
+  const reading = await getCollection('reading');
+  const works = await getCollection('works');
   const now = new Date().toISOString().slice(0, 10);
 
   const staticPages = [
     { loc: '/', priority: '1.0', changefreq: 'weekly', lastmod: now },
     { loc: '/about', priority: '0.8', changefreq: 'monthly', lastmod: now },
+    { loc: '/reading', priority: '0.7', changefreq: 'monthly', lastmod: now },
+    { loc: '/works', priority: '0.7', changefreq: 'monthly', lastmod: now },
     { loc: '/search', priority: '0.3', changefreq: 'yearly', lastmod: now },
   ];
 
@@ -37,7 +41,21 @@ export const GET: APIRoute = async () => {
     };
   });
 
-  const all = [...staticPages, ...seriesUrls, ...postUrls];
+  const readingUrls = reading.map((n) => ({
+    loc: `/reading/${n.slug}`,
+    priority: '0.6',
+    changefreq: 'yearly',
+    lastmod: n.data.date.toISOString().slice(0, 10),
+  }));
+
+  const workUrls = works.map((w) => ({
+    loc: `/works/${w.slug}`,
+    priority: '0.6',
+    changefreq: 'yearly',
+    lastmod: w.data.date.toISOString().slice(0, 10),
+  }));
+
+  const all = [...staticPages, ...seriesUrls, ...postUrls, ...readingUrls, ...workUrls];
 
   const urls = all
     .map(

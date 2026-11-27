@@ -62,6 +62,8 @@ const works = defineCollection({
     tags: z.array(z.string()).default([]),
     cover: z.string().optional(),
     demoPath: z.string(),           // 作品入口，如 /works/mingtang/index.html
+    howto: z.string().optional(),   // 怎么玩：入口操作提示，详情页「怎么玩」一栏
+    builtAt: z.string().optional(), // 完成时间的展示文本；不填则用 date
     tech: z.array(z.string()).default([]),
     featured: z.boolean().default(false),
     order: z.number().default(99),

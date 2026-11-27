@@ -3,11 +3,21 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
+import JsonLd from '../../components/JsonLd.astro';
 import { SITE } from '../../data/site';
 
 const works = (await getCollection('works')).sort(
   (a, b) => a.data.order - b.data.order || b.data.date.getTime() - a.data.date.getTime()
 );
+
+const collectionJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: '作品工作室',
+  description: '用 AI 做的小东西，点开就能用：网页小品、交互工具与可视化实验的展台。',
+  url: new URL('/works', SITE.url).href,
+  numberOfItems: works.length,
+};
 ---
 
 <BaseLayout
@@ -15,6 +25,7 @@ const works = (await getCollection('works')).sort(
   description="用 AI 做的小东西，点开就能用。网页小品、交互工具与可视化实验的展台。"
   keywords={['作品工作室', 'AI作品', '网页小品', 'Three.js', '交互设计']}
 >
+  <JsonLd data={collectionJsonLd} />
   <Nav active="作品工作室" variant="full" />
 
   <section class="works-header">

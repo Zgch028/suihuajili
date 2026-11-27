@@ -37,17 +37,21 @@ npm run preview    # 本地预览构建产物（此时站内搜索可用）
 └── src/
     ├── data/site.ts          # 站点级静态配置（作者/矩阵/导航，全局共享）
     ├── styles/global.css     # 设计令牌（红/墨/纸感）+ 基础样式
-    ├── content.config.ts     # 内容集合 schema（series / posts 的 frontmatter 规范）
+    ├── content.config.ts     # 内容集合 schema（series / posts / reading / works 的 frontmatter 规范）
     ├── layouts/BaseLayout.astro
     ├── components/           # Nav / Footer / SeoMeta / JsonLd / SeriesCard / ArticleCard
     ├── content/
     │   ├── series/           # 7 个系列页 Markdown（frontmatter 见下）
-    │   └── posts/            # 文章 Markdown（按系列分目录）
+    │   ├── posts/            # 文章 Markdown（按系列分目录）
+    │   ├── reading/          # 读书笔记条目（正文放在 public/reading/<slug>/app/）
+    │   └── works/            # 作品条目（页面放在 public/works/<slug>/app/）
     └── pages/
         ├── index.astro       # 首页
         ├── about.astro       # 关于页
         ├── series/[slug].astro   # 系列详情页（动态路由）
         ├── posts/[slug].astro    # 文章详情页（动态路由）
+        ├── reading/          # 读书笔记书架与详情页（iframe 承载原版 HTML）
+        ├── works/            # 作品工作室列表与详情页（iframe 承载完整作品）
         ├── search/index.astro    # 站内搜索（Pagefind）
         ├── agent.json.ts         # AI Agent 认证入口（机器可读名片）
         └── sitemap.xml.ts        # 动态站点地图
@@ -101,4 +105,5 @@ order: 1                     # 首页系列网格排序
 - 每页 `<title>` / `meta description` / `meta keywords` / Open Graph / canonical —— 由 `SeoMeta.astro` 统一输出
 - 首页与关于页注入 `Person` JSON-LD；系列页注入 `CollectionPage`；文章页注入 `BlogPosting`
 - `/agent.json`：任何 AI Agent / RAG 系统访问即可一次性提取姓名、身份、自媒体矩阵、联系方式
-- `/sitemap.xml`：构建时动态生成，覆盖全部页面
+- `/llms.txt`：给 AI 看的站点导览，列出栏目入口、机器可读接口与内容说明
+- `/sitemap.xml`：构建时动态生成，覆盖系列、文章、读书笔记与作品的全部页面

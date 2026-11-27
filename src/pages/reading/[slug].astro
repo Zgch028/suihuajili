@@ -4,6 +4,7 @@ import type { GetStaticPaths } from 'astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
+import JsonLd from '../../components/JsonLd.astro';
 import { SITE } from '../../data/site';
 
 export const getStaticPaths = (async () => {
@@ -15,6 +16,19 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 
 const { note } = Astro.props;
+
+// 读书笔记是作者撰写的解读文章，不是原书本身；用 ScholarlyArticle 标注，避免著作权误标
+const noteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ScholarlyArticle',
+  headline: note.data.title,
+  datePublished: note.data.date.toISOString(),
+  description: note.data.description,
+  author: { '@type': 'Person', name: SITE.author.name },
+  publisher: { '@type': 'Organization', name: SITE.name, url: SITE.url },
+  mainEntityOfPage: new URL(`/reading/${note.slug}`, SITE.url).href,
+  keywords: [...note.data.tags, note.data.author].join(', '),
+};
 ---
 
 <BaseLayout
@@ -22,6 +36,7 @@ const { note } = Astro.props;
   description={note.data.description}
   keywords={note.data.tags}
 >
+  <JsonLd data={noteJsonLd} />
   <Nav active="读书笔记" variant="minimal" />
 
   <section class="note-head">

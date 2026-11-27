@@ -6,6 +6,7 @@ description: 按 J2000 平黄道与 Standish 六根数实时解算八大行星�
 tags: [天文, 三维可视化, Three.js]
 cover: /works/taiyangxi/cover.jpg
 demoPath: /works/taiyangxi/app/index.html
+howto: 拖动底部时间轴在 1800–2050 年间正放或倒放，也可以调整每天的播放秒数；视角可在俯视黄道、侧视倾角与跟随行星之间切换，再用「教学增强 / 真实比例」比较轨道关系与真实尺度。
 tech: [Three.js, WebGL, J2000 星历, GLSL]
 featured: true
 order: 2

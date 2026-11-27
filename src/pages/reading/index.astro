@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
+import JsonLd from '../../components/JsonLd.astro';
 import { SITE } from '../../data/site';
 
 const CAT_ORDER = ['古典文学', '哲学思想', '心理认知', '社科历史', '科学自然', 'AI与未来'];
@@ -23,6 +24,15 @@ const groups = [...CAT_ORDER, ...extras]
 
 const total = notes.length;
 const catCount = (cat: string) => notes.filter((n) => n.data.category === cat).length;
+
+const collectionJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: '读书笔记',
+  description: '按六个书架分类的 AI 辅助精读笔记，每本都是可点开翻阅的独立笔记。',
+  url: new URL('/reading', SITE.url).href,
+  numberOfItems: total,
+};
 ---
 
 <BaseLayout
@@ -30,6 +40,7 @@ const catCount = (cat: string) => notes.filter((n) => n.data.category === cat).l
   description={`用 AI 把一本书拆成可复用的认知框架。已收录 ${total} 本精读笔记，分六个书架：古典文学、哲学思想、心理认知、社科历史、科学自然、AI 与未来。`}
   keywords={['读书笔记', 'AI读书', '认知框架', '古典文学', '哲学思想', '心理认知', '社科历史']}
 >
+  <JsonLd data={collectionJsonLd} />
   <Nav active="读书笔记" variant="full" />
 
   <section class="reading-header">
@@ -56,6 +67,16 @@ const catCount = (cat: string) => notes.filter((n) => n.data.category === cat).l
       }
     </div>
   </nav>
+
+  <!-- 版本标签图例：解释卡片上的三种笔记版式 -->
+  <div class="shelf-legend">
+    <div class="container shelf-legend__inner">
+      <span class="shelf-legend__label">版本标记</span>
+      <span><b>OCD 分格</b>：单色分格强化结构感</span>
+      <span><b>认知框架</b>：提炼可复用模型</span>
+      <span><b>完整版</b>：全量图解笔记</span>
+    </div>
+  </div>
 
   <section class="section section--paper">
     <div class="container">
@@ -166,6 +187,31 @@ const catCount = (cat: string) => notes.filter((n) => n.data.category === cat).l
     font-size: 11px;
     color: var(--gold);
     font-weight: 600;
+  }
+
+  /* 版本图例 */
+  .shelf-legend {
+    background: #fdfaf2;
+    border-bottom: 1px solid var(--border);
+  }
+  .shelf-legend__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px 20px;
+    padding: 12px 0;
+    font-size: 12px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+  .shelf-legend__label {
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 0.5px;
+  }
+  .shelf-legend b {
+    font-weight: 600;
+    color: var(--ink);
   }
 
   /* 分区 */

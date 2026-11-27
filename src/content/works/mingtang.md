@@ -6,6 +6,7 @@ description: 一个可交互的三维经穴定位模型，支持旋转、缩放�
 tags: [中医, 三维可视化, Three.js]
 cover: /works/mingtang/cover.jpg
 demoPath: /works/mingtang/app/index.html
+howto: 拖拽模型旋转、滚轮缩放；左侧勾选十四经显示经络，点穴位查看定位与病候；顶部可切换正视、背视、侧视或复位。重合位置的琥珀编号点开后可在同组穴位里选穴。
 tech: [Three.js, WebGL, HTML5]
 featured: true
 order: 1

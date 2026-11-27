@@ -1,4 +1,6 @@
 ---
+import fs from 'node:fs';
+import path from 'node:path';
 import { getCollection } from 'astro:content';
 import type { GetStaticPaths } from 'astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
@@ -8,14 +10,37 @@ import JsonLd from '../../components/JsonLd.astro';
 import { SITE } from '../../data/site';
 
 export const getStaticPaths = (async () => {
+  // iframe 内的正文 Pagefind 抓不到：构建时从原版 HTML 抽一份纯文本，供外侧摘要区索引。
+  // 原 HTML 的显示方式完全不变，这里只读取文件，不改写任何原稿。
+  const extractNoteText = (htmlPath: string): string => {
+    const file = path.join(process.cwd(), 'public', htmlPath.replace(/^\//, ''));
+    if (!fs.existsSync(file)) return '';
+    const html = fs.readFileSync(file, 'utf8');
+    const main = html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/i)?.[1] ?? html;
+    return main
+      .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '')
+      .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, '')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/&nbsp;/g, ' ')
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/\s+/g, ' ')
+      .trim()
+      .slice(0, 900);
+  };
+
   const notes = await getCollection('reading');
   return notes.map((note) => ({
     params: { slug: note.slug },
-    props: { note },
+    props: { note, excerpt: extractNoteText(note.data.htmlPath) },
   }));
 }) satisfies GetStaticPaths;
 
-const { note } = Astro.props;
+const { note, excerpt } = Astro.props;
+const noteMeta = `读书笔记 · ${note.data.category} · ${note.data.edition ?? '完整版'}`;
 
 // 读书笔记是作者撰写的解读文章，不是原书本身；用 ScholarlyArticle 标注，避免著作权误标
 const noteJsonLd = {
@@ -37,12 +62,13 @@ const noteJsonLd = {
   keywords={note.data.tags}
 >
   <JsonLd data={noteJsonLd} />
+  <span data-pagefind-meta={`subtitle:${noteMeta}`} data-pagefind-ignore hidden></span>
   <Nav active="读书笔记" variant="minimal" />
 
   <section class="note-head">
     <div class="container">
-      <a class="note-head__crumb" href="/reading">← 返回书架</a>
-      <h1>{note.data.title}</h1>
+      <a class="note-head__crumb" href="/reading" data-pagefind-ignore>← 返回书架</a>
+      <h1 data-pagefind-meta="title">{note.data.title}</h1>
       <p class="note-head__meta">
         {note.data.author}{note.data.edition ? ` · ${note.data.edition}` : ''}
       </p>
@@ -57,9 +83,20 @@ const noteJsonLd = {
     ></iframe>
   </section>
 
+  <!-- 供 Pagefind 索引的可检索正文摘要：iframe 显示方式不变，这里只是外侧的静态文本副本 -->
+  <section class="note-search-text" data-pagefind-body>
+    <div class="container">
+      <h2 class="note-search-text__title">{note.data.title}</h2>
+      <p class="note-search-text__meta">
+        {note.data.author} · {note.data.edition ?? '完整版'} · {note.data.tags.join(' / ')}
+      </p>
+      <p class="note-search-text__body">{excerpt || note.data.description}</p>
+    </div>
+  </section>
+
   <section class="note-foot">
     <div class="container">
-      <a class="btn btn--primary btn--sm" href="/reading">← 返回书架</a>
+      <a class="btn btn--primary btn--sm" href="/reading" data-pagefind-ignore>← 返回书架</a>
     </div>
   </section>
 
@@ -103,6 +140,31 @@ const noteJsonLd = {
     border-radius: 12px;
     background: #fff;
     box-shadow: 0 8px 30px rgba(80, 60, 30, 0.12);
+  }
+  /* 可检索正文摘要：低调排版，不改变上方 iframe 的显示方式 */
+  .note-search-text {
+    padding: 28px 0 10px;
+    background: #fdfaf2;
+    border-top: 1px solid var(--border);
+  }
+  .note-search-text__title {
+    font-family: var(--font-serif);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0 0 6px;
+  }
+  .note-search-text__meta {
+    font-size: 12px;
+    color: var(--gold);
+    letter-spacing: 0.3px;
+    margin: 0 0 12px;
+  }
+  .note-search-text__body {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.85;
+    margin: 0;
   }
   .note-foot {
     padding: 28px 0 48px;

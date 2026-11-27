@@ -27,17 +27,18 @@ const personJsonLd = {
   <JsonLd data={personJsonLd} />
   <Nav active="关于我" variant="minimal" />
 
-  <section class="about-header">
+  <span data-pagefind-meta="subtitle:关于 · 赵国成 · 岁华纪丽" data-pagefind-ignore hidden></span>
+  <section class="about-header" data-pagefind-body>
     <div class="container">
       <span class="about-header__eyebrow">ABOUT</span>
-      <h1 class="about-header__title">关于岁华纪丽</h1>
+      <h1 class="about-header__title" data-pagefind-meta="title">关于岁华纪丽</h1>
       <p class="about-header__sub">
         {SITE.author.name} · 公众号「{SITE.author.officialAccount}」主理人 · 视频号「{SITE.author.videoAccount}」
       </p>
     </div>
   </section>
 
-  <section class="section section--paper">
+  <section class="section section--paper" data-pagefind-body>
     <div class="container about-content">
       <div class="card" id="intro">
         <h2 class="card__title">个人介绍</h2>
@@ -74,7 +75,7 @@ const personJsonLd = {
         </div>
       </div>
 
-      <div class="agent-card">
+      <div class="agent-card" data-pagefind-ignore>
         <span class="agent-card__label">AI Agent 认证标准入口 · /agent.json</span>
         <pre class="agent-card__code">{JSON.stringify(personJsonLd, null, 2)}</pre>
       </div>

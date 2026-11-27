@@ -38,13 +38,14 @@ const workJsonLd = {
   <JsonLd data={workJsonLd} />
   <Nav active="作品工作室" variant="minimal" />
 
-  <section class="work-head">
+  <span data-pagefind-meta={`subtitle:作品工作室 · ${work.data.tags[0] ?? '作品'} · ${work.data.date.toISOString().slice(0, 10)}`} data-pagefind-ignore hidden></span>
+  <section class="work-head" data-pagefind-body>
     <div class="container">
-      <a class="work-head__crumb" href="/works">← 返回作品工作室</a>
+      <a class="work-head__crumb" href="/works" data-pagefind-ignore>← 返回作品工作室</a>
       <span class="work-head__eyebrow">WORKS · {work.data.tags[0] ?? '作品'}</span>
-      <h1>{work.data.title}</h1>
+      <h1 data-pagefind-meta="title">{work.data.title}</h1>
       {work.data.subtitle && <p class="work-head__sub">{work.data.subtitle}</p>}
-      <div class="work-head__actions">
+      <div class="work-head__actions" data-pagefind-ignore>
         <button class="btn btn--primary btn--sm" id="work-fullscreen" type="button">
           全屏体验
         </button>
@@ -68,7 +69,7 @@ const workJsonLd = {
     </div>
   </section>
 
-  <section class="section section--paper">
+  <section class="section section--paper" data-pagefind-body>
     <div class="container work-info">
       <div class="work-info__row">
         <span class="work-info__key">这是什么</span>

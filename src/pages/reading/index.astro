@@ -43,10 +43,11 @@ const collectionJsonLd = {
   <JsonLd data={collectionJsonLd} />
   <Nav active="读书笔记" variant="full" />
 
-  <section class="reading-header">
+  <span data-pagefind-meta={`subtitle:读书笔记 · ${total} 本 · ${groups.length} 个书架`} data-pagefind-ignore hidden></span>
+  <section class="reading-header" data-pagefind-body>
     <div class="container">
       <span class="reading-header__eyebrow">READING NOTES</span>
-      <h1 class="reading-header__title">读书笔记</h1>
+      <h1 class="reading-header__title" data-pagefind-meta="title">读书笔记</h1>
       <p class="reading-header__sub">用 AI 把一本书拆成可复用的认知框架。</p>
       <p class="reading-header__meta">
         {total} 本 · {groups.length} 个书架 · 每本都是一份可点开翻阅的独立笔记
@@ -55,7 +56,7 @@ const collectionJsonLd = {
   </section>
 
   <!-- 书架导航 -->
-  <nav class="shelf-nav" aria-label="书架分区">
+  <nav class="shelf-nav" aria-label="书架分区" data-pagefind-ignore>
     <div class="container shelf-nav__inner">
       {
         groups.map((g) => (
@@ -69,7 +70,7 @@ const collectionJsonLd = {
   </nav>
 
   <!-- 版本标签图例：解释卡片上的三种笔记版式 -->
-  <div class="shelf-legend">
+  <div class="shelf-legend" data-pagefind-ignore>
     <div class="container shelf-legend__inner">
       <span class="shelf-legend__label">版本标记</span>
       <span><b>OCD 分格</b>：单色分格强化结构感</span>
@@ -78,7 +79,7 @@ const collectionJsonLd = {
     </div>
   </div>
 
-  <section class="section section--paper">
+  <section class="section section--paper" data-pagefind-body>
     <div class="container">
       {
         groups.map((g, gi) => (

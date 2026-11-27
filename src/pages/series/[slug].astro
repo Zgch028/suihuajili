@@ -53,12 +53,13 @@ const collectionJsonLd = {
   <JsonLd data={collectionJsonLd} />
   <Nav active={series.data.title} variant="minimal" />
 
-  <section class={`series-header ${series.data.headerImage ? 'series-header--with-bg' : ''}`} style={series.data.headerImage ? `background-image: url('${series.data.headerImage}');` : undefined}>
+  <span data-pagefind-meta={`subtitle:内容系列 · ${series.data.tag} · ${posts.length} 篇`} data-pagefind-ignore hidden></span>
+  <section class={`series-header ${series.data.headerImage ? 'series-header--with-bg' : ''}`} style={series.data.headerImage ? `background-image: url('${series.data.headerImage}');` : undefined} data-pagefind-body>
     <div class="container">
       <span class="series-header__eyebrow">{series.data.eyebrow}</span>
-      <h1 class="series-header__title">{series.data.title}</h1>
+      <h1 class="series-header__title" data-pagefind-meta="title">{series.data.title}</h1>
       <p class="series-header__sub">{series.data.description}</p>
-      <div class="seo-panel">
+      <div class="seo-panel" data-pagefind-ignore>
         <span class="seo-panel__label">本页 SEO 元信息（搜索引擎可见）</span>
         <div>title：{series.data.seoTitle}</div>
         <div>description：{series.data.seoDescription}</div>
@@ -67,7 +68,7 @@ const collectionJsonLd = {
     </div>
   </section>
 
-  <section class="section section--paper">
+  <section class="section section--paper" data-pagefind-body>
     <div class="container">
       {
         pinned && (

@@ -28,15 +28,16 @@ const collectionJsonLd = {
   <JsonLd data={collectionJsonLd} />
   <Nav active="作品工作室" variant="full" />
 
-  <section class="works-header">
+  <span data-pagefind-meta={`subtitle:作品工作室 · ${works.length} 件作品`} data-pagefind-ignore hidden></span>
+  <section class="works-header" data-pagefind-body>
     <div class="container">
       <span class="works-header__eyebrow">WORKS STUDIO</span>
-      <h1 class="works-header__title">作品工作室</h1>
+      <h1 class="works-header__title" data-pagefind-meta="title">作品工作室</h1>
       <p class="works-header__sub">用 AI 做的小东西，点开就能用。</p>
     </div>
   </section>
 
-  <section class="section section--paper">
+  <section class="section section--paper" data-pagefind-body>
     <div class="container">
       <div class="works-grid">
         {

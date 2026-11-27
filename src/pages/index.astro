@@ -86,6 +86,7 @@ const websiteJsonLd = {
   <JsonLd data={websiteJsonLd} />
   <Nav active="首页" variant="full" />
 
+  <div data-pagefind-body>
   <!-- Hero -->
   <section class="hero">
     <div class="container hero__inner">
@@ -108,11 +109,11 @@ const websiteJsonLd = {
     </div>
   </section>
 
-  <!-- 三个核心价值 -->
+  <!-- 读者能做什么 -->
   <section class="section section--paper">
     <div class="container">
-      <span class="section__eyebrow">WHY IT MATTERS</span>
-      <h2 class="section__title">三个核心价值</h2>
+      <span class="section__eyebrow">WHAT YOU CAN DO</span>
+      <h2 class="section__title">在这里你能做什么</h2>
       <div class="cv-row">
         <div class="cv-card">
           <div class="cv-card__icon" style="background:var(--navy)">壹</div>
@@ -214,10 +215,10 @@ const websiteJsonLd = {
   </section>
 
   <!-- 站内搜索 + AI Agent 认证入口 -->
-  <section class="section agent-section">
+  <section class="section agent-section" data-pagefind-ignore>
     <div class="container">
       <span class="section__eyebrow" style="color:var(--gold)">SEARCH & AI-AGENT READY</span>
-      <h2 class="section__title" style="color:#fff">站内搜索 + AI Agent 认证入口</h2>
+      <h2 class="section__title" style="color:#fff">站内搜索</h2>
       <p class="section__sub" style="color:#c9c4ba">
         读者用搜索快速找到内容；AI Agent 用结构化数据快速提取你的认证信息——这是平台账号给不了的资产。
       </p>
@@ -230,15 +231,7 @@ const websiteJsonLd = {
         />
         <button class="btn btn--primary btn--sm" type="submit">搜索</button>
       </form>
-      <div class="agent-feats">
-        <span>· 每个内容块后附机器可读结构化标签</span>
-        <span>· 个人介绍 / 职业背景均带 JSON-LD</span>
-        <span>· 方便各类 AI Agent 检索与提取</span>
-      </div>
-      <div class="agent-card">
-        <span class="agent-card__label">AI Agent 认证标准入口 · /agent.json</span>
-        <pre class="agent-card__code">{JSON.stringify(personJsonLd, null, 2)}</pre>
-      </div>
+      <p class="search-note">也可以直接问 AI：站内内容由 AI 帮你找。</p>
     </div>
   </section>
 
@@ -259,6 +252,8 @@ const websiteJsonLd = {
       </div>
     </div>
   </section>
+
+  </div>
 
   <Footer />
 </BaseLayout>
@@ -408,35 +403,10 @@ const websiteJsonLd = {
   .search-bar__input::placeholder {
     color: var(--muted);
   }
-  .agent-feats {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
+  .search-note {
     margin-top: 16px;
     font-size: 14px;
     color: #c9c4ba;
-  }
-  .agent-card {
-    margin-top: 20px;
-    background: var(--navy-deep);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: var(--radius);
-    padding: 24px;
-  }
-  .agent-card__label {
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    color: var(--gold);
-  }
-  .agent-card__code {
-    margin-top: 10px;
-    font-family: var(--font-mono);
-    font-size: 13px;
-    line-height: 1.5;
-    color: #9fe6b0;
-    white-space: pre-wrap;
-    word-break: break-all;
   }
   .about-row {
     display: flex;

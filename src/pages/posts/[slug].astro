@@ -26,6 +26,15 @@ export const getStaticPaths = (async () => {
 const { post, seriesTitle, seriesSlug } = Astro.props;
 const { Content } = await render(post);
 
+// 搜索结果副标题：卷次 · 分类/系列 · 日期
+const metaLine = [
+  post.data.volume,
+  post.data.tags[0] ?? seriesTitle,
+  post.data.date.toISOString().slice(0, 10),
+]
+  .filter(Boolean)
+  .join(' · ');
+
 const articleJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
@@ -47,10 +56,11 @@ const articleJsonLd = {
   <JsonLd data={articleJsonLd} />
   <Nav active={seriesTitle} variant="minimal" />
 
-  <article class="post">
+  <article class="post" data-pagefind-body>
+    <span data-pagefind-meta={`subtitle:${metaLine}`} data-pagefind-ignore hidden></span>
     <div class="container post__inner">
-      <a class="post__crumb" href={`/series/${seriesSlug}`}>← {seriesTitle}</a>
-        <h1 class="post__title">{post.data.title}</h1>
+      <a class="post__crumb" href={`/series/${seriesSlug}`} data-pagefind-ignore>← {seriesTitle}</a>
+        <h1 class="post__title" data-pagefind-meta="title">{post.data.title}</h1>
         {
           post.data.cover && (
             <img class="post__cover" src={post.data.cover} alt={post.data.title} />

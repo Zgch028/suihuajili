@@ -41,11 +41,15 @@ const q = Astro.url.searchParams.get('q') ?? '';
     if (!q) return;
     try {
       const pagefind = await import('/pagefind/pagefind.js');
-      await pagefind.options({ basePath: '/pagefind/' });
+      await pagefind.options({ basePath: '/pagefind/', excerptLength: 50 });
       const search = await pagefind.search(q);
       const results = await Promise.all(
-        search.results.slice(0, 20).map((r) => r.data())
+        search.results.slice(0, 20).map((r) => r.data({ excerptLength: 50 }))
       );
+      const esc = (s) =>
+        String(s ?? '').replace(/[&<>"']/g, (c) =>
+          ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]
+        );
       const box = document.getElementById('results');
       if (!results.length) {
         box.innerHTML = '<p class="search__empty">没有找到相关内容。</p>';
@@ -54,7 +58,7 @@ const q = Astro.url.searchParams.get('q') ?? '';
       box.innerHTML = results
         .map(
           (r) =>
-            `<a class="search__result" href="${r.url}"><span class="search__result-title">${r.meta?.title || r.url}</span><span class="search__result-excerpt">${r.excerpt || ''}</span></a>`
+            `<a class="search__result" href="${esc(r.url)}"><span class="search__result-title">${esc(r.meta?.title || r.url)}</span>${r.meta?.subtitle ? `<span class="search__result-meta">${esc(r.meta.subtitle)}</span>` : ''}<span class="search__result-excerpt">${r.excerpt || ''}</span></a>`
         )
         .join('');
       document.getElementById('hint')?.remove();
@@ -115,6 +119,11 @@ const q = Astro.url.searchParams.get('q') ?? '';
     font-size: 17px;
     font-weight: 700;
     color: var(--ink);
+  }
+  .search__result-meta {
+    font-size: 12px;
+    color: var(--gold);
+    letter-spacing: 0.3px;
   }
   .search__result-excerpt {
     font-size: 14px;
